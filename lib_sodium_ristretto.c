@@ -12,7 +12,7 @@ my_bool ristretto_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 1 || (args->arg_type[0] != STRING_RESULT)){
         strcpy(message, "ristretto hash requires 1 string argument");
         return 1;
-                             }
+    }
 
     args->maybe_null[0] = 1;
 
@@ -29,15 +29,19 @@ my_bool ristretto_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
 // Take unsigned char x as input arguments and return the ristretto'ed hash.
 char* ristretto(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned long *length, char *is_null, char *error) {
     if (sodium_init() == -1) {
-        //return 1;
+        *error = 1;
+        return 0;
     }
-    char* x=args->args[0];
-    unsigned char xx, yy;
-    xx = (unsigned char)*x;
-    yy = (unsigned char)*initid->ptr;
-
-    crypto_core_ristretto255_from_hash(&yy, &xx);
-
+    unsigned char x[crypto_core_ristretto255_HASHBYTES];
+    memcpy(x, args->args[0], crypto_core_ristretto255_HASHBYTES);
+    unsigned char yy[crypto_core_ristretto255_BYTES];
+    crypto_core_ristretto255_from_hash(yy, x);
+    if (crypto_core_ristretto255_is_valid_point(yy) == 0) {
+        *error = 1;
+        return 0;
+    }
+    memcpy(initid->ptr, yy, crypto_core_ristretto255_BYTES);
+    *length = crypto_core_ristretto255_BYTES;
     return initid->ptr;
 }
 
