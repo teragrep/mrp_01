@@ -126,3 +126,50 @@ char* ristrettoscalarmultbase(UDF_INIT *initid, UDF_ARGS *args, char *result, un
     *length = crypto_core_ristretto255_BYTES;
     return initid->ptr;
 }
+
+my_bool ristrettoadd_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
+    /* make sure user has provided exactly one string argument */
+    if (args->arg_count != 2 || (args->arg_type[0] != STRING_RESULT) || (args->arg_type[1] != STRING_RESULT)){
+        strcpy(message, "ristrettoadd requires 2 string argument");
+        return 1;
+    }
+    if (args->lengths[0] != crypto_core_ristretto255_BYTES || args->lengths[1] != crypto_core_ristretto255_BYTES){
+        strcpy(message, "ristrettoadd requires 64 byte arguments");
+        return 1;
+    }
+
+    initid->ptr = malloc(crypto_core_ristretto255_BYTES);
+    if (initid->ptr == 0)
+    {
+        strcpy(message, "ristrettoadd not enough memory for buffer");
+        return 1;
+    }
+    return 0;
+}
+
+void ristrettoadd_deinit(UDF_INIT *initid) {
+    if (initid->ptr != 0)
+    {
+        free( initid->ptr);
+    }
+}
+
+char* ristrettoadd(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned long *length, char *is_null, char *error) {
+    if (sodium_init() == -1) {
+        *error = 1;
+        return 0;
+    }
+    unsigned char gr[crypto_core_ristretto255_BYTES];
+    memcpy(gr, args->args[0], args->lengths[0]);
+    unsigned char px[crypto_core_ristretto255_BYTES];
+    memcpy(px, args->args[1], args->lengths[1]);
+    unsigned char a[crypto_core_ristretto255_BYTES];
+    crypto_core_ristretto255_add(a, px, gr);
+    if (crypto_core_ristretto255_is_valid_point(a) == 0) {
+        *error = 1;
+        return 0;
+    }
+    memcpy(initid->ptr, a, crypto_core_ristretto255_BYTES);
+    *length = crypto_core_ristretto255_BYTES;
+    return initid->ptr;
+}
