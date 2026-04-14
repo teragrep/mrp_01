@@ -1,3 +1,4 @@
 USE mysql;
 
-DROP FUNCTION IF EXISTS ristretto;
+DROP FUNCTION IF EXISTS ristrettofromhash;
+DROP FUNCTION IF EXISTS ristrettoscalarrandom;

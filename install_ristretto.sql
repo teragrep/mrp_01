@@ -1,4 +1,7 @@
 USE mysql;
 
-DROP FUNCTION IF EXISTS ristretto;
-CREATE FUNCTION ristretto RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristrettofromhash;
+CREATE FUNCTION ristrettofromhash RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+
+DROP FUNCTION IF EXISTS ristrettoscalarrandom;
+CREATE FUNCTION ristrettoscalarrandom RETURNS STRING SONAME 'lib_sodium_ristretto.so';
