@@ -13,6 +13,10 @@ my_bool ristretto_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
         strcpy(message, "ristretto hash requires 1 string argument");
         return 1;
     }
+    if (args->lengths[0] != crypto_core_ristretto255_HASHBYTES){
+        strcpy(message, "ristretto hash requires 64 byte argument");
+        return 1;
+    }
 
     args->maybe_null[0] = 1;
 
@@ -33,7 +37,7 @@ char* ristretto(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned long *l
         return 0;
     }
     unsigned char x[crypto_core_ristretto255_HASHBYTES];
-    memcpy(x, args->args[0], crypto_core_ristretto255_HASHBYTES);
+    memcpy(x, args->args[0], args->lengths[0]);
     unsigned char yy[crypto_core_ristretto255_BYTES];
     crypto_core_ristretto255_from_hash(yy, x);
     if (crypto_core_ristretto255_is_valid_point(yy) == 0) {
