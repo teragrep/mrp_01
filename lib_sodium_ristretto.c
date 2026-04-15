@@ -176,6 +176,65 @@ char* ristrettoadd(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned long
     return initid->ptr;
 }
 
+my_bool ristrettosub_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
+    if (args->arg_count != 2 || (args->arg_type[0] != STRING_RESULT) || (args->arg_type[1] != STRING_RESULT)){
+        strcpy(message, "ristrettoadd requires 2 string argument");
+        return 1;
+    }
+    if (args->lengths[0] != crypto_core_ristretto255_BYTES || args->lengths[1] != crypto_core_ristretto255_BYTES){
+        strcpy(message, "ristrettoadd requires 32 byte arguments");
+        return 1;
+    }
+    if (sodium_init() == -1) {
+        strcpy(message, "sodium failed to initialize");
+        return 1;
+    }
+    unsigned char arg0[crypto_core_ristretto255_BYTES];
+    memcpy(arg0, args->args[0], args->lengths[0]);
+    if (crypto_core_ristretto255_is_valid_point(arg0) == 0) {
+        strcpy(message, "First input is not a valid ristretto point");
+        return 1;
+    }
+    unsigned char arg1[crypto_core_ristretto255_BYTES];
+    memcpy(arg1, args->args[1], args->lengths[1]);
+    if (crypto_core_ristretto255_is_valid_point(arg1) == 0) {
+        strcpy(message, "Second input is not a valid ristretto point");
+        return 1;
+    }
+
+
+    initid->ptr = malloc(crypto_core_ristretto255_BYTES);
+    if (initid->ptr == 0)
+    {
+        strcpy(message, "ristrettoadd not enough memory for buffer");
+        return 1;
+    }
+    return 0;
+}
+
+void ristrettosub_deinit(UDF_INIT *initid) {
+    if (initid->ptr != 0)
+    {
+        free( initid->ptr);
+    }
+}
+
+char* ristrettosub(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned long *length, char *is_null, char *error) {
+    if (sodium_init() == -1) {
+        *error = 1;
+        return 0;
+    }
+    unsigned char gr[crypto_core_ristretto255_BYTES];
+    memcpy(gr, args->args[0], args->lengths[0]);
+    unsigned char px[crypto_core_ristretto255_BYTES];
+    memcpy(px, args->args[1], args->lengths[1]);
+    unsigned char a[crypto_core_ristretto255_BYTES];
+    crypto_core_ristretto255_sub(a, px, gr);
+    memcpy(initid->ptr, a, crypto_core_ristretto255_BYTES);
+    *length = crypto_core_ristretto255_BYTES;
+    return initid->ptr;
+}
+
 my_bool ristrettoscalarnegate_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 1 || (args->arg_type[0] != STRING_RESULT)){
         strcpy(message, "ristrettoscalarnegate requires 1 string argument");
