@@ -123,9 +123,26 @@ my_bool ristrettoadd_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
         return 1;
     }
     if (args->lengths[0] != crypto_core_ristretto255_BYTES || args->lengths[1] != crypto_core_ristretto255_BYTES){
-        strcpy(message, "ristrettoadd requires 64 byte arguments");
+        strcpy(message, "ristrettoadd requires 32 byte arguments");
         return 1;
     }
+    if (sodium_init() == -1) {
+        strcpy(message, "sodium failed to initialize");
+        return 1;
+    }
+    unsigned char arg0[crypto_core_ristretto255_BYTES];
+    memcpy(arg0, args->args[0], args->lengths[0]);
+    if (crypto_core_ristretto255_is_valid_point(arg0) == 0) {
+        strcpy(message, "First input is not a valid ristretto point");
+        return 1;
+    }
+    unsigned char arg1[crypto_core_ristretto255_BYTES];
+    memcpy(arg1, args->args[1], args->lengths[1]);
+    if (crypto_core_ristretto255_is_valid_point(arg1) == 0) {
+        strcpy(message, "Second input is not a valid ristretto point");
+        return 1;
+    }
+
 
     initid->ptr = malloc(crypto_core_ristretto255_BYTES);
     if (initid->ptr == 0)
