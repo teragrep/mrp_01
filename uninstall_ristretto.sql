@@ -5,3 +5,4 @@ DROP FUNCTION IF EXISTS ristrettoscalarrandom;
 DROP FUNCTION IF EXISTS ristrettoscalarmultbase;
 DROP FUNCTION IF EXISTS ristrettoadd;
 DROP FUNCTION IF EXISTS ristrettoscalarnegate;
+DROP FUNCTION IF EXISTS ristrettovalidpoint;

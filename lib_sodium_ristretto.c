@@ -210,3 +210,28 @@ char* ristrettoscalarnegate(UDF_INIT *initid, UDF_ARGS *args, char *result, unsi
     *length = crypto_core_ristretto255_SCALARBYTES;
     return initid->ptr;
 }
+
+my_bool ristrettovalidpoint_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
+    if (args->arg_count != 1 || (args->arg_type[0] != STRING_RESULT)){
+        strcpy(message, "ristrettovalidpoint requires 1 string argument");
+        return 1;
+    }
+    if (args->lengths[0] != crypto_core_ristretto255_BYTES){
+        strcpy(message, "ristrettovalidpoint requires 32 byte argument");
+        return 1;
+    }
+    return 0;
+}
+
+long long ristrettovalidpoint(UDF_INIT *initid, UDF_ARGS *args, char *is_null, char *error) {
+    if (sodium_init() == -1) {
+        *error = 1;
+        return 0;
+    }
+    unsigned char r[crypto_core_ristretto255_BYTES];
+    memcpy(r, args->args[0], args->lengths[0]);
+    if (crypto_core_ristretto255_is_valid_point(r) == 0) {
+        return 0;
+    }
+    return 1;
+}
