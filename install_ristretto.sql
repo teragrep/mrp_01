@@ -6,6 +6,9 @@ CREATE FUNCTION ristrettofromhash RETURNS STRING SONAME 'lib_sodium_ristretto.so
 DROP FUNCTION IF EXISTS ristrettoscalarrandom;
 CREATE FUNCTION ristrettoscalarrandom RETURNS STRING SONAME 'lib_sodium_ristretto.so';
 
+DROP FUNCTION IF EXISTS ristrettoscalarmult;
+CREATE FUNCTION ristrettoscalarmult RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+
 DROP FUNCTION IF EXISTS ristrettoscalarmultbase;
 CREATE FUNCTION ristrettoscalarmultbase RETURNS STRING SONAME 'lib_sodium_ristretto.so';
 

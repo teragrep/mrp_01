@@ -77,6 +77,65 @@ char* ristrettoscalarrandom(UDF_INIT *initid, UDF_ARGS *args, char *result, unsi
     return initid->ptr;
 }
 
+my_bool ristrettoscalarmult_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
+    if (args->arg_count != 2 || (args->arg_type[0] != STRING_RESULT) || (args->arg_type[1] != STRING_RESULT)){
+        strcpy(message, "requires 2 string argument");
+        return 1;
+    }
+    if (args->lengths[0] != crypto_core_ristretto255_SCALARBYTES){
+        strcpy(message, "First input argument is not a scalar");
+        return 1;
+    }
+    if (args->lengths[1] != crypto_core_ristretto255_BYTES){
+        strcpy(message, "Second input argument is not a ristretto point");
+        return 1;
+    }
+    if (sodium_init() == -1) {
+        strcpy(message, "sodium failed to initialize");
+        return 1;
+    }
+    unsigned char arg1[crypto_core_ristretto255_BYTES];
+    memcpy(arg1, args->args[1], args->lengths[1]);
+    if (crypto_core_ristretto255_is_valid_point(arg1) == 0) {
+        strcpy(message, "Second input argument is not a valid ristretto point");
+        return 1;
+    }
+
+    initid->ptr = malloc(crypto_core_ristretto255_BYTES);
+    if (initid->ptr == 0)
+    {
+        strcpy(message, "ristrettoscalarmult not enough memory for buffer");
+        return 1;
+    }
+    return 0;
+}
+
+void ristrettoscalarmult_deinit(UDF_INIT *initid) {
+    if (initid->ptr != 0)
+    {
+        free( initid->ptr);
+    }
+}
+
+char* ristrettoscalarmult(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned long *length, char *is_null, char *error) {
+    if (sodium_init() == -1) {
+        *error = 1;
+        return 0;
+    }
+    unsigned char n[crypto_core_ristretto255_SCALARBYTES];
+    memcpy(n, args->args[0], args->lengths[0]);
+    unsigned char p[crypto_core_ristretto255_BYTES];
+    memcpy(p, args->args[1], args->lengths[1]);
+    unsigned char q[crypto_core_ristretto255_BYTES];
+    if (crypto_scalarmult_ristretto255(q, n, p) != 0) {
+        *error = 1;
+        return 0;
+    }
+    memcpy(initid->ptr, q, crypto_core_ristretto255_BYTES);
+    *length = crypto_core_ristretto255_BYTES;
+    return initid->ptr;
+}
+
 my_bool ristrettoscalarmultbase_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 1 || (args->arg_type[0] != STRING_RESULT)){
         strcpy(message, "ristrettoscalarmultbase requires 1 string argument");
