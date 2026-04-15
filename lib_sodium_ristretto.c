@@ -43,10 +43,6 @@ char* ristrettofromhash(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned
     memcpy(x, args->args[0], args->lengths[0]);
     unsigned char yy[crypto_core_ristretto255_BYTES];
     crypto_core_ristretto255_from_hash(yy, x);
-    if (crypto_core_ristretto255_is_valid_point(yy) == 0) {
-        *error = 1;
-        return 0;
-    }
     memcpy(initid->ptr, yy, crypto_core_ristretto255_BYTES);
     *length = crypto_core_ristretto255_BYTES;
     return initid->ptr;
@@ -116,10 +112,6 @@ char* ristrettoscalarmultbase(UDF_INIT *initid, UDF_ARGS *args, char *result, un
     memcpy(r, args->args[0], args->lengths[0]);
     unsigned char gr[crypto_core_ristretto255_BYTES];
     crypto_scalarmult_ristretto255_base(gr, r);
-    if (crypto_core_ristretto255_is_valid_point(gr) == 0) {
-        *error = 1;
-        return 0;
-    }
     memcpy(initid->ptr, gr, crypto_core_ristretto255_BYTES);
     *length = crypto_core_ristretto255_BYTES;
     return initid->ptr;
@@ -162,10 +154,6 @@ char* ristrettoadd(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned long
     memcpy(px, args->args[1], args->lengths[1]);
     unsigned char a[crypto_core_ristretto255_BYTES];
     crypto_core_ristretto255_add(a, px, gr);
-    if (crypto_core_ristretto255_is_valid_point(a) == 0) {
-        *error = 1;
-        return 0;
-    }
     memcpy(initid->ptr, a, crypto_core_ristretto255_BYTES);
     *length = crypto_core_ristretto255_BYTES;
     return initid->ptr;
