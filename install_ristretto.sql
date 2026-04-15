@@ -11,3 +11,6 @@ CREATE FUNCTION ristrettoscalarmultbase RETURNS STRING SONAME 'lib_sodium_ristre
 
 DROP FUNCTION IF EXISTS ristrettoadd;
 CREATE FUNCTION ristrettoadd RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+
+DROP FUNCTION IF EXISTS ristrettoscalarnegate;
+CREATE FUNCTION ristrettoscalarnegate RETURNS STRING SONAME 'lib_sodium_ristretto.so';
