@@ -117,6 +117,46 @@ char* ristrettoscalarreduce(UDF_INIT *initid, UDF_ARGS *args, char *result, unsi
     return initid->ptr;
 }
 
+my_bool ristrettoscalarinvert_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
+    if (args->arg_count != 1 || (args->arg_type[0] != STRING_RESULT)){
+        strcpy(message, "requires 1 string argument");
+        return 1;
+    }
+    if (args->lengths[0] != crypto_core_ristretto255_SCALARBYTES){
+        strcpy(message, "Input argument is not a scalar");
+        return 1;
+    }
+
+    initid->ptr = malloc(crypto_core_ristretto255_SCALARBYTES);
+    if (initid->ptr == 0)
+    {
+        strcpy(message, "ristrettoscalarmult not enough memory for buffer");
+        return 1;
+    }
+    return 0;
+}
+
+void ristrettoscalarinvert_deinit(UDF_INIT *initid) {
+    if (initid->ptr != 0)
+    {
+        free( initid->ptr);
+    }
+}
+
+char* ristrettoscalarinvert(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned long *length, char *is_null, char *error) {
+    if (sodium_init() == -1) {
+        *error = 1;
+        return 0;
+    }
+    unsigned char s[crypto_core_ristretto255_SCALARBYTES];
+    memcpy(s, args->args[0], args->lengths[0]);
+    unsigned char recip[crypto_core_ristretto255_SCALARBYTES];
+    crypto_core_ristretto255_scalar_invert(recip, s);
+    memcpy(initid->ptr, recip, crypto_core_ristretto255_SCALARBYTES);
+    *length = crypto_core_ristretto255_SCALARBYTES;
+    return initid->ptr;
+}
+
 my_bool ristrettoscalarnegate_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 1 || (args->arg_type[0] != STRING_RESULT)){
         strcpy(message, "ristrettoscalarnegate requires 1 string argument");
