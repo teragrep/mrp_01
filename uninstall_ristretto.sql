@@ -8,6 +8,7 @@ DROP FUNCTION IF EXISTS ristrettoscalarnegate;
 DROP FUNCTION IF EXISTS ristrettoscalarcomplement;
 DROP FUNCTION IF EXISTS ristrettoscalaradd;
 DROP FUNCTION IF EXISTS ristrettoscalarsub;
+DROP FUNCTION IF EXISTS ristrettoscalarmul;
 DROP FUNCTION IF EXISTS ristrettoscalarmult;
 DROP FUNCTION IF EXISTS ristrettoscalarmultbase;
 DROP FUNCTION IF EXISTS ristrettoadd;
