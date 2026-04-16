@@ -398,3 +398,32 @@ long long ristrettovalidpoint(UDF_INIT *initid, UDF_ARGS *args, char *is_null, c
     }
     return 1;
 }
+
+my_bool ristrettorandom_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
+    initid->ptr = malloc(crypto_core_ristretto255_BYTES);
+    if (initid->ptr == 0)
+    {
+        strcpy(message, "ristrettoadd not enough memory for buffer");
+        return 1;
+    }
+    return 0;
+}
+
+void ristrettorandom_deinit(UDF_INIT *initid) {
+    if (initid->ptr != 0)
+    {
+        free( initid->ptr);
+    }
+}
+
+char* ristrettorandom(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned long *length, char *is_null, char *error) {
+    if (sodium_init() == -1) {
+        *error = 1;
+        return 0;
+    }
+    unsigned char p[crypto_core_ristretto255_BYTES];
+    crypto_core_ristretto255_random(p);
+    memcpy(initid->ptr, p, crypto_core_ristretto255_BYTES);
+    *length = crypto_core_ristretto255_BYTES;
+    return initid->ptr;
+}

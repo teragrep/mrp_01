@@ -9,3 +9,4 @@ DROP FUNCTION IF EXISTS ristrettoscalarmultbase;
 DROP FUNCTION IF EXISTS ristrettoadd;
 DROP FUNCTION IF EXISTS ristrettosub;
 DROP FUNCTION IF EXISTS ristrettovalidpoint;
+DROP FUNCTION IF EXISTS ristrettorandom;
