@@ -15,6 +15,9 @@ CREATE FUNCTION ristrettoscalarinvert RETURNS STRING SONAME 'lib_sodium_ristrett
 DROP FUNCTION IF EXISTS ristrettoscalarnegate;
 CREATE FUNCTION ristrettoscalarnegate RETURNS STRING SONAME 'lib_sodium_ristretto.so';
 
+DROP FUNCTION IF EXISTS ristrettoscalarcomplement;
+CREATE FUNCTION ristrettoscalarcomplement RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+
 DROP FUNCTION IF EXISTS ristrettoscalarmult;
 CREATE FUNCTION ristrettoscalarmult RETURNS STRING SONAME 'lib_sodium_ristretto.so';
 

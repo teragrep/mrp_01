@@ -197,6 +197,46 @@ char* ristrettoscalarnegate(UDF_INIT *initid, UDF_ARGS *args, char *result, unsi
     return initid->ptr;
 }
 
+my_bool ristrettoscalarcomplement_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
+    if (args->arg_count != 1 || (args->arg_type[0] != STRING_RESULT)){
+        strcpy(message, "ristrettoscalarnegate requires 1 string argument");
+        return 1;
+    }
+    if (args->lengths[0] != crypto_core_ristretto255_SCALARBYTES){
+        strcpy(message, "ristrettoscalarnegate requires 32 byte argument");
+        return 1;
+    }
+
+    initid->ptr = malloc(crypto_core_ristretto255_SCALARBYTES);
+    if (initid->ptr == 0)
+    {
+        strcpy(message, "ristrettoscalarnegate not enough memory for buffer");
+        return 1;
+    }
+    return 0;
+}
+
+void ristrettoscalarcomplement_deinit(UDF_INIT *initid) {
+    if (initid->ptr != 0)
+    {
+        free( initid->ptr);
+    }
+}
+
+char* ristrettoscalarcomplement(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned long *length, char *is_null, char *error) {
+    if (sodium_init() == -1) {
+        *error = 1;
+        return 0;
+    }
+    unsigned char r[crypto_core_ristretto255_SCALARBYTES];
+    memcpy(r, args->args[0], args->lengths[0]);
+    unsigned char ir[crypto_core_ristretto255_SCALARBYTES];
+    crypto_core_ristretto255_scalar_complement(ir, r);
+    memcpy(initid->ptr, ir, crypto_core_ristretto255_SCALARBYTES);
+    *length = crypto_core_ristretto255_SCALARBYTES;
+    return initid->ptr;
+}
+
 my_bool ristrettoscalarmult_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 2 || (args->arg_type[0] != STRING_RESULT) || (args->arg_type[1] != STRING_RESULT)){
         strcpy(message, "requires 2 string argument");
