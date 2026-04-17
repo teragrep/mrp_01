@@ -1,6 +1,6 @@
-AC_PREREQ(2.69)
+AC_PREREQ([2.72])
 
-AC_INIT(lib_sodium_ristretto,0.0.1)
+AC_INIT([lib_sodium_ristretto],[0.0.1])
 
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_MACRO_DIR(config)
@@ -8,8 +8,7 @@ AM_CONFIG_HEADER(config.h)
 
 AM_INIT_AUTOMAKE(foreign)
 
-AC_LIBTOOL_WIN32_DLL
-AM_PROG_LIBTOOL
+LT_INIT([win32-dll])
 AC_PROG_CC
 
 m4_include(config/ax_lib_mysql.m4)
