@@ -1,5 +1,6 @@
 FROM rockylinux:8
-RUN dnf -y install make automake autoconf libtool libsodium mariadb-devel
+RUN dnf -y install make automake autoconf libtool mariadb-devel epel-release
+RUN dnf -y install libsodium-devel
 WORKDIR /code
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
