@@ -1,4 +1,4 @@
-AC_PREREQ([2.72])
+AC_PREREQ([2.69])
 
 AC_INIT([lib_sodium_ristretto],[0.0.1])
 
