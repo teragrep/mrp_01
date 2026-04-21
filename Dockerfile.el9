@@ -3,4 +3,5 @@ RUN dnf -y --enablerepo=devel install make automake autoconf libtool mariadb-dev
 RUN dnf -y --enablerepo=devel install libsodium-devel
 WORKDIR /code
 COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
