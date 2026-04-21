@@ -21,4 +21,4 @@ jobs:
         run: docker build . --tag builder -f "Dockerfile.${{ matrix.os }}"
 
       - name: Build project
-        run: docker run -v "${{ github.workspace }}:/code:Z" builder
+        run: sudo docker run -v "${{ github.workspace }}:/code:Z" builder
