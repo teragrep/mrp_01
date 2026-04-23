@@ -13,9 +13,7 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v6
 
       - name: Build container
         run: docker build . --tag builder -f "Dockerfile.${{ matrix.os }}"
