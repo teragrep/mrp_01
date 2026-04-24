@@ -9,7 +9,7 @@ typedef char my_bool;
 
 // Encoded element validation
 
-my_bool ristrettovalidpoint_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
+my_bool ristrettoisvalidpoint_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 1 || (args->arg_type[0] != STRING_RESULT)){
         strcpy(message, "ristrettovalidpoint requires 1 string argument");
         return 1;
@@ -21,7 +21,7 @@ my_bool ristrettovalidpoint_init(UDF_INIT *initid, UDF_ARGS *args, char *message
     return 0;
 }
 
-long long ristrettovalidpoint(UDF_INIT *initid, UDF_ARGS *args, char *is_null, char *error) {
+long long ristrettoisvalidpoint(UDF_INIT *initid, UDF_ARGS *args, char *is_null, char *error) {
     if (sodium_init() == -1) {
         *error = 1;
         return 0;
@@ -110,7 +110,7 @@ char* ristrettofromhash(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned
 
 // Scalar multiplication
 
-my_bool ristrettoscalarmult_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
+my_bool scalarmultristretto_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 2 || (args->arg_type[0] != STRING_RESULT) || (args->arg_type[1] != STRING_RESULT)){
         strcpy(message, "requires 2 string argument");
         return 1;
@@ -143,14 +143,14 @@ my_bool ristrettoscalarmult_init(UDF_INIT *initid, UDF_ARGS *args, char *message
     return 0;
 }
 
-void ristrettoscalarmult_deinit(UDF_INIT *initid) {
+void scalarmultristretto_deinit(UDF_INIT *initid) {
     if (initid->ptr != 0)
     {
         free( initid->ptr);
     }
 }
 
-char* ristrettoscalarmult(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned long *length, char *is_null, char *error) {
+char* scalarmultristretto(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned long *length, char *is_null, char *error) {
     if (sodium_init() == -1) {
         *error = 1;
         return 0;
@@ -169,7 +169,7 @@ char* ristrettoscalarmult(UDF_INIT *initid, UDF_ARGS *args, char *result, unsign
     return initid->ptr;
 }
 
-my_bool ristrettoscalarmultbase_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
+my_bool scalarmultristrettobase_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 1 || (args->arg_type[0] != STRING_RESULT)){
         strcpy(message, "ristrettoscalarmultbase requires 1 string argument");
         return 1;
@@ -188,14 +188,14 @@ my_bool ristrettoscalarmultbase_init(UDF_INIT *initid, UDF_ARGS *args, char *mes
     return 0;
 }
 
-void ristrettoscalarmultbase_deinit(UDF_INIT *initid) {
+void scalarmultristrettobase_deinit(UDF_INIT *initid) {
     if (initid->ptr != 0)
     {
         free( initid->ptr);
     }
 }
 
-char* ristrettoscalarmultbase(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned long *length, char *is_null, char *error) {
+char* scalarmultristrettobase(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned long *length, char *is_null, char *error) {
     if (sodium_init() == -1) {
         *error = 1;
         return 0;

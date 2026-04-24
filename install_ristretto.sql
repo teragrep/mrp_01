@@ -1,7 +1,25 @@
 USE mysql;
 
+DROP FUNCTION IF EXISTS ristrettoisvalidpoint;
+CREATE FUNCTION ristrettoisvalidpoint RETURNS INTEGER SONAME 'lib_sodium_ristretto.so';
+
+DROP FUNCTION IF EXISTS ristrettorandom;
+CREATE FUNCTION ristrettorandom RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+
 DROP FUNCTION IF EXISTS ristrettofromhash;
 CREATE FUNCTION ristrettofromhash RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+
+DROP FUNCTION IF EXISTS scalarmultristretto;
+CREATE FUNCTION scalarmultristretto RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+
+DROP FUNCTION IF EXISTS scalarmultristrettobase;
+CREATE FUNCTION scalarmultristrettobase RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+
+DROP FUNCTION IF EXISTS ristrettoadd;
+CREATE FUNCTION ristrettoadd RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+
+DROP FUNCTION IF EXISTS ristrettosub;
+CREATE FUNCTION ristrettosub RETURNS STRING SONAME 'lib_sodium_ristretto.so';
 
 DROP FUNCTION IF EXISTS ristrettoscalarrandom;
 CREATE FUNCTION ristrettoscalarrandom RETURNS STRING SONAME 'lib_sodium_ristretto.so';
@@ -26,21 +44,3 @@ CREATE FUNCTION ristrettoscalarsub RETURNS STRING SONAME 'lib_sodium_ristretto.s
 
 DROP FUNCTION IF EXISTS ristrettoscalarmul;
 CREATE FUNCTION ristrettoscalarmul RETURNS STRING SONAME 'lib_sodium_ristretto.so';
-
-DROP FUNCTION IF EXISTS ristrettoscalarmult;
-CREATE FUNCTION ristrettoscalarmult RETURNS STRING SONAME 'lib_sodium_ristretto.so';
-
-DROP FUNCTION IF EXISTS ristrettoscalarmultbase;
-CREATE FUNCTION ristrettoscalarmultbase RETURNS STRING SONAME 'lib_sodium_ristretto.so';
-
-DROP FUNCTION IF EXISTS ristrettoadd;
-CREATE FUNCTION ristrettoadd RETURNS STRING SONAME 'lib_sodium_ristretto.so';
-
-DROP FUNCTION IF EXISTS ristrettosub;
-CREATE FUNCTION ristrettosub RETURNS STRING SONAME 'lib_sodium_ristretto.so';
-
-DROP FUNCTION IF EXISTS ristrettovalidpoint;
-CREATE FUNCTION ristrettovalidpoint RETURNS INTEGER SONAME 'lib_sodium_ristretto.so';
-
-DROP FUNCTION IF EXISTS ristrettorandom;
-CREATE FUNCTION ristrettorandom RETURNS STRING SONAME 'lib_sodium_ristretto.so';
