@@ -3,27 +3,86 @@
 // 2. Update the issues link in Contributing section in the readme file
 // 3. Update the discussion link in config.yml file in .github/ISSUE_TEMPLATE directory
 
-= repo-template
+= MRP_01: MariaDB Ristretto255 Plugin
 
-// Add a short description of your project. Tell what your project does and what it's used for.
+This package provides all the functionalities of libsodium ristretto255 methods in the form of user-defined functions (UDFs) for MySQL.
 
-This is a template repository for Teragrep organization.
+== Installation
 
-== Features
+WIP
 
-// List your project's features
+== Functions
 
-== Documentation
+=== Encoded element validation
+==== `ristrettoisvalidpoint`
 
-See the official documentation on https://docs.teragrep.com[docs.teragrep.com].
+The function checks that the input argument `p` is a valid ristretto255-encoded element. Returns 1 on success, 0 if the check didn't pass.
 
-== Limitations
+=== Random group element
+==== `ristrettorandom`
 
-// If your project has limitations, please list them. Otherwise remove this section.
+Returns a random ristretto255 group element.
 
-== How to [compile/use/implement]
+=== Hash-to-group
+==== `ristrettofromhash`
 
-// add instructions how people can start to use your project
+The function maps a 64 bytes vector to a ristretto255 group element and returns it.
+
+=== Scalar multiplication
+==== `scalarmultristretto`
+
+
+==== `scalarmultristrettobase`
+
+=== Element addition/subtraction
+==== `ristrettoadd`
+
+==== `ristrettosub`
+
+=== Scalar arithmetic over L
+==== `ristrettoscalarrandom`
+
+==== `ristrettoscalarreduce`
+
+==== `ristrettoscalarinvert`
+
+==== `ristrettoscalarnegate`
+
+==== `ristrettoscalarcomplement`
+
+==== `ristrettoscalaradd`
+
+==== `ristrettoscalarsub`
+
+==== `ristrettoscalarmul`
+
+== Development
+
+Compiling this project requires at least the following packages to be installed:
+
+- `make`
+- `automake`
+- `autoconf`
+- `libtool`
+- `mariadb-devel`
+- `libsodium-devel`
+
+To install, run the following commands in project root directory:
+[source,shell]
+----
+autoreconf -fvi
+
+./configure
+make
+sudo make install
+sudo make installdb
+----
+And to uninstall, run the following commands:
+[source,shell]
+----
+make uninstalldb
+make uninstall
+----
 
 == Contributing
 
