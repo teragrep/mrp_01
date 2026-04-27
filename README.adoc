@@ -11,50 +11,81 @@ This package provides all the functionalities of libsodium ristretto255 methods 
 
 WIP
 
-== Functions
+== SQL Functions
 
 === Encoded element validation
-==== `ristrettoisvalidpoint`
+
+`ristrettoisvalidpoint(BINARY(32) p)`
 
 The function checks that the input argument `p` is a valid ristretto255-encoded element. Returns 1 on success, 0 if the check didn't pass.
 
 === Random group element
-==== `ristrettorandom`
 
-Returns a random ristretto255 group element.
+`ristrettorandom()`
+
+The function returns a random ristretto255 group element in binary string format.
 
 === Hash-to-group
-==== `ristrettofromhash`
 
-The function maps a 64 bytes vector to a ristretto255 group element and returns it.
+`ristrettofromhash(BINARY(64) a)`
+
+The function maps a 64 bytes vector that given as input argument `a` to a ristretto255 group element and returns it.
 
 === Scalar multiplication
-==== `scalarmultristretto`
 
+`scalarmultristretto(BINARY(32) a, BINARY(32) b);`
 
-==== `scalarmultristrettobase`
+The function multiplies an ristretto element `b` by a scalar `a` and returns the resulting element.
 
-=== Element addition/subtraction
-==== `ristrettoadd`
+`scalarmultristrettobase(BINARY(32) a);`
 
-==== `ristrettosub`
+The function multiplies the randomly generated ristretto element by a scalar `a` and returns the resulting element.
+
+=== Element addition and subtraction
+
+`ristrettoadd(BINARY(32) a, BINARY(32) b)`
+
+The function adds the ristretto element `a` to ristretto element `b` and returns the resulting element.
+
+`ristrettosub(BINARY(32) a, BINARY(32) b)`
+
+The function subtracts the ristretto element `a` to the ristretto element `b` and returns the resulting element.
 
 === Scalar arithmetic over L
-==== `ristrettoscalarrandom`
 
-==== `ristrettoscalarreduce`
+The ristrettoscalar*() function set operates over scalars in the `[0..L[` interval, `L` being the order of the ristretto255 group: (2^252 + 27742317777372353535851937790883648493).
 
-==== `ristrettoscalarinvert`
+`ristrettoscalarrandom()`
 
-==== `ristrettoscalarnegate`
+The function returns a random scalar in binary string format.
 
-==== `ristrettoscalarcomplement`
+`ristrettoscalarreduce(BINARY(32) a)`
 
-==== `ristrettoscalaradd`
+The function reduces `a` to `a mod L` and returns the resulting integer in binary string format.
 
-==== `ristrettoscalarsub`
+`ristrettoscalarinvert(BINARY(32) a)`
 
-==== `ristrettoscalarmul`
+The function computes the multiplicative inverse of `a over L` and returns the result in binary string format.
+
+`ristrettoscalarnegate(BINARY(32) a)`
+
+The function returns `neg` so that `a + neg = 0 (mod L)`.
+
+`ristrettoscalarcomplement(BINARY(32) a)`
+
+The function returns `comp` so that `a + comp = 1 (mod L)`.
+
+`ristrettoscalaradd(BINARY(32) a, BINARY(32) b)`
+
+The function returns the result of `a + b (mod L)`.
+
+`ristrettoscalarsub(BINARY(32) a, BINARY(32) b)`
+
+The function returns the result of `a - b (mod L)`.
+
+`ristrettoscalarmul(BINARY(32) a, BINARY(32) b)`
+
+The function retuns the result of `a * b (mod L)`.
 
 == Development
 
