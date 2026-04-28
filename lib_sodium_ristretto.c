@@ -11,11 +11,11 @@ typedef char my_bool;
 
 my_bool ristrettoisvalidpoint_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 1 || (args->arg_type[0] != STRING_RESULT)){
-        strcpy(message, "ristrettovalidpoint requires 1 string argument");
+        strcpy(message, "requires 1 binary string argument");
         return 1;
     }
     if (args->lengths[0] != crypto_core_ristretto255_BYTES){
-        strcpy(message, "ristrettovalidpoint requires 32 byte argument");
+        strcpy(message, "First input argument is not a 32 byte binary string");
         return 1;
     }
     return 0;
@@ -40,7 +40,7 @@ my_bool ristrettorandom_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     initid->ptr = malloc(crypto_core_ristretto255_BYTES);
     if (initid->ptr == 0)
     {
-        strcpy(message, "ristrettoadd not enough memory for buffer");
+        strcpy(message, "not enough memory for buffer");
         return 1;
     }
     return 0;
@@ -69,18 +69,18 @@ char* ristrettorandom(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned l
 
 my_bool ristrettofromhash_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 1 || (args->arg_type[0] != STRING_RESULT)){
-        strcpy(message, "ristrettofromhash requires 1 string argument");
+        strcpy(message, "requires 1 binary string argument");
         return 1;
     }
     if (args->lengths[0] != crypto_core_ristretto255_HASHBYTES){
-        strcpy(message, "ristrettofromhash requires 64 byte argument");
+        strcpy(message, "First input argument is not a 64 byte binary string");
         return 1;
     }
 
     initid->ptr = malloc(crypto_core_ristretto255_BYTES);
     if (initid->ptr == 0)
     {
-        strcpy(message, "ristrettofromhash not enough memory for buffer");
+        strcpy(message, "not enough memory for buffer");
         return 1;
     }
 
@@ -112,15 +112,15 @@ char* ristrettofromhash(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned
 
 my_bool scalarmultristretto_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 2 || (args->arg_type[0] != STRING_RESULT) || (args->arg_type[1] != STRING_RESULT)){
-        strcpy(message, "requires 2 string argument");
+        strcpy(message, "requires 2 binary string arguments");
         return 1;
     }
     if (args->lengths[0] != crypto_core_ristretto255_SCALARBYTES){
-        strcpy(message, "First input argument is not a scalar");
+        strcpy(message, "First input argument is not a 32 byte scalar in binary string format");
         return 1;
     }
     if (args->lengths[1] != crypto_core_ristretto255_BYTES){
-        strcpy(message, "Second input argument is not a ristretto point");
+        strcpy(message, "Second input argument is not a 32 byte binary string");
         return 1;
     }
     if (sodium_init() == -1) {
@@ -137,7 +137,7 @@ my_bool scalarmultristretto_init(UDF_INIT *initid, UDF_ARGS *args, char *message
     initid->ptr = malloc(crypto_core_ristretto255_BYTES);
     if (initid->ptr == 0)
     {
-        strcpy(message, "ristrettoscalarmult not enough memory for buffer");
+        strcpy(message, "not enough memory for buffer");
         return 1;
     }
     return 0;
@@ -171,18 +171,18 @@ char* scalarmultristretto(UDF_INIT *initid, UDF_ARGS *args, char *result, unsign
 
 my_bool scalarmultristrettobase_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 1 || (args->arg_type[0] != STRING_RESULT)){
-        strcpy(message, "ristrettoscalarmultbase requires 1 string argument");
+        strcpy(message, "requires 1 binary string argument");
         return 1;
     }
     if (args->lengths[0] != crypto_core_ristretto255_SCALARBYTES){
-        strcpy(message, "ristrettoscalarmultbase requires string scalar argument");
+        strcpy(message, "First input argument is not a 32 byte scalar in binary string format");
         return 1;
     }
 
     initid->ptr = malloc(crypto_core_ristretto255_BYTES);
     if (initid->ptr == 0)
     {
-        strcpy(message, "ristrettoscalarmultbase not enough memory for buffer");
+        strcpy(message, "not enough memory for buffer");
         return 1;
     }
     return 0;
@@ -213,11 +213,15 @@ char* scalarmultristrettobase(UDF_INIT *initid, UDF_ARGS *args, char *result, un
 
 my_bool ristrettoadd_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 2 || (args->arg_type[0] != STRING_RESULT) || (args->arg_type[1] != STRING_RESULT)){
-        strcpy(message, "ristrettoadd requires 2 string argument");
+        strcpy(message, "requires 2 binary string arguments");
         return 1;
     }
-    if (args->lengths[0] != crypto_core_ristretto255_BYTES || args->lengths[1] != crypto_core_ristretto255_BYTES){
-        strcpy(message, "ristrettoadd requires 32 byte arguments");
+    if (args->lengths[0] != crypto_core_ristretto255_BYTES){
+        strcpy(message, "First input argument is not a 32 byte binary string");
+        return 1;
+    }
+    if (args->lengths[1] != crypto_core_ristretto255_BYTES){
+        strcpy(message, "Second input argument is not a 32 byte binary string");
         return 1;
     }
     if (sodium_init() == -1) {
@@ -241,7 +245,7 @@ my_bool ristrettoadd_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     initid->ptr = malloc(crypto_core_ristretto255_BYTES);
     if (initid->ptr == 0)
     {
-        strcpy(message, "ristrettoadd not enough memory for buffer");
+        strcpy(message, "not enough memory for buffer");
         return 1;
     }
     return 0;
@@ -272,11 +276,15 @@ char* ristrettoadd(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned long
 
 my_bool ristrettosub_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 2 || (args->arg_type[0] != STRING_RESULT) || (args->arg_type[1] != STRING_RESULT)){
-        strcpy(message, "ristrettoadd requires 2 string argument");
+        strcpy(message, "requires 2 binary string argument");
         return 1;
     }
-    if (args->lengths[0] != crypto_core_ristretto255_BYTES || args->lengths[1] != crypto_core_ristretto255_BYTES){
-        strcpy(message, "ristrettoadd requires 32 byte arguments");
+    if (args->lengths[0] != crypto_core_ristretto255_BYTES){
+        strcpy(message, "First input is not a 32 byte binary string");
+        return 1;
+    }
+    if (args->lengths[1] != crypto_core_ristretto255_BYTES){
+        strcpy(message, "Second input is not a 32 byte binary string");
         return 1;
     }
     if (sodium_init() == -1) {
@@ -300,7 +308,7 @@ my_bool ristrettosub_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     initid->ptr = malloc(crypto_core_ristretto255_BYTES);
     if (initid->ptr == 0)
     {
-        strcpy(message, "ristrettoadd not enough memory for buffer");
+        strcpy(message, "not enough memory for buffer");
         return 1;
     }
     return 0;
@@ -335,7 +343,7 @@ my_bool ristrettoscalarrandom_init(UDF_INIT *initid, UDF_ARGS *args, char *messa
     initid->ptr = malloc(crypto_core_ristretto255_SCALARBYTES);
     if (initid->ptr == 0)
     {
-        strcpy(message, "ristrettoscalarrandom not enough memory for buffer");
+        strcpy(message, "not enough memory for buffer");
         return 1;
     }
     return 0;
@@ -362,18 +370,18 @@ char* ristrettoscalarrandom(UDF_INIT *initid, UDF_ARGS *args, char *result, unsi
 
 my_bool ristrettoscalarreduce_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 1 || (args->arg_type[0] != STRING_RESULT)){
-        strcpy(message, "requires 1 string argument");
+        strcpy(message, "requires 1 binary string argument");
         return 1;
     }
-    if (args->lengths[0] != crypto_core_ristretto255_SCALARBYTES){
-        strcpy(message, "Input argument is not a scalar");
+    if (args->lengths[0] != crypto_core_ristretto255_NONREDUCEDSCALARBYTES){
+        strcpy(message, "First input is not a scalar in 64 byte binary string format");
         return 1;
     }
 
     initid->ptr = malloc(crypto_core_ristretto255_SCALARBYTES);
     if (initid->ptr == 0)
     {
-        strcpy(message, "ristrettoscalarmult not enough memory for buffer");
+        strcpy(message, "not enough memory for buffer");
         return 1;
     }
     return 0;
@@ -391,7 +399,7 @@ char* ristrettoscalarreduce(UDF_INIT *initid, UDF_ARGS *args, char *result, unsi
         *error = 1;
         return 0;
     }
-    unsigned char s[crypto_core_ristretto255_SCALARBYTES];
+    unsigned char s[crypto_core_ristretto255_NONREDUCEDSCALARBYTES];
     memcpy(s, args->args[0], args->lengths[0]);
     unsigned char r[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_reduce(r, s);
@@ -402,18 +410,18 @@ char* ristrettoscalarreduce(UDF_INIT *initid, UDF_ARGS *args, char *result, unsi
 
 my_bool ristrettoscalarinvert_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 1 || (args->arg_type[0] != STRING_RESULT)){
-        strcpy(message, "requires 1 string argument");
+        strcpy(message, "requires 1 binary string argument");
         return 1;
     }
     if (args->lengths[0] != crypto_core_ristretto255_SCALARBYTES){
-        strcpy(message, "Input argument is not a scalar");
+        strcpy(message, "First input is not a scalar in 32 byte binary string format");
         return 1;
     }
 
     initid->ptr = malloc(crypto_core_ristretto255_SCALARBYTES);
     if (initid->ptr == 0)
     {
-        strcpy(message, "ristrettoscalarmult not enough memory for buffer");
+        strcpy(message, "not enough memory for buffer");
         return 1;
     }
     return 0;
@@ -442,18 +450,18 @@ char* ristrettoscalarinvert(UDF_INIT *initid, UDF_ARGS *args, char *result, unsi
 
 my_bool ristrettoscalarnegate_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 1 || (args->arg_type[0] != STRING_RESULT)){
-        strcpy(message, "ristrettoscalarnegate requires 1 string argument");
+        strcpy(message, "Requires 1 binary string argument");
         return 1;
     }
     if (args->lengths[0] != crypto_core_ristretto255_SCALARBYTES){
-        strcpy(message, "ristrettoscalarnegate requires 32 byte argument");
+        strcpy(message, "First input is not a scalar in 32 byte binary string format");
         return 1;
     }
 
     initid->ptr = malloc(crypto_core_ristretto255_SCALARBYTES);
     if (initid->ptr == 0)
     {
-        strcpy(message, "ristrettoscalarnegate not enough memory for buffer");
+        strcpy(message, "not enough memory for buffer");
         return 1;
     }
     return 0;
@@ -482,18 +490,18 @@ char* ristrettoscalarnegate(UDF_INIT *initid, UDF_ARGS *args, char *result, unsi
 
 my_bool ristrettoscalarcomplement_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 1 || (args->arg_type[0] != STRING_RESULT)){
-        strcpy(message, "ristrettoscalarnegate requires 1 string argument");
+        strcpy(message, "requires 1 binary string argument");
         return 1;
     }
     if (args->lengths[0] != crypto_core_ristretto255_SCALARBYTES){
-        strcpy(message, "ristrettoscalarnegate requires 32 byte argument");
+        strcpy(message, "First input is not a scalar in 32 byte binary string format");
         return 1;
     }
 
     initid->ptr = malloc(crypto_core_ristretto255_SCALARBYTES);
     if (initid->ptr == 0)
     {
-        strcpy(message, "ristrettoscalarnegate not enough memory for buffer");
+        strcpy(message, "not enough memory for buffer");
         return 1;
     }
     return 0;
@@ -522,22 +530,22 @@ char* ristrettoscalarcomplement(UDF_INIT *initid, UDF_ARGS *args, char *result, 
 
 my_bool ristrettoscalaradd_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 2 || args->arg_type[0] != STRING_RESULT || args->arg_type[1] != STRING_RESULT){
-        strcpy(message, "ristrettoscalarnegate requires 1 string argument");
+        strcpy(message, "requires 1 binary string argument");
         return 1;
     }
     if (args->lengths[0] != crypto_core_ristretto255_SCALARBYTES){
-        strcpy(message, "First input argument must be 32 bytes");
+        strcpy(message, "First input is not a scalar in 32 byte binary string format");
         return 1;
     }
     if (args->lengths[1] != crypto_core_ristretto255_SCALARBYTES){
-        strcpy(message, "Second input argument must be 32 bytes");
+        strcpy(message, "Second input is not a scalar in 32 byte binary string format");
         return 1;
     }
 
     initid->ptr = malloc(crypto_core_ristretto255_SCALARBYTES);
     if (initid->ptr == 0)
     {
-        strcpy(message, "ristrettoscalarnegate not enough memory for buffer");
+        strcpy(message, "not enough memory for buffer");
         return 1;
     }
     return 0;
@@ -568,22 +576,22 @@ char* ristrettoscalaradd(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigne
 
 my_bool ristrettoscalarsub_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 2 || args->arg_type[0] != STRING_RESULT || args->arg_type[1] != STRING_RESULT){
-        strcpy(message, "ristrettoscalarnegate requires 1 string argument");
+        strcpy(message, "requires 1 binary string argument");
         return 1;
     }
     if (args->lengths[0] != crypto_core_ristretto255_SCALARBYTES){
-        strcpy(message, "First input argument must be 32 bytes");
+        strcpy(message, "First input is not a scalar in 32 byte binary string format");
         return 1;
     }
     if (args->lengths[1] != crypto_core_ristretto255_SCALARBYTES){
-        strcpy(message, "Second input argument must be 32 bytes");
+        strcpy(message, "Second input is not a scalar in 32 byte binary string format");
         return 1;
     }
 
     initid->ptr = malloc(crypto_core_ristretto255_SCALARBYTES);
     if (initid->ptr == 0)
     {
-        strcpy(message, "ristrettoscalarnegate not enough memory for buffer");
+        strcpy(message, "not enough memory for buffer");
         return 1;
     }
     return 0;
@@ -614,22 +622,22 @@ char* ristrettoscalarsub(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigne
 
 my_bool ristrettoscalarmul_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 2 || args->arg_type[0] != STRING_RESULT || args->arg_type[1] != STRING_RESULT){
-        strcpy(message, "ristrettoscalarnegate requires 1 string argument");
+        strcpy(message, "requires 2 binary string arguments");
         return 1;
     }
     if (args->lengths[0] != crypto_core_ristretto255_SCALARBYTES){
-        strcpy(message, "First input argument must be 32 bytes");
+        strcpy(message, "First input is not a scalar in 32 byte binary string format");
         return 1;
     }
     if (args->lengths[1] != crypto_core_ristretto255_SCALARBYTES){
-        strcpy(message, "Second input argument must be 32 bytes");
+        strcpy(message, "Second input is not a scalar in 32 byte binary string format");
         return 1;
     }
 
     initid->ptr = malloc(crypto_core_ristretto255_SCALARBYTES);
     if (initid->ptr == 0)
     {
-        strcpy(message, "ristrettoscalarnegate not enough memory for buffer");
+        strcpy(message, "not enough memory for buffer");
         return 1;
     }
     return 0;
