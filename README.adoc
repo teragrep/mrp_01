@@ -109,9 +109,9 @@ The ristrettoscalar*() function set operates over scalars in the `[0..L[` interv
 
 The function returns a random scalar in binary string format.
 
-`ristrettoscalarreduce(BINARY(32) a)`
+`ristrettoscalarreduce(BINARY(64) s)`
 
-The function reduces `a` to `a mod L` and returns the resulting integer in binary string format.
+The function reduces a larger scalar value `s` to `s mod L` and returns the resulting 32 byte integer in binary string format.
 
 `ristrettoscalarinvert(BINARY(32) a)`
 
@@ -161,15 +161,41 @@ sudo make installdb
 And to uninstall, run the following commands:
 [source,shell]
 ----
-make uninstalldb
-make uninstall
+sudo make uninstalldb
+sudo make uninstall
+----
+
+== Query examples
+
+A short introduction on how to use the new user defined functions in SQL queries.
+
+=== Hash-to-group
+
+[source,sql]
+----
+# The SHA2() function produces a nonbinary string, UNHEX() is used to convert it to binary string.
+SELECT ristrettofromhash(UNHEX(SHA2('Maria', 512)));
+----
+
+=== Encoded element validation
+
+[source,sql]
+----
+SELECT ristrettoisvalidpoint(0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45);
+----
+
+=== Scalar multiplication
+
+[source,sql]
+----
+SELECT scalarmultristretto(ristrettoscalarrandom(), 0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45);
 ----
 
 == Contributing
 
 // Change the repository name in the issues link to match with your project's name
 
-You can involve yourself with our project by https://github.com/teragrep/repo-template/issues/new/choose[opening an issue] or submitting a pull request.
+You can involve yourself with our project by https://github.com/teragrep/mrp_01/issues/new/choose[opening an issue] or submitting a pull request.
 
 Contribution requirements:
 
