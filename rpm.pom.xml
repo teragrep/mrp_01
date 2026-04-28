@@ -93,10 +93,10 @@
                             <recurseDirectories>true</recurseDirectories>
                             <sources>
                                 <source>
-                                    <location>${project.basedir}/installdb.sql</location>
+                                    <location>${project.basedir}/install_ristretto.sql</location>
                                 </source>
                                 <source>
-                                    <location>${project.basedir}/uninstalldb.sql</location>
+                                    <location>${project.basedir}/uninstall_ristretto.sql</location>
                                 </source>
                             </sources>
                         </mapping>
