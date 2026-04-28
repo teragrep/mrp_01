@@ -82,6 +82,42 @@
                                 </source>
                             </sources>
                         </mapping>
+                        <!-- (un)install scripts -->
+                        <mapping>
+                            <directory>/opt/teragrep/${project.artifactId}/share</directory>
+                            <directoryIncluded>true</directoryIncluded>
+                            <filemode>755</filemode>
+                            <dirmode>755</dirmode>
+                            <username>root</username>
+                            <groupname>root</groupname>
+                            <recurseDirectories>true</recurseDirectories>
+                            <sources>
+                                <source>
+                                    <location>${project.basedir}/installdb.sql</location>
+                                </source>
+                                <source>
+                                    <location>${project.basedir}/uninstalldb.sql</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <!-- symlink for the payload (MariaDB) -->
+                        <mapping>
+                            <directory>/usr/lib64/mariadb/plugin</directory>
+                            <sources>
+                                <softlinkSource>
+                                    <location>/opt/teragrep/${project.artifactId}/lib/lib_sodium_ristretto.so</location>
+                                </softlinkSource>
+                            </sources>
+                        </mapping>
+                        <!-- symlink for the payload (MySQL) -->
+                        <mapping>
+                            <directory>/usr/lib64/mysql/plugin</directory>
+                            <sources>
+                                <softlinkSource>
+                                    <location>/opt/teragrep/${project.artifactId}/lib/lib_sodium_ristretto.so</location>
+                                </softlinkSource>
+                            </sources>
+                        </mapping>
                     </mappings>
                 </configuration>
             </plugin>
