@@ -169,6 +169,13 @@ sudo make uninstall
 
 A short introduction on how to use the new user defined functions in SQL queries.
 
+=== Random group element
+
+[source,sql]
+----
+SELECT ristrettorandom();
+----
+
 === Hash-to-group
 
 [source,sql]
@@ -181,6 +188,7 @@ SELECT ristrettofromhash(UNHEX(SHA2('Maria', 512)));
 
 [source,sql]
 ----
+SELECT ristrettoisvalidpoint(ristrettofromhash(UNHEX(SHA2('Maria', 512))));
 SELECT ristrettoisvalidpoint(0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45);
 ----
 
@@ -188,7 +196,66 @@ SELECT ristrettoisvalidpoint(0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11
 
 [source,sql]
 ----
-SELECT scalarmultristretto(ristrettoscalarrandom(), 0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45);
+SELECT scalarmultristretto(0x34ABF3B816C051FE1BA7315760B5854800959D776AF87ACF540CC55F3701A905, 0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45);
+----
+
+[source,sql]
+----
+SELECT scalarmultristrettobase(0x34ABF3B816C051FE1BA7315760B5854800959D776AF87ACF540CC55F3701A905);
+----
+
+=== Element addition and subtraction
+
+[source,sql]
+----
+SELECT ristrettoadd(0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45, 0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45);
+----
+
+[source,sql]
+----
+SELECT ristrettosub(0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45, 0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45);
+----
+
+=== Scalar arithmetic over L
+
+[source,sql]
+----
+SELECT ristrettoscalarrandom();
+----
+
+[source,sql]
+----
+SELECT ristrettoscalarreduce(RANDOM_BYTES(64));
+----
+
+[source,sql]
+----
+SELECT ristrettoscalarinvert(ristrettoscalarrandom());
+----
+
+[source,sql]
+----
+SELECT ristrettoscalarnegate(ristrettoscalarrandom());
+----
+
+[source,sql]
+----
+SELECT ristrettoscalarcomplement(ristrettoscalarrandom());
+----
+
+[source,sql]
+----
+SELECT ristrettoscalaradd(ristrettoscalarrandom(), ristrettoscalarrandom());
+----
+
+[source,sql]
+----
+SELECT ristrettoscalarsub(ristrettoscalarrandom(), ristrettoscalarrandom());
+----
+
+[source,sql]
+----
+SELECT ristrettoscalarmul(ristrettoscalarrandom(), ristrettoscalarrandom());
 ----
 
 == Contributing
