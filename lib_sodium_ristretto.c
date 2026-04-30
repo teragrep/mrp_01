@@ -1,7 +1,7 @@
 #include <sodium.h>
-#include <stdio.h>
 #include <string.h>
 #include <mysql/mysql.h>
+#include "lib_sodium_ristretto.h"
 
 #ifndef my_bool
 typedef char my_bool;
