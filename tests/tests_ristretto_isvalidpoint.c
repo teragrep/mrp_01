@@ -8,18 +8,17 @@
 #include "../lib_sodium_ristretto.h"
 
 void testPassRistrettoisvalidpoint_init() {
-    char *RistrettoPoint = malloc (32);
+    char *RistrettoPoint = malloc (crypto_core_ristretto255_BYTES);
     size_t i;
-    for (i = 0; i < 32; i++)
+    for (i = 0; i < crypto_core_ristretto255_BYTES; i++)
     {
         RistrettoPoint[i] = rand ();
     }
     char * testArgs[] = {RistrettoPoint};
-    unsigned long values[1] = {strlen(testArgs[0])};
-    unsigned long * testLengths = values;
+    unsigned long testLengths[1] = {strlen(testArgs[0])};
     enum Item_result itemValue[1] = {STRING_RESULT};
     UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null=0};
-    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = 21, .ptr = "0", .const_item = 0};
+    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = "0", .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
     my_bool result = ristrettoisvalidpoint_init(&initid, &args, message);
     assert(result == 0 && "Result is not 0, _init failed when it should have passed.");
@@ -35,11 +34,10 @@ void testInvalidArgSizeRistrettoisvalidpoint_init() {
         RistrettoPoint[i] = rand ();
     }
     char * testArgs[] = {RistrettoPoint};
-    unsigned long values[1] = {strlen(testArgs[0])};
-    unsigned long * testLengths = values;
+    unsigned long testLengths[1] = {strlen(testArgs[0])};
     enum Item_result itemValue[1] = {STRING_RESULT};
     UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null=0};
-    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = 21, .ptr = "0", .const_item = 0};
+    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = 64, .ptr = "0", .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
     my_bool result = ristrettoisvalidpoint_init(&initid, &args, message);
     assert(result == 1 && "Result is not 1, _init passed when it should have failed.");
@@ -48,18 +46,17 @@ void testInvalidArgSizeRistrettoisvalidpoint_init() {
 }
 
 void testInvalidArgAmountRistrettoisvalidpoint_init() {
-    char *RistrettoPoint = malloc (32);
+    char *RistrettoPoint = malloc (crypto_core_ristretto255_BYTES);
     size_t i;
-    for (i = 0; i < 32; i++)
+    for (i = 0; i < crypto_core_ristretto255_BYTES; i++)
     {
         RistrettoPoint[i] = rand ();
     }
     char * testArgs[] = {RistrettoPoint, RistrettoPoint};
-    unsigned long values[2] = {strlen(testArgs[0]), strlen(testArgs[1])};
-    unsigned long * testLengths = values;
+    unsigned long testLengths[2] = {strlen(testArgs[0]), strlen(testArgs[1])};
     enum Item_result itemValue[1] = {STRING_RESULT};
     UDF_ARGS args = { .arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null=0};
-    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = 21, .ptr = "0", .const_item = 0};
+    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = "0", .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
     my_bool result = ristrettoisvalidpoint_init(&initid, &args, message);
     assert(result == 1 && "Result is not 1, _init passed when it should have failed.");
@@ -68,10 +65,77 @@ void testInvalidArgAmountRistrettoisvalidpoint_init() {
     free(RistrettoPoint);
 }
 
+void testInvalidArgTypeRistrettoisvalidpoint_init() {
+    char *RistrettoPoint = malloc (crypto_core_ristretto255_BYTES);
+    size_t i;
+    for (i = 0; i < crypto_core_ristretto255_BYTES; i++)
+    {
+        RistrettoPoint[i] = rand ();
+    }
+    char * testArgs[] = {RistrettoPoint};
+    unsigned long testLengths[1] = {strlen(testArgs[0])};
+    enum Item_result itemValue[1] = {INT_RESULT};
+    UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null=0};
+    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = "0", .const_item = 0};
+    char message[MYSQL_ERRMSG_SIZE];
+    my_bool result = ristrettoisvalidpoint_init(&initid, &args, message);
+    assert(result == 1 && "Result is not 1, _init passed when it should have failed.");
+    assert(strcmp(message,"requires 1 binary string argument") == 0 && "Error message is incorrect");
+    printf("testInvalidArgTypeRistrettoisvalidpoint_init() passed assertions!\n");
+    free(RistrettoPoint);
+}
+
+void testPassRistrettoisvalidpoint() {
+    // Generate a valid ristretto point for validation using ristrettorandom()
+    char * testArgs[] = {0};
+    unsigned long testLengths[] = {0};
+    enum Item_result itemValue[1] = {STRING_RESULT};
+    UDF_ARGS args = { .arg_count = 0, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    char *RistrettoPoint = malloc (crypto_core_ristretto255_BYTES);
+    unsigned char p[crypto_core_ristretto255_BYTES];
+    crypto_core_ristretto255_random(p);
+    memcpy(RistrettoPoint, p, crypto_core_ristretto255_BYTES);
+    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = RistrettoPoint, .const_item = 0};
+    char randResult[255];
+    char error[1];
+    char is_null[1];
+    unsigned long length[1];
+    ristrettorandom(&initid, &args, randResult, length, is_null, error);
+
+    long result = ristrettoisvalidpoint(&initid, &args, is_null, error);
+    assert(result == 1 && "Result is not 1, Ristretto point validation failed when it should have passed.");
+    printf("testPassRistrettoisvalidpoint() passed assertions!\n");
+    free(RistrettoPoint);
+}
+
+void testFailRistrettoisvalidpoint() {
+    // Generate an invalid ristretto point for validation using rand()
+    char *RistrettoPoint = malloc (32);
+    size_t i;
+    for (i = 0; i < 32; i++)
+    {
+        RistrettoPoint[i] = rand ();
+    }
+    char * testArgs[] = {RistrettoPoint};
+    unsigned long testLengths[1] = {strlen(testArgs[0])};
+    enum Item_result itemValue[1] = {STRING_RESULT};
+    UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null=0};
+    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = 21, .ptr = "0", .const_item = 0};
+    char error[1];
+    char is_null[1];
+    long result = ristrettoisvalidpoint(&initid, &args, is_null, error);
+    assert(result == 0 && "Result is not 0, Ristretto point validation passed when it should have failed.");
+    printf("testFailRistrettoisvalidpoint() passed assertions!\n");
+    free(RistrettoPoint);
+}
+
 int main()
 {
     testPassRistrettoisvalidpoint_init();
     testInvalidArgSizeRistrettoisvalidpoint_init();
     testInvalidArgAmountRistrettoisvalidpoint_init();
+    testInvalidArgTypeRistrettoisvalidpoint_init();
+    testPassRistrettoisvalidpoint();
+    testFailRistrettoisvalidpoint();
     return 0;
 }
