@@ -14,11 +14,11 @@ void testPassRistrettoisvalidpoint_init() {
     {
         ristrettoPoint[i] = rand ();
     }
-    char * testArgs[] = {ristrettoPoint};
-    unsigned long testLengths[1] = {strlen(testArgs[0])};
+    char * testArgs[1] = {ristrettoPoint};
+    unsigned long testLengths[1] = {crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[1] = {STRING_RESULT};
     UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null=0};
-    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = "0", .const_item = 0};
+    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = 0, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
     my_bool result = ristrettoisvalidpoint_init(&initid, &args, message);
     assert(result == 0 && "Result is not 0, _init failed when it should have passed.");
@@ -33,11 +33,11 @@ void testInvalidArgSizeRistrettoisvalidpoint_init() {
     {
         ristrettoPoint[i] = rand ();
     }
-    char * testArgs[] = {ristrettoPoint};
-    unsigned long testLengths[1] = {strlen(testArgs[0])};
+    char * testArgs[1] = {ristrettoPoint};
+    unsigned long testLengths[1] = {64};
     enum Item_result itemValue[1] = {STRING_RESULT};
     UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null=0};
-    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = 64, .ptr = "0", .const_item = 0};
+    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = 64, .ptr = 0, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
     my_bool result = ristrettoisvalidpoint_init(&initid, &args, message);
     assert(result == 1 && "Result is not 1, _init passed when it should have failed.");
@@ -53,11 +53,11 @@ void testInvalidArgAmountRistrettoisvalidpoint_init() {
     {
         ristrettoPoint[i] = rand ();
     }
-    char * testArgs[] = {ristrettoPoint, ristrettoPoint};
-    unsigned long testLengths[2] = {strlen(testArgs[0]), strlen(testArgs[1])};
+    char * testArgs[2] = {ristrettoPoint, ristrettoPoint};
+    unsigned long testLengths[2] = {crypto_core_ristretto255_BYTES, crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[1] = {STRING_RESULT};
     UDF_ARGS args = { .arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null=0};
-    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = "0", .const_item = 0};
+    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = 0, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
     my_bool result = ristrettoisvalidpoint_init(&initid, &args, message);
     assert(result == 1 && "Result is not 1, _init passed when it should have failed.");
@@ -73,11 +73,11 @@ void testInvalidArgTypeRistrettoisvalidpoint_init() {
     {
         ristrettoPoint[i] = rand ();
     }
-    char * testArgs[] = {ristrettoPoint};
-    unsigned long testLengths[1] = {strlen(testArgs[0])};
+    char * testArgs[1] = {ristrettoPoint};
+    unsigned long testLengths[1] = {crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[1] = {INT_RESULT};
     UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null=0};
-    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = "0", .const_item = 0};
+    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = 0, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
     my_bool result = ristrettoisvalidpoint_init(&initid, &args, message);
     assert(result == 1 && "Result is not 1, _init passed when it should have failed.");
@@ -96,7 +96,7 @@ void testPassRistrettoisvalidpoint() {
     memcpy(ristrettoPoint, p, crypto_core_ristretto255_BYTES);
 
     char * testArgs[1] = {ristrettoPoint};
-    unsigned long testLengths[1] = {strlen(testArgs[0])};
+    unsigned long testLengths[1] = {crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[1] = {STRING_RESULT};
     UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = 21, .ptr = 0, .const_item = 0};
@@ -117,11 +117,11 @@ void testFailRistrettoisvalidpoint() {
     {
         ristrettoPoint[i] = rand ();
     }
-    char * testArgs[] = {ristrettoPoint};
-    unsigned long testLengths[1] = {strlen(testArgs[0])};
+    char * testArgs[1] = {ristrettoPoint};
+    unsigned long testLengths[1] = {crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[1] = {STRING_RESULT};
     UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null=0};
-    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = 21, .ptr = "0", .const_item = 0};
+    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = 21, .ptr = 0, .const_item = 0};
     char error[1];
     char is_null[1];
     long result = ristrettoisvalidpoint(&initid, &args, is_null, error);
