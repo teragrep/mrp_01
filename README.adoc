@@ -165,6 +165,25 @@ sudo make uninstalldb
 sudo make uninstall
 ----
 
+Tests can be run with:
+[source,shell]
+----
+make check
+----
+
+If more test files are added to the link:Makefile.am[Makefile.am]:
+[source,text]
+----
+tests_{test_file_name}_SOURCES = tests/{test_file_name}.c
+tests_{test_file_name}_LDADD = -lsodium lib_sodium_ristretto.la
+----
+and add the new test file after the rest of the RISTRETTO_BUILT_TESTS:
+[source,text]
+----
+RISTRETTO_BUILT_TESTS = tests/tests_ristretto_isvalidpoint tests/tests_ristretto_random tests/{test_file_name}
+----
+
+
 == Query examples
 
 A short introduction on how to use the new user defined functions in SQL queries.
