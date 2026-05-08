@@ -9,12 +9,13 @@
 extern int fail_malloc;
 
 void testRistrettofromhash_init() {
-    char *ristrettoPoint = malloc(crypto_core_ristretto255_HASHBYTES);
+    char *hash = malloc(crypto_core_ristretto255_HASHBYTES);
+    assert(hash != 0);
     size_t i;
     for (i = 0; i < crypto_core_ristretto255_HASHBYTES; i++) {
-        ristrettoPoint[i] = rand();
+        hash[i] = rand();
     }
-    char *testArgs[] = {ristrettoPoint};
+    char *testArgs[] = {hash};
     unsigned long testLengths[1] = {crypto_core_ristretto255_HASHBYTES};
     enum Item_result itemValue[1] = {STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -25,19 +26,20 @@ void testRistrettofromhash_init() {
     my_bool result = ristrettofromhash_init(&initid, &args, message);
     assert(result == 0 && "Result is not 0, _init failed when it should have passed.");
     assert(initid.ptr != 0 && "Memory was not succesfully allocated");
-    free(ristrettoPoint);
+    free(hash);
     free(initid.ptr);
     printf("testRistrettofromhash_init() passed assertions!\n");
 }
 
 void testInvalidArgSizeRistrettofromhash_init() {
-    char *ristrettoPoint = malloc (32);
+    char *hash = malloc (32);
+    assert(hash != 0);
     size_t i;
     for (i = 0; i < 32; i++)
     {
-        ristrettoPoint[i] = rand ();
+        hash[i] = rand ();
     }
-    char * testArgs[] = {ristrettoPoint};
+    char * testArgs[] = {hash};
     unsigned long testLengths[1] = {32};
     enum Item_result itemValue[1] = {STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -47,21 +49,19 @@ void testInvalidArgSizeRistrettofromhash_init() {
     assert(result == 1 && "Result is not 1, _init passed when it should have failed.");
     assert(strcmp(message, "First input argument is not a 64 byte binary string") == 0 && "Error message is incorrect");
     assert(initid.ptr == 0 && "Memory was allocated when it shouldn't");
-    free(ristrettoPoint);
+    free(hash);
     printf("testInvalidArgSizeRistrettofromhash_init() passed assertions!\n");
 }
 
 void testInvalidArgAmountRistrettofromhash_init() {
-    char *testPoint = malloc(crypto_core_ristretto255_BYTES);
-    assert(testPoint != 0);
-    free(testPoint);
-    char *ristrettoPoint = malloc (crypto_core_ristretto255_HASHBYTES);
+    char *hash = malloc (crypto_core_ristretto255_HASHBYTES);
+    assert(hash != 0);
     size_t i;
     for (i = 0; i < crypto_core_ristretto255_HASHBYTES; i++)
     {
-        ristrettoPoint[i] = rand ();
+        hash[i] = rand ();
     }
-    char * testArgs[] = {ristrettoPoint, ristrettoPoint};
+    char * testArgs[] = {hash, hash};
     unsigned long testLengths[2] = {crypto_core_ristretto255_HASHBYTES, crypto_core_ristretto255_HASHBYTES};
     enum Item_result itemValue[1] = {STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -71,17 +71,11 @@ void testInvalidArgAmountRistrettofromhash_init() {
     assert(result == 1 && "Result is not 1, _init passed when it should have failed.");
     assert(strcmp(message, "requires 1 binary string argument") == 0 && "Error message is incorrect");
     assert(initid.ptr == 0 && "Memory was allocated when it shouldn't");
-    free(ristrettoPoint);
+    free(hash);
     printf("testInvalidArgAmountRistrettofromhash_init() passed assertions!\n");
 }
 
 void testRistrettofromhash_deinit() {
-    char *testPoint = malloc(crypto_core_ristretto255_BYTES);
-    assert(testPoint != 0);
-    free(testPoint);
-    char *testPoint2 = malloc(crypto_core_ristretto255_BYTES);
-    assert(testPoint2 != 0);
-    free(testPoint2);
     char *ristrettoPoint = malloc(crypto_core_ristretto255_BYTES);
     assert(ristrettoPoint != 0);
     UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0};
@@ -93,6 +87,7 @@ void testRistrettofromhash_deinit() {
 
 void testRistrettofromhash() {
     char *hash = malloc(crypto_core_ristretto255_HASHBYTES);
+    assert(hash != 0);
     size_t i;
     for (i = 0; i < crypto_core_ristretto255_HASHBYTES; i++) {
         hash[i] = rand();
@@ -101,6 +96,7 @@ void testRistrettofromhash() {
     unsigned long testLengths[1] = {crypto_core_ristretto255_HASHBYTES};
     enum Item_result itemValue[1] = {STRING_RESULT};
     char *ristrettoPoint = malloc (crypto_core_ristretto255_BYTES);
+    assert(ristrettoPoint != 0);
     UDF_ARGS args = {.arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0};
     char result[255];
