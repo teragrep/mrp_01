@@ -50,6 +50,7 @@ void ristrettorandom_deinit(UDF_INIT *initid) {
     if (initid->ptr != 0)
     {
         free( initid->ptr);
+        initid->ptr = 0;
     }
 }
 
@@ -91,6 +92,7 @@ void ristrettofromhash_deinit(UDF_INIT *initid) {
     if (initid->ptr != 0)
     {
         free( initid->ptr);
+        initid->ptr = 0;
     }
 }
 
@@ -147,6 +149,7 @@ void scalarmultristretto_deinit(UDF_INIT *initid) {
     if (initid->ptr != 0)
     {
         free( initid->ptr);
+        initid->ptr = 0;
     }
 }
 
@@ -192,6 +195,7 @@ void scalarmultristrettobase_deinit(UDF_INIT *initid) {
     if (initid->ptr != 0)
     {
         free( initid->ptr);
+        initid->ptr = 0;
     }
 }
 
@@ -255,6 +259,7 @@ void ristrettoadd_deinit(UDF_INIT *initid) {
     if (initid->ptr != 0)
     {
         free( initid->ptr);
+        initid->ptr = 0;
     }
 }
 
@@ -318,6 +323,7 @@ void ristrettosub_deinit(UDF_INIT *initid) {
     if (initid->ptr != 0)
     {
         free( initid->ptr);
+        initid->ptr = 0;
     }
 }
 
@@ -353,6 +359,7 @@ void ristrettoscalarrandom_deinit(UDF_INIT *initid) {
     if (initid->ptr != 0)
     {
         free( initid->ptr);
+        initid->ptr = 0;
     }
 }
 
@@ -391,6 +398,7 @@ void ristrettoscalarreduce_deinit(UDF_INIT *initid) {
     if (initid->ptr != 0)
     {
         free( initid->ptr);
+        initid->ptr = 0;
     }
 }
 
@@ -431,6 +439,7 @@ void ristrettoscalarinvert_deinit(UDF_INIT *initid) {
     if (initid->ptr != 0)
     {
         free( initid->ptr);
+        initid->ptr = 0;
     }
 }
 
@@ -471,6 +480,7 @@ void ristrettoscalarnegate_deinit(UDF_INIT *initid) {
     if (initid->ptr != 0)
     {
         free( initid->ptr);
+        initid->ptr = 0;
     }
 }
 
@@ -511,6 +521,7 @@ void ristrettoscalarcomplement_deinit(UDF_INIT *initid) {
     if (initid->ptr != 0)
     {
         free( initid->ptr);
+        initid->ptr = 0;
     }
 }
 
@@ -555,6 +566,7 @@ void ristrettoscalaradd_deinit(UDF_INIT *initid) {
     if (initid->ptr != 0)
     {
         free( initid->ptr);
+        initid->ptr = 0;
     }
 }
 
@@ -601,6 +613,7 @@ void ristrettoscalarsub_deinit(UDF_INIT *initid) {
     if (initid->ptr != 0)
     {
         free( initid->ptr);
+        initid->ptr = 0;
     }
 }
 
@@ -647,6 +660,7 @@ void ristrettoscalarmul_deinit(UDF_INIT *initid) {
     if (initid->ptr != 0)
     {
         free( initid->ptr);
+        initid->ptr = 0;
     }
 }
 
