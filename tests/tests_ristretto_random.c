@@ -16,6 +16,7 @@ void testPassRistrettorandom_init() {
     char message[MYSQL_ERRMSG_SIZE];
     my_bool result = ristrettorandom_init(&initid, &args, message);
     assert(result == 0 && "Result is not 0, _init failed when it should have passed.");
+    assert(initid.ptr != 0 && "Memory was not succesfully allocated");
     printf("testPassRistrettorandom_init() passed assertions!\n");
     free(initid.ptr);
 }
@@ -37,9 +38,19 @@ void testRistrettorandom() {
     free(ristrettoPoint);
 }
 
+void testRistrettorandom_deinit() {
+    char *ristrettoPoint = malloc (crypto_core_ristretto255_BYTES);
+    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0};
+    assert(initid.ptr != 0);
+    ristrettoadd_deinit(&initid);
+    assert(initid.ptr == 0 && "_deinit failed to free the allocated memory.");
+    printf("testRistrettorandom_deinit() passed assertions!\n");
+}
+
 int main()
 {
     testPassRistrettorandom_init();
     testRistrettorandom();
+    testRistrettorandom_deinit();
     return 0;
 }
