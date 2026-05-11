@@ -27,12 +27,11 @@ void testRistrettorandom() {
     char error[1];
     char is_null[1];
     enum Item_result itemValue[1] = {STRING_RESULT};
-    char *ristrettoPoint = malloc (crypto_core_ristretto255_BYTES);
     UDF_ARGS args = { .arg_count = 0, .arg_type = itemValue, .args = 0, .lengths = 0, .maybe_null=0};
+    char *ristrettoPoint = malloc (crypto_core_ristretto255_BYTES);
+    assert(ristrettoPoint != 0);
     UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0};
-    UDF_INIT *initid_ptr = &initid;
-    initid_ptr->ptr = malloc(crypto_core_ristretto255_BYTES);
-    ristrettorandom(initid_ptr, &args, result, length, is_null, error);
+    ristrettorandom(&initid, &args, result, length, is_null, error);
     assert(crypto_core_ristretto255_is_valid_point(initid.ptr) == 1 && "Result is not 1, generated ristretto point was not valid.");
     printf("testRistrettorandom() passed assertions!\n");
     free(ristrettoPoint);
