@@ -6,7 +6,6 @@
 #include <string.h>
 
 #include "../lib_sodium_ristretto.h"
-extern int fail_malloc;
 
 void testRistrettofromhash_init() {
     char *hash = malloc(crypto_core_ristretto255_HASHBYTES);
