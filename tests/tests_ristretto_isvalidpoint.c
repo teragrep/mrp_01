@@ -9,6 +9,7 @@
 
 void testPassRistrettoisvalidpoint_init() {
     char *ristrettoPoint = malloc (crypto_core_ristretto255_BYTES);
+    assert(ristrettoPoint != 0);
     size_t i;
     for (i = 0; i < crypto_core_ristretto255_BYTES; i++)
     {
@@ -28,6 +29,7 @@ void testPassRistrettoisvalidpoint_init() {
 
 void testInvalidArgSizeRistrettoisvalidpoint_init() {
     char *ristrettoPoint = malloc (64);
+    assert(ristrettoPoint != 0);
     size_t i;
     for (i = 0; i < 64; i++)
     {
@@ -48,6 +50,7 @@ void testInvalidArgSizeRistrettoisvalidpoint_init() {
 
 void testInvalidArgAmountRistrettoisvalidpoint_init() {
     char *ristrettoPoint = malloc (crypto_core_ristretto255_BYTES);
+    assert(ristrettoPoint != 0);
     size_t i;
     for (i = 0; i < crypto_core_ristretto255_BYTES; i++)
     {
@@ -68,6 +71,7 @@ void testInvalidArgAmountRistrettoisvalidpoint_init() {
 
 void testInvalidArgTypeRistrettoisvalidpoint_init() {
     char *ristrettoPoint = malloc (crypto_core_ristretto255_BYTES);
+    assert(ristrettoPoint != 0);
     size_t i;
     for (i = 0; i < crypto_core_ristretto255_BYTES; i++)
     {
@@ -91,6 +95,7 @@ void testPassRistrettoisvalidpoint() {
     assert(init >= 0);
     // Generate a valid ristretto point for validation using crypto_core_ristretto255_random()
     char *ristrettoPoint = malloc (crypto_core_ristretto255_BYTES);
+    assert(ristrettoPoint != 0);
     unsigned char p[crypto_core_ristretto255_BYTES];
     crypto_core_ristretto255_random(p);
     memcpy(ristrettoPoint, p, crypto_core_ristretto255_BYTES);
@@ -112,6 +117,7 @@ void testPassRistrettoisvalidpoint() {
 void testFailRistrettoisvalidpoint() {
     // Generate an invalid ristretto point for validation using rand()
     char *ristrettoPoint = malloc (crypto_core_ristretto255_BYTES);
+    assert(ristrettoPoint != 0);
     size_t i;
     for (i = 0; i < crypto_core_ristretto255_BYTES; i++)
     {
