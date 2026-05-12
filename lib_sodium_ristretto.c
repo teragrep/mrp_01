@@ -281,15 +281,15 @@ char* ristrettoadd(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned long
 
 my_bool ristrettosub_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 2 || (args->arg_type[0] != STRING_RESULT) || (args->arg_type[1] != STRING_RESULT)){
-        strcpy(message, "requires 2 binary string argument");
+        strcpy(message, "requires 2 binary string arguments");
         return 1;
     }
     if (args->lengths[0] != crypto_core_ristretto255_BYTES){
-        strcpy(message, "First input is not a 32 byte binary string");
+        strcpy(message, "First input argument is not a 32 byte binary string");
         return 1;
     }
     if (args->lengths[1] != crypto_core_ristretto255_BYTES){
-        strcpy(message, "Second input is not a 32 byte binary string");
+        strcpy(message, "Second input argument is not a 32 byte binary string");
         return 1;
     }
     if (sodium_init() == -1) {
