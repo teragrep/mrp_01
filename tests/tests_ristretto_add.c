@@ -161,7 +161,8 @@ void testRistrettoAdd() {
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    ristrettoadd(&initid, &args, result, length, is_null, error);
+    char *returnedPtr = ristrettoadd(&initid, &args, result, length, is_null, error);
+    assert(returnedPtr == initid.ptr && "Returned pointer does not originate from the UDF_INIT struct");
     assert(crypto_core_ristretto255_is_valid_point(ristrettoPoint) == 1 && "Output of the ristrettoadd() is not a valid ristretto point");
     char expecteRistrettoPoint[crypto_core_ristretto255_BYTES];
     crypto_core_ristretto255_add(expecteRistrettoPoint, point2, point1);

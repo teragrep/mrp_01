@@ -31,7 +31,8 @@ void testRistrettorandom() {
     char *ristrettoPoint = malloc (crypto_core_ristretto255_BYTES);
     assert(ristrettoPoint != 0);
     UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0};
-    ristrettorandom(&initid, &args, result, length, is_null, error);
+    char *returnedPtr = ristrettorandom(&initid, &args, result, length, is_null, error);
+    assert(returnedPtr == initid.ptr && "Returned pointer does not originate from the UDF_INIT struct");
     assert(crypto_core_ristretto255_is_valid_point(initid.ptr) == 1 && "Result is not 1, generated ristretto point was not valid.");
     printf("testRistrettorandom() passed assertions!\n");
     free(ristrettoPoint);
