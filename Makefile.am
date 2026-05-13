@@ -8,7 +8,7 @@ lib_sodium_ristretto_la_CXXFLAGS = -DSTANDARD -DMYSQL_SERVER @MYSQL_CFLAGS@
 lib_sodium_ristretto_la_LDFLAGS = -module -avoid-version -no-undefined -rpath @MYSQL_PLUGINDIR@
 lib_sodium_ristretto_la_LIBADD = -lsodium
 
-RISTRETTO_BUILT_TESTS = tests/tests_ristretto_isvalidpoint tests/tests_ristretto_random tests/tests_ristretto_from_hash tests/tests_scalarmult_ristretto tests/tests_scalarmult_ristrettobase tests/tests_ristretto_add tests/tests_ristretto_sub tests/tests_ristretto_scalar_random
+RISTRETTO_BUILT_TESTS = tests/tests_ristretto_isvalidpoint tests/tests_ristretto_random tests/tests_ristretto_from_hash tests/tests_scalarmult_ristretto tests/tests_scalarmult_ristrettobase tests/tests_ristretto_add tests/tests_ristretto_sub tests/tests_ristretto_scalar_random tests/tests_ristretto_scalar_reduce
 TESTS = $(RISTRETTO_BUILT_TESTS)
 check_PROGRAMS = $(RISTRETTO_BUILT_TESTS)
 
@@ -35,6 +35,9 @@ tests_tests_ristretto_sub_LDADD = -lsodium lib_sodium_ristretto.la
 
 tests_tests_ristretto_scalar_random_SOURCES = tests/tests_ristretto_scalar_random.c
 tests_tests_ristretto_scalar_random_LDADD = -lsodium lib_sodium_ristretto.la
+
+tests_tests_ristretto_scalar_reduce_SOURCES = tests/tests_ristretto_scalar_reduce.c
+tests_tests_ristretto_scalar_reduce_LDADD = -lsodium lib_sodium_ristretto.la
 
 EXTRA_DIST = *.h *.sql
 
