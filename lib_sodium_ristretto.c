@@ -541,7 +541,7 @@ char* ristrettoscalarcomplement(UDF_INIT *initid, UDF_ARGS *args, char *result, 
 
 my_bool ristrettoscalaradd_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     if (args->arg_count != 2 || args->arg_type[0] != STRING_RESULT || args->arg_type[1] != STRING_RESULT){
-        strcpy(message, "requires 1 binary string argument");
+        strcpy(message, "requires 2 binary string arguments");
         return 1;
     }
     if (args->lengths[0] != crypto_core_ristretto255_SCALARBYTES){
