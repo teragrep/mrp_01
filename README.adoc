@@ -137,53 +137,6 @@ The function returns the result of `a - b (mod L)`.
 
 The function retuns the result of `a * b (mod L)`.
 
-== Development
-
-Compiling this project requires at least the following packages to be installed:
-
-- `make`
-- `automake`
-- `autoconf`
-- `libtool`
-- `mariadb-devel`
-- `libsodium-devel`
-
-To install, run the following commands in project root directory:
-[source,shell]
-----
-autoreconf -fvi
-
-./configure
-make
-sudo make install
-sudo make installdb
-----
-And to uninstall, run the following commands:
-[source,shell]
-----
-sudo make uninstalldb
-sudo make uninstall
-----
-
-Tests can be run with:
-[source,shell]
-----
-make check
-----
-
-If more test files are added to the link:Makefile.am[Makefile.am]:
-[source,text]
-----
-tests_{test_file_name}_SOURCES = tests/{test_file_name}.c
-tests_{test_file_name}_LDADD = -lsodium lib_sodium_ristretto.la
-----
-and add the new test file after the rest of the RISTRETTO_BUILT_TESTS:
-[source,text]
-----
-RISTRETTO_BUILT_TESTS = tests/tests_ristretto_isvalidpoint tests/tests_ristretto_random tests/{test_file_name}
-----
-
-
 == Query examples
 
 A short introduction on how to use the new user defined functions in SQL queries.
@@ -275,6 +228,52 @@ SELECT ristrettoscalarsub(ristrettoscalarrandom(), ristrettoscalarrandom());
 [source,sql]
 ----
 SELECT ristrettoscalarmul(ristrettoscalarrandom(), ristrettoscalarrandom());
+----
+
+== Development
+
+Compiling this project requires at least the following packages to be installed:
+
+- `make`
+- `automake`
+- `autoconf`
+- `libtool`
+- `mariadb-devel`
+- `libsodium-devel`
+
+To install, run the following commands in project root directory:
+[source,shell]
+----
+autoreconf -fvi
+
+./configure
+make
+sudo make install
+sudo make installdb
+----
+And to uninstall, run the following commands:
+[source,shell]
+----
+sudo make uninstalldb
+sudo make uninstall
+----
+
+Tests can be run with:
+[source,shell]
+----
+make check
+----
+
+If more test files are added to the link:Makefile.am[Makefile.am]:
+[source,text]
+----
+tests_{test_file_name}_SOURCES = tests/{test_file_name}.c
+tests_{test_file_name}_LDADD = -lsodium lib_sodium_ristretto.la
+----
+and add the new test file after the rest of the RISTRETTO_BUILT_TESTS:
+[source,text]
+----
+RISTRETTO_BUILT_TESTS = tests/tests_ristretto_isvalidpoint tests/tests_ristretto_random tests/{test_file_name}
 ----
 
 == Contributing
