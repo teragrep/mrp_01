@@ -1,4 +1,5 @@
 FROM rockylinux:8
+RUN dnf -y upgrade
 RUN dnf -y install make automake autoconf libtool mariadb-devel epel-release
 RUN dnf -y install libsodium-devel
 WORKDIR /code
