@@ -37,7 +37,6 @@ void testInvalidArgsAmountRistrettoScalarComplement_init() {
     assert(strcmp(message, "requires 1 binary string argument") == 0 && "Error message is incorrect");
     assert(initid.ptr == 0 && "Memory was allocated when it shouldn't");
     printf("testInvalidArgsAmountRistrettoScalarComplement_init() passed assertions!\n");
-    free(initid.ptr);
 }
 
 void testInvalidFirstArgSizeRistrettoScalarComplement_init() {
@@ -54,7 +53,6 @@ void testInvalidFirstArgSizeRistrettoScalarComplement_init() {
     assert(strcmp(message, "First input is not a scalar in 32 byte binary string format") == 0 && "Error message is incorrect");
     assert(initid.ptr == 0 && "Memory was allocated when it shouldn't");
     printf("testInvalidFirstArgSizeRistrettoScalarComplement_init() passed assertions!\n");
-    free(initid.ptr);
 }
 
 void testRistrettoScalarComplement_deinit() {

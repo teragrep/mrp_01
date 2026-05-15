@@ -37,7 +37,6 @@ void testInvalidArgsAmountRistrettoScalarInvert_init() {
     assert(strcmp(message, "requires 1 binary string argument") == 0 && "Error message is incorrect");
     assert(initid.ptr == 0 && "Memory was allocated when it shouldn't");
     printf("testInvalidArgsAmountRistrettoScalarInvert_init() passed assertions!\n");
-    free(initid.ptr);
 }
 
 void testInvalidFirstArgSizeRistrettoScalarInvert_init() {
@@ -54,7 +53,6 @@ void testInvalidFirstArgSizeRistrettoScalarInvert_init() {
     assert(strcmp(message, "First input is not a scalar in 32 byte binary string format") == 0 && "Error message is incorrect");
     assert(initid.ptr == 0 && "Memory was allocated when it shouldn't");
     printf("testInvalidFirstArgSizeRistrettoScalarInvert_init() passed assertions!\n");
-    free(initid.ptr);
 }
 
 void testRistrettoScalarInvert_deinit() {
