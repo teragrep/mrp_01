@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <unistd.h>
 #include <assert.h>
 #include <mysql/mysql.h>
 #include <sodium.h>
