@@ -134,9 +134,8 @@ void testInvalidSecondArgPointRistrettoSub_init() {
 }
 
 void testRistrettoSub_deinit() {
-    char *ristrettoPoint = malloc(crypto_core_ristretto255_BYTES);
-    assert(ristrettoPoint != 0);
-    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0};
+    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = 0, .const_item = 0};
+    initid.ptr = malloc(crypto_core_ristretto255_SCALARBYTES);
     assert(initid.ptr != 0);
     ristrettosub_deinit(&initid);
     assert(initid.ptr == 0 && "_deinit failed to free the allocated memory.");
