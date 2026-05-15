@@ -78,8 +78,8 @@ void testInvalidFirstArgSizeRistrettoScalarReduce_init() {
 }
 
 void testRistrettoScalarReduce_deinit() {
-    char *scalar = malloc (crypto_core_ristretto255_SCALARBYTES);
-    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = scalar, .const_item = 0};
+    UDF_INIT initid = {.maybe_null=0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = 0, .const_item = 0};
+    initid.ptr = malloc (crypto_core_ristretto255_SCALARBYTES);
     assert(initid.ptr != 0);
     ristrettoscalarreduce_deinit(&initid);
     assert(initid.ptr == 0 && "_deinit failed to free the allocated memory.");
