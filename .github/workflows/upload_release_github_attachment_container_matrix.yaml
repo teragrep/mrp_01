@@ -30,11 +30,17 @@ jobs:
           java-version: 25
           distribution: 'adopt'
 
+      - name: Check Podman version
+        run: podman --version
+
+      - name: enable podman
+        run: systemctl --user start podman.socket
+
       - name: Build container
-        run: docker build . --tag builder -f "Dockerfile.${{ matrix.os }}"
+        run: podman build . --tag builder -f "Dockerfile.${{ matrix.os }}"
 
       - name: Build project
-        run: docker run -v "${{ github.workspace }}:/code:Z" builder
+        run: podman run -v "${{ github.workspace }}:/code:Z" builder
 
       - name: Prepare RPM GPG signing
         run: |
