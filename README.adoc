@@ -276,6 +276,14 @@ and add the new test file after the rest of the RISTRETTO_BUILT_TESTS:
 RISTRETTO_BUILT_TESTS = tests/tests_ristretto_isvalidpoint tests/tests_ristretto_random tests/{test_file_name}
 ----
 
+C-code formatting for all source code files can be done using astyle:
+[source,shell]
+----
+dnf install astyle
+
+astyle --options=astyle-options.ini --mode=c --recursive "./*.c"
+----
+
 == Contributing
 
 // Change the repository name in the issues link to match with your project's name
