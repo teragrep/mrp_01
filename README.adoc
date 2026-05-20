@@ -281,7 +281,7 @@ C-code formatting for all source code files can be done using astyle:
 ----
 dnf install astyle
 
-astyle --options=astyle-options.ini --mode=c --recursive "./*.c"
+astyle --options=astyle-options.ini --mode=c --recursive "./*.c, *.h"
 ----
 
 == Contributing
