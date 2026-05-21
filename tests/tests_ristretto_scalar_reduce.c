@@ -124,6 +124,7 @@ void testRistrettoScalarReduce()
             "Output of the ristrettoscalarreduce() is not as expected" );
     printf( "testRistrettoScalarReduce() passed assertions!\n" );
     free( scalar );
+    free( nonReducedScalar );
 }
 
 int main()
