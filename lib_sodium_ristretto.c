@@ -9,7 +9,7 @@ typedef char my_bool;
 
 // Encoded element validation
 
-my_bool ristrettoisvalidpoint_init( UDF_INIT* initid, UDF_ARGS* args,
+my_bool ristrettoisvalidpoint_init( UDF_INIT* initid, const UDF_ARGS* args,
                                     char* message )
 {
     if( args->arg_count != 1 || ( args->arg_type[0] != STRING_RESULT ) ) {
@@ -23,7 +23,7 @@ my_bool ristrettoisvalidpoint_init( UDF_INIT* initid, UDF_ARGS* args,
     return 0;
 }
 
-long long ristrettoisvalidpoint( UDF_INIT* initid, UDF_ARGS* args,
+long long ristrettoisvalidpoint( UDF_INIT* initid, const UDF_ARGS* args,
                                  char* is_null, char* error )
 {
     if( sodium_init() == -1 ) {
@@ -58,7 +58,7 @@ void ristrettorandom_deinit( UDF_INIT* initid )
     }
 }
 
-char* ristrettorandom( UDF_INIT* initid, UDF_ARGS* args, char* result,
+char* ristrettorandom( const UDF_INIT* initid, UDF_ARGS* args, char* result,
                        unsigned long* length, char* is_null, char* error )
 {
     if( sodium_init() == -1 ) {
@@ -74,7 +74,7 @@ char* ristrettorandom( UDF_INIT* initid, UDF_ARGS* args, char* result,
 
 // Hash-to-group
 
-my_bool ristrettofromhash_init( UDF_INIT* initid, UDF_ARGS* args,
+my_bool ristrettofromhash_init( UDF_INIT* initid, const UDF_ARGS* args,
                                 char* message )
 {
     if( args->arg_count != 1 || ( args->arg_type[0] != STRING_RESULT ) ) {
@@ -103,7 +103,8 @@ void ristrettofromhash_deinit( UDF_INIT* initid )
     }
 }
 
-char* ristrettofromhash( UDF_INIT* initid, UDF_ARGS* args, char* result,
+char* ristrettofromhash( const UDF_INIT* initid, const UDF_ARGS* args,
+                         char* result,
                          unsigned long* length, char* is_null, char* error )
 {
     if( sodium_init() == -1 ) {
@@ -121,7 +122,7 @@ char* ristrettofromhash( UDF_INIT* initid, UDF_ARGS* args, char* result,
 
 // Scalar multiplication
 
-my_bool scalarmultristretto_init( UDF_INIT* initid, UDF_ARGS* args,
+my_bool scalarmultristretto_init( UDF_INIT* initid, const UDF_ARGS* args,
                                   char* message )
 {
     if( args->arg_count != 2 || ( args->arg_type[0] != STRING_RESULT ) ||
@@ -165,7 +166,8 @@ void scalarmultristretto_deinit( UDF_INIT* initid )
     }
 }
 
-char* scalarmultristretto( UDF_INIT* initid, UDF_ARGS* args, char* result,
+char* scalarmultristretto( const UDF_INIT* initid, const UDF_ARGS* args,
+                           char* result,
                            unsigned long* length, char* is_null, char* error )
 {
     if( sodium_init() == -1 ) {
@@ -186,7 +188,7 @@ char* scalarmultristretto( UDF_INIT* initid, UDF_ARGS* args, char* result,
     return initid->ptr;
 }
 
-my_bool scalarmultristrettobase_init( UDF_INIT* initid, UDF_ARGS* args,
+my_bool scalarmultristrettobase_init( UDF_INIT* initid, const UDF_ARGS* args,
                                       char* message )
 {
     if( args->arg_count != 1 || ( args->arg_type[0] != STRING_RESULT ) ) {
@@ -215,7 +217,8 @@ void scalarmultristrettobase_deinit( UDF_INIT* initid )
     }
 }
 
-char* scalarmultristrettobase( UDF_INIT* initid, UDF_ARGS* args, char* result,
+char* scalarmultristrettobase( const UDF_INIT* initid, const UDF_ARGS* args,
+                               char* result,
                                unsigned long* length, char* is_null, char* error )
 {
     if( sodium_init() == -1 ) {
@@ -233,7 +236,8 @@ char* scalarmultristrettobase( UDF_INIT* initid, UDF_ARGS* args, char* result,
 
 // Element addition/subtraction
 
-my_bool ristrettoadd_init( UDF_INIT* initid, UDF_ARGS* args, char* message )
+my_bool ristrettoadd_init( UDF_INIT* initid, const UDF_ARGS* args,
+                           char* message )
 {
     if( args->arg_count != 2 || ( args->arg_type[0] != STRING_RESULT ) ||
             ( args->arg_type[1] != STRING_RESULT ) ) {
@@ -282,7 +286,7 @@ void ristrettoadd_deinit( UDF_INIT* initid )
     }
 }
 
-char* ristrettoadd( UDF_INIT* initid, UDF_ARGS* args, char* result,
+char* ristrettoadd( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
                     unsigned long* length, char* is_null, char* error )
 {
     if( sodium_init() == -1 ) {
@@ -300,7 +304,8 @@ char* ristrettoadd( UDF_INIT* initid, UDF_ARGS* args, char* result,
     return initid->ptr;
 }
 
-my_bool ristrettosub_init( UDF_INIT* initid, UDF_ARGS* args, char* message )
+my_bool ristrettosub_init( UDF_INIT* initid, const UDF_ARGS* args,
+                           char* message )
 {
     if( args->arg_count != 2 || ( args->arg_type[0] != STRING_RESULT ) ||
             ( args->arg_type[1] != STRING_RESULT ) ) {
@@ -349,7 +354,7 @@ void ristrettosub_deinit( UDF_INIT* initid )
     }
 }
 
-char* ristrettosub( UDF_INIT* initid, UDF_ARGS* args, char* result,
+char* ristrettosub( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
                     unsigned long* length, char* is_null, char* error )
 {
     if( sodium_init() == -1 ) {
@@ -388,7 +393,8 @@ void ristrettoscalarrandom_deinit( UDF_INIT* initid )
     }
 }
 
-char* ristrettoscalarrandom( UDF_INIT* initid, UDF_ARGS* args, char* result,
+char* ristrettoscalarrandom( const UDF_INIT* initid, UDF_ARGS* args,
+                             char* result,
                              unsigned long* length, char* is_null, char* error )
 {
     if( sodium_init() == -1 ) {
@@ -402,7 +408,7 @@ char* ristrettoscalarrandom( UDF_INIT* initid, UDF_ARGS* args, char* result,
     return initid->ptr;
 }
 
-my_bool ristrettoscalarreduce_init( UDF_INIT* initid, UDF_ARGS* args,
+my_bool ristrettoscalarreduce_init( UDF_INIT* initid, const UDF_ARGS* args,
                                     char* message )
 {
     if( args->arg_count != 1 || ( args->arg_type[0] != STRING_RESULT ) ) {
@@ -431,7 +437,8 @@ void ristrettoscalarreduce_deinit( UDF_INIT* initid )
     }
 }
 
-char* ristrettoscalarreduce( UDF_INIT* initid, UDF_ARGS* args, char* result,
+char* ristrettoscalarreduce( const UDF_INIT* initid, const UDF_ARGS* args,
+                             char* result,
                              unsigned long* length, char* is_null, char* error )
 {
     if( sodium_init() == -1 ) {
@@ -447,7 +454,7 @@ char* ristrettoscalarreduce( UDF_INIT* initid, UDF_ARGS* args, char* result,
     return initid->ptr;
 }
 
-my_bool ristrettoscalarinvert_init( UDF_INIT* initid, UDF_ARGS* args,
+my_bool ristrettoscalarinvert_init( UDF_INIT* initid, const UDF_ARGS* args,
                                     char* message )
 {
     if( args->arg_count != 1 || ( args->arg_type[0] != STRING_RESULT ) ) {
@@ -476,7 +483,8 @@ void ristrettoscalarinvert_deinit( UDF_INIT* initid )
     }
 }
 
-char* ristrettoscalarinvert( UDF_INIT* initid, UDF_ARGS* args, char* result,
+char* ristrettoscalarinvert( const UDF_INIT* initid, const UDF_ARGS* args,
+                             char* result,
                              unsigned long* length, char* is_null, char* error )
 {
     if( sodium_init() == -1 ) {
@@ -492,7 +500,7 @@ char* ristrettoscalarinvert( UDF_INIT* initid, UDF_ARGS* args, char* result,
     return initid->ptr;
 }
 
-my_bool ristrettoscalarnegate_init( UDF_INIT* initid, UDF_ARGS* args,
+my_bool ristrettoscalarnegate_init( UDF_INIT* initid, const UDF_ARGS* args,
                                     char* message )
 {
     if( args->arg_count != 1 || ( args->arg_type[0] != STRING_RESULT ) ) {
@@ -521,7 +529,8 @@ void ristrettoscalarnegate_deinit( UDF_INIT* initid )
     }
 }
 
-char* ristrettoscalarnegate( UDF_INIT* initid, UDF_ARGS* args, char* result,
+char* ristrettoscalarnegate( const UDF_INIT* initid, const UDF_ARGS* args,
+                             char* result,
                              unsigned long* length, char* is_null, char* error )
 {
     if( sodium_init() == -1 ) {
@@ -537,7 +546,7 @@ char* ristrettoscalarnegate( UDF_INIT* initid, UDF_ARGS* args, char* result,
     return initid->ptr;
 }
 
-my_bool ristrettoscalarcomplement_init( UDF_INIT* initid, UDF_ARGS* args,
+my_bool ristrettoscalarcomplement_init( UDF_INIT* initid, const UDF_ARGS* args,
                                         char* message )
 {
     if( args->arg_count != 1 || ( args->arg_type[0] != STRING_RESULT ) ) {
@@ -566,7 +575,8 @@ void ristrettoscalarcomplement_deinit( UDF_INIT* initid )
     }
 }
 
-char* ristrettoscalarcomplement( UDF_INIT* initid, UDF_ARGS* args, char* result,
+char* ristrettoscalarcomplement( const UDF_INIT* initid, const UDF_ARGS* args,
+                                 char* result,
                                  unsigned long* length, char* is_null, char* error )
 {
     if( sodium_init() == -1 ) {
@@ -582,7 +592,7 @@ char* ristrettoscalarcomplement( UDF_INIT* initid, UDF_ARGS* args, char* result,
     return initid->ptr;
 }
 
-my_bool ristrettoscalaradd_init( UDF_INIT* initid, UDF_ARGS* args,
+my_bool ristrettoscalaradd_init( UDF_INIT* initid, const UDF_ARGS* args,
                                  char* message )
 {
     if( args->arg_count != 2 || args->arg_type[0] != STRING_RESULT ||
@@ -617,7 +627,8 @@ void ristrettoscalaradd_deinit( UDF_INIT* initid )
     }
 }
 
-char* ristrettoscalaradd( UDF_INIT* initid, UDF_ARGS* args, char* result,
+char* ristrettoscalaradd( const UDF_INIT* initid, const UDF_ARGS* args,
+                          char* result,
                           unsigned long* length, char* is_null, char* error )
 {
     if( sodium_init() == -1 ) {
@@ -635,7 +646,7 @@ char* ristrettoscalaradd( UDF_INIT* initid, UDF_ARGS* args, char* result,
     return initid->ptr;
 }
 
-my_bool ristrettoscalarsub_init( UDF_INIT* initid, UDF_ARGS* args,
+my_bool ristrettoscalarsub_init( UDF_INIT* initid, const UDF_ARGS* args,
                                  char* message )
 {
     if( args->arg_count != 2 || args->arg_type[0] != STRING_RESULT ||
@@ -670,7 +681,8 @@ void ristrettoscalarsub_deinit( UDF_INIT* initid )
     }
 }
 
-char* ristrettoscalarsub( UDF_INIT* initid, UDF_ARGS* args, char* result,
+char* ristrettoscalarsub( const UDF_INIT* initid, const UDF_ARGS* args,
+                          char* result,
                           unsigned long* length, char* is_null, char* error )
 {
     if( sodium_init() == -1 ) {
@@ -688,7 +700,7 @@ char* ristrettoscalarsub( UDF_INIT* initid, UDF_ARGS* args, char* result,
     return initid->ptr;
 }
 
-my_bool ristrettoscalarmul_init( UDF_INIT* initid, UDF_ARGS* args,
+my_bool ristrettoscalarmul_init( UDF_INIT* initid, const UDF_ARGS* args,
                                  char* message )
 {
     if( args->arg_count != 2 || args->arg_type[0] != STRING_RESULT ||
@@ -723,7 +735,8 @@ void ristrettoscalarmul_deinit( UDF_INIT* initid )
     }
 }
 
-char* ristrettoscalarmul( UDF_INIT* initid, UDF_ARGS* args, char* result,
+char* ristrettoscalarmul( const UDF_INIT* initid, const UDF_ARGS* args,
+                          char* result,
                           unsigned long* length, char* is_null, char* error )
 {
     if( sodium_init() == -1 ) {
