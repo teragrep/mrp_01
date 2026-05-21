@@ -1,7 +1,6 @@
 #include <assert.h>
 #include <mysql/mysql.h>
 #include <sodium.h>
-#include <string.h>
 
 #include "../lib_sodium_ristretto.h"
 
