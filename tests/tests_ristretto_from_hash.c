@@ -9,8 +9,7 @@ void testRistrettofromhash_init()
 {
     char* hash = malloc( crypto_core_ristretto255_HASHBYTES );
     assert( hash != 0 );
-    size_t i;
-    for( i = 0; i < crypto_core_ristretto255_HASHBYTES; i++ ) {
+    for( size_t i = 0; i < crypto_core_ristretto255_HASHBYTES; i++ ) {
         hash[i] = rand();
     }
     char* testArgs[] = {hash};
@@ -34,8 +33,7 @@ void testInvalidArgSizeRistrettofromhash_init()
 {
     char* hash = malloc( 32 );
     assert( hash != 0 );
-    size_t i;
-    for( i = 0; i < 32; i++ ) {
+    for( size_t i = 0; i < 32; i++ ) {
         hash[i] = rand();
     }
     char* testArgs[] = {hash};
@@ -59,8 +57,7 @@ void testInvalidArgAmountRistrettofromhash_init()
 {
     char* hash = malloc( crypto_core_ristretto255_HASHBYTES );
     assert( hash != 0 );
-    size_t i;
-    for( i = 0; i < crypto_core_ristretto255_HASHBYTES; i++ ) {
+    for( size_t i = 0; i < crypto_core_ristretto255_HASHBYTES; i++ ) {
         hash[i] = rand();
     }
     char* testArgs[] = {hash, hash};
@@ -93,8 +90,7 @@ void testRistrettofromhash()
 {
     char* hash = malloc( crypto_core_ristretto255_HASHBYTES );
     assert( hash != 0 );
-    size_t i;
-    for( i = 0; i < crypto_core_ristretto255_HASHBYTES; i++ ) {
+    for( size_t i = 0; i < crypto_core_ristretto255_HASHBYTES; i++ ) {
         hash[i] = rand();
     }
     char* testArgs[] = {hash};

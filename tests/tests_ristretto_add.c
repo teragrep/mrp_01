@@ -75,8 +75,7 @@ void testInvalidFirstArgSizeRistrettoAdd_init()
 void testInvalidFirstArgPointRistrettoAdd_init()
 {
     unsigned char point1[crypto_core_ristretto255_BYTES];
-    size_t i;
-    for( i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
+    for( size_t i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
         point1[i] = rand();
     }
     unsigned char point2[crypto_core_ristretto255_BYTES];
@@ -127,8 +126,7 @@ void testInvalidSecondArgPointRistrettoAdd_init()
     unsigned char point1[crypto_core_ristretto255_BYTES];
     crypto_core_ristretto255_random( point1 );
     unsigned char point2[crypto_core_ristretto255_BYTES];
-    size_t i;
-    for( i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
+    for( size_t i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
         point2[i] = rand();
     }
     char* testArgs[] = {point1, point2};

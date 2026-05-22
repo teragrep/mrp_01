@@ -9,8 +9,7 @@ void testPassRistrettoisvalidpoint_init()
 {
     char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
     assert( ristrettoPoint != 0 );
-    size_t i;
-    for( i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
+    for( size_t i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
         ristrettoPoint[i] = rand();
     }
     char* testArgs[1] = {ristrettoPoint};
@@ -30,8 +29,7 @@ void testInvalidArgSizeRistrettoisvalidpoint_init()
 {
     char* ristrettoPoint = malloc( 64 );
     assert( ristrettoPoint != 0 );
-    size_t i;
-    for( i = 0; i < 64; i++ ) {
+    for( size_t i = 0; i < 64; i++ ) {
         ristrettoPoint[i] = rand();
     }
     char* testArgs[1] = {ristrettoPoint};
@@ -54,8 +52,7 @@ void testInvalidArgAmountRistrettoisvalidpoint_init()
 {
     char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
     assert( ristrettoPoint != 0 );
-    size_t i;
-    for( i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
+    for( size_t i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
         ristrettoPoint[i] = rand();
     }
     char* testArgs[2] = {ristrettoPoint, ristrettoPoint};
@@ -77,8 +74,7 @@ void testInvalidArgTypeRistrettoisvalidpoint_init()
 {
     char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
     assert( ristrettoPoint != 0 );
-    size_t i;
-    for( i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
+    for( size_t i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
         ristrettoPoint[i] = rand();
     }
     char* testArgs[1] = {ristrettoPoint};
@@ -127,8 +123,7 @@ void testFailRistrettoisvalidpoint()
     // Generate an invalid ristretto point for validation using rand()
     char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
     assert( ristrettoPoint != 0 );
-    size_t i;
-    for( i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
+    for( size_t i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
         ristrettoPoint[i] = rand();
     }
     char* testArgs[1] = {ristrettoPoint};

@@ -10,8 +10,7 @@ void testRistrettoScalarReduce_init()
     char* nonReducedScalar = malloc(
                                  crypto_core_ristretto255_NONREDUCEDSCALARBYTES );
     assert( nonReducedScalar != 0 );
-    size_t i;
-    for( i = 0; i < crypto_core_ristretto255_NONREDUCEDSCALARBYTES; i++ ) {
+    for( size_t i = 0; i < crypto_core_ristretto255_NONREDUCEDSCALARBYTES; i++ ) {
         nonReducedScalar[i] = rand();
     }
     char* testArgs[] = {nonReducedScalar};
@@ -34,8 +33,7 @@ void testInvalidArgsAmountRistrettoScalarReduce_init()
     char* nonReducedScalar = malloc(
                                  crypto_core_ristretto255_NONREDUCEDSCALARBYTES );
     assert( nonReducedScalar != 0 );
-    size_t i;
-    for( i = 0; i < crypto_core_ristretto255_NONREDUCEDSCALARBYTES; i++ ) {
+    for( size_t i = 0; i < crypto_core_ristretto255_NONREDUCEDSCALARBYTES; i++ ) {
         nonReducedScalar[i] = rand();
     }
     char* testArgs[] = {nonReducedScalar, nonReducedScalar};
@@ -60,8 +58,7 @@ void testInvalidFirstArgSizeRistrettoScalarReduce_init()
 {
     char* scalar = malloc( crypto_core_ristretto255_SCALARBYTES );
     assert( scalar != 0 );
-    size_t i;
-    for( i = 0; i < crypto_core_ristretto255_SCALARBYTES; i++ ) {
+    for( size_t i = 0; i < crypto_core_ristretto255_SCALARBYTES; i++ ) {
         scalar[i] = rand();
     }
     char* testArgs[] = {scalar};
@@ -98,8 +95,7 @@ void testRistrettoScalarReduce()
     char* nonReducedScalar = malloc(
                                  crypto_core_ristretto255_NONREDUCEDSCALARBYTES );
     assert( nonReducedScalar != 0 );
-    size_t i;
-    for( i = 0; i < crypto_core_ristretto255_NONREDUCEDSCALARBYTES; i++ ) {
+    for( size_t i = 0; i < crypto_core_ristretto255_NONREDUCEDSCALARBYTES; i++ ) {
         nonReducedScalar[i] = rand();
     }
     char* testArgs[] = {nonReducedScalar};

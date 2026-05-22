@@ -75,8 +75,7 @@ void testInvalidFirstArgSizeScalarmultristretto_init()
 void testInvalidSecondArgSizeScalarmultristretto_init()
 {
     unsigned char point[16];
-    size_t i;
-    for( i = 0; i < 16; i++ ) {
+    for( size_t i = 0; i < 16; i++ ) {
         point[i] = rand();
     }
     unsigned char scalar[crypto_core_ristretto255_SCALARBYTES];
@@ -102,8 +101,7 @@ void testInvalidSecondArgSizeScalarmultristretto_init()
 void testInvalidSecondArgPointScalarmultristretto_init()
 {
     unsigned char point[crypto_core_ristretto255_BYTES];
-    size_t i;
-    for( i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
+    for( size_t i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
         point[i] = rand();
     }
     unsigned char scalar[crypto_core_ristretto255_SCALARBYTES];

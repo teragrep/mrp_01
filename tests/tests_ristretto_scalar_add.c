@@ -47,8 +47,7 @@ void testInvalidFirstArgSizeRistrettoScalarAdd_init()
     char secondScalar[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_random( secondScalar );
     char firstScalar[16];
-    size_t i;
-    for( i = 0; i < 16; i++ ) {
+    for( size_t i = 0; i < 16; i++ ) {
         firstScalar[i] = rand();
     }
     char* testArgs[] = {firstScalar, secondScalar};
@@ -72,8 +71,7 @@ void testInvalidSecondArgSizeRistrettoScalarAdd_init()
     char firstScalar[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_random( firstScalar );
     char secondScalar[16];
-    size_t i;
-    for( i = 0; i < 16; i++ ) {
+    for( size_t i = 0; i < 16; i++ ) {
         secondScalar[i] = rand();
     }
     char* testArgs[] = {firstScalar, secondScalar};
