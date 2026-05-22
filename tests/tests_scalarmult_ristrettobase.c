@@ -74,7 +74,8 @@ void testScalarmultristrettobase_deinit()
     initid.ptr = malloc( crypto_core_ristretto255_BYTES );
     assert( initid.ptr != nullptr );
     scalarmultristrettobase_deinit( &initid );
-    assert( initid.ptr == nullptr && "_deinit failed to free the allocated memory." );
+    assert( initid.ptr == nullptr &&
+            "_deinit failed to free the allocated memory." );
     printf( "testScalarmultristrettobase_deinit() passed assertions!\n" );
 }
 

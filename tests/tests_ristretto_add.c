@@ -154,7 +154,8 @@ void testRistrettoAdd_deinit()
     initid.ptr = malloc( crypto_core_ristretto255_BYTES );
     assert( initid.ptr != nullptr );
     ristrettoadd_deinit( &initid );
-    assert( initid.ptr == nullptr && "_deinit failed to free the allocated memory." );
+    assert( initid.ptr == nullptr &&
+            "_deinit failed to free the allocated memory." );
     printf( "testRistrettoAdd_deinit() passed assertions!\n" );
 }
 

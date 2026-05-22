@@ -68,7 +68,8 @@ void testRistrettoScalarComplement_deinit()
     initid.ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
     assert( initid.ptr != nullptr );
     ristrettoscalarcomplement_deinit( &initid );
-    assert( initid.ptr == nullptr && "_deinit failed to free the allocated memory." );
+    assert( initid.ptr == nullptr &&
+            "_deinit failed to free the allocated memory." );
     printf( "testRistrettoScalarComplement_deinit() passed assertions!\n" );
 }
 

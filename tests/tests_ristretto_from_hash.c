@@ -85,7 +85,8 @@ void testRistrettofromhash_deinit()
     initid.ptr = malloc( crypto_core_ristretto255_BYTES );
     assert( initid.ptr != nullptr );
     ristrettofromhash_deinit( &initid );
-    assert( initid.ptr == nullptr && "_deinit failed to free the allocated memory." );
+    assert( initid.ptr == nullptr &&
+            "_deinit failed to free the allocated memory." );
     printf( "testRistrettofromhash_deinit() passed assertions!\n" );
 }
 
