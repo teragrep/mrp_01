@@ -43,7 +43,7 @@ long long ristrettoisvalidpoint( UDF_INIT* initid, const UDF_ARGS* args,
 my_bool ristrettorandom_init( UDF_INIT* initid, UDF_ARGS* args, char* message )
 {
     initid->ptr = malloc( crypto_core_ristretto255_BYTES );
-    if( initid->ptr == 0 ) {
+    if( initid->ptr == nullptr ) {
         strcpy( message, "not enough memory for buffer" );
         return 1;
     }
@@ -52,9 +52,9 @@ my_bool ristrettorandom_init( UDF_INIT* initid, UDF_ARGS* args, char* message )
 
 void ristrettorandom_deinit( UDF_INIT* initid )
 {
-    if( initid->ptr != 0 ) {
+    if( initid->ptr != nullptr ) {
         free( initid->ptr );
-        initid->ptr = 0;
+        initid->ptr = nullptr;
     }
 }
 
@@ -63,7 +63,7 @@ char* ristrettorandom( const UDF_INIT* initid, UDF_ARGS* args, char* result,
 {
     if( sodium_init() == -1 ) {
         *error = 1;
-        return 0;
+        return nullptr;
     }
     unsigned char p[crypto_core_ristretto255_BYTES];
     crypto_core_ristretto255_random( p );
@@ -87,7 +87,7 @@ my_bool ristrettofromhash_init( UDF_INIT* initid, const UDF_ARGS* args,
     }
 
     initid->ptr = malloc( crypto_core_ristretto255_BYTES );
-    if( initid->ptr == 0 ) {
+    if( initid->ptr == nullptr ) {
         strcpy( message, "not enough memory for buffer" );
         return 1;
     }
@@ -97,9 +97,9 @@ my_bool ristrettofromhash_init( UDF_INIT* initid, const UDF_ARGS* args,
 
 void ristrettofromhash_deinit( UDF_INIT* initid )
 {
-    if( initid->ptr != 0 ) {
+    if( initid->ptr != nullptr ) {
         free( initid->ptr );
-        initid->ptr = 0;
+        initid->ptr = nullptr;
     }
 }
 
@@ -109,7 +109,7 @@ char* ristrettofromhash( const UDF_INIT* initid, const UDF_ARGS* args,
 {
     if( sodium_init() == -1 ) {
         *error = 1;
-        return 0;
+        return nullptr;
     }
     unsigned char x[crypto_core_ristretto255_HASHBYTES];
     memcpy( x, args->args[0], args->lengths[0] );
@@ -151,7 +151,7 @@ my_bool scalarmultristretto_init( UDF_INIT* initid, const UDF_ARGS* args,
     }
 
     initid->ptr = malloc( crypto_core_ristretto255_BYTES );
-    if( initid->ptr == 0 ) {
+    if( initid->ptr == nullptr ) {
         strcpy( message, "not enough memory for buffer" );
         return 1;
     }
@@ -160,9 +160,9 @@ my_bool scalarmultristretto_init( UDF_INIT* initid, const UDF_ARGS* args,
 
 void scalarmultristretto_deinit( UDF_INIT* initid )
 {
-    if( initid->ptr != 0 ) {
+    if( initid->ptr != nullptr ) {
         free( initid->ptr );
-        initid->ptr = 0;
+        initid->ptr = nullptr;
     }
 }
 
@@ -172,7 +172,7 @@ char* scalarmultristretto( const UDF_INIT* initid, const UDF_ARGS* args,
 {
     if( sodium_init() == -1 ) {
         *error = 1;
-        return 0;
+        return nullptr;
     }
     unsigned char n[crypto_core_ristretto255_SCALARBYTES];
     memcpy( n, args->args[0], args->lengths[0] );
@@ -181,7 +181,7 @@ char* scalarmultristretto( const UDF_INIT* initid, const UDF_ARGS* args,
     unsigned char q[crypto_core_ristretto255_BYTES];
     if( crypto_scalarmult_ristretto255( q, n, p ) != 0 ) {
         *error = 1;
-        return 0;
+        return nullptr;
     }
     memcpy( initid->ptr, q, crypto_core_ristretto255_BYTES );
     *length = crypto_core_ristretto255_BYTES;
@@ -202,7 +202,7 @@ my_bool scalarmultristrettobase_init( UDF_INIT* initid, const UDF_ARGS* args,
     }
 
     initid->ptr = malloc( crypto_core_ristretto255_BYTES );
-    if( initid->ptr == 0 ) {
+    if( initid->ptr == nullptr ) {
         strcpy( message, "not enough memory for buffer" );
         return 1;
     }
@@ -211,9 +211,9 @@ my_bool scalarmultristrettobase_init( UDF_INIT* initid, const UDF_ARGS* args,
 
 void scalarmultristrettobase_deinit( UDF_INIT* initid )
 {
-    if( initid->ptr != 0 ) {
+    if( initid->ptr != nullptr ) {
         free( initid->ptr );
-        initid->ptr = 0;
+        initid->ptr = nullptr;
     }
 }
 
@@ -223,7 +223,7 @@ char* scalarmultristrettobase( const UDF_INIT* initid, const UDF_ARGS* args,
 {
     if( sodium_init() == -1 ) {
         *error = 1;
-        return 0;
+        return nullptr;
     }
     unsigned char r[crypto_core_ristretto255_SCALARBYTES];
     memcpy( r, args->args[0], args->lengths[0] );
@@ -271,7 +271,7 @@ my_bool ristrettoadd_init( UDF_INIT* initid, const UDF_ARGS* args,
 
 
     initid->ptr = malloc( crypto_core_ristretto255_BYTES );
-    if( initid->ptr == 0 ) {
+    if( initid->ptr == nullptr ) {
         strcpy( message, "not enough memory for buffer" );
         return 1;
     }
@@ -280,9 +280,9 @@ my_bool ristrettoadd_init( UDF_INIT* initid, const UDF_ARGS* args,
 
 void ristrettoadd_deinit( UDF_INIT* initid )
 {
-    if( initid->ptr != 0 ) {
+    if( initid->ptr != nullptr ) {
         free( initid->ptr );
-        initid->ptr = 0;
+        initid->ptr = nullptr;
     }
 }
 
@@ -291,7 +291,7 @@ char* ristrettoadd( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
 {
     if( sodium_init() == -1 ) {
         *error = 1;
-        return 0;
+        return nullptr;
     }
     unsigned char gr[crypto_core_ristretto255_BYTES];
     memcpy( gr, args->args[0], args->lengths[0] );
@@ -339,7 +339,7 @@ my_bool ristrettosub_init( UDF_INIT* initid, const UDF_ARGS* args,
 
 
     initid->ptr = malloc( crypto_core_ristretto255_BYTES );
-    if( initid->ptr == 0 ) {
+    if( initid->ptr == nullptr ) {
         strcpy( message, "not enough memory for buffer" );
         return 1;
     }
@@ -348,9 +348,9 @@ my_bool ristrettosub_init( UDF_INIT* initid, const UDF_ARGS* args,
 
 void ristrettosub_deinit( UDF_INIT* initid )
 {
-    if( initid->ptr != 0 ) {
+    if( initid->ptr != nullptr ) {
         free( initid->ptr );
-        initid->ptr = 0;
+        initid->ptr = nullptr;
     }
 }
 
@@ -359,7 +359,7 @@ char* ristrettosub( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
 {
     if( sodium_init() == -1 ) {
         *error = 1;
-        return 0;
+        return nullptr;
     }
     unsigned char gr[crypto_core_ristretto255_BYTES];
     memcpy( gr, args->args[0], args->lengths[0] );
@@ -378,7 +378,7 @@ my_bool ristrettoscalarrandom_init( UDF_INIT* initid, UDF_ARGS* args,
                                     char* message )
 {
     initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
-    if( initid->ptr == 0 ) {
+    if( initid->ptr == nullptr ) {
         strcpy( message, "not enough memory for buffer" );
         return 1;
     }
@@ -387,9 +387,9 @@ my_bool ristrettoscalarrandom_init( UDF_INIT* initid, UDF_ARGS* args,
 
 void ristrettoscalarrandom_deinit( UDF_INIT* initid )
 {
-    if( initid->ptr != 0 ) {
+    if( initid->ptr != nullptr ) {
         free( initid->ptr );
-        initid->ptr = 0;
+        initid->ptr = nullptr;
     }
 }
 
@@ -399,7 +399,7 @@ char* ristrettoscalarrandom( const UDF_INIT* initid, UDF_ARGS* args,
 {
     if( sodium_init() == -1 ) {
         *error = 1;
-        return 0;
+        return nullptr;
     }
     unsigned char r[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_random( r );
@@ -422,7 +422,7 @@ my_bool ristrettoscalarreduce_init( UDF_INIT* initid, const UDF_ARGS* args,
     }
 
     initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
-    if( initid->ptr == 0 ) {
+    if( initid->ptr == nullptr ) {
         strcpy( message, "not enough memory for buffer" );
         return 1;
     }
@@ -431,9 +431,9 @@ my_bool ristrettoscalarreduce_init( UDF_INIT* initid, const UDF_ARGS* args,
 
 void ristrettoscalarreduce_deinit( UDF_INIT* initid )
 {
-    if( initid->ptr != 0 ) {
+    if( initid->ptr != nullptr ) {
         free( initid->ptr );
-        initid->ptr = 0;
+        initid->ptr = nullptr;
     }
 }
 
@@ -443,7 +443,7 @@ char* ristrettoscalarreduce( const UDF_INIT* initid, const UDF_ARGS* args,
 {
     if( sodium_init() == -1 ) {
         *error = 1;
-        return 0;
+        return nullptr;
     }
     unsigned char s[crypto_core_ristretto255_NONREDUCEDSCALARBYTES];
     memcpy( s, args->args[0], args->lengths[0] );
@@ -468,7 +468,7 @@ my_bool ristrettoscalarinvert_init( UDF_INIT* initid, const UDF_ARGS* args,
     }
 
     initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
-    if( initid->ptr == 0 ) {
+    if( initid->ptr == nullptr ) {
         strcpy( message, "not enough memory for buffer" );
         return 1;
     }
@@ -477,9 +477,9 @@ my_bool ristrettoscalarinvert_init( UDF_INIT* initid, const UDF_ARGS* args,
 
 void ristrettoscalarinvert_deinit( UDF_INIT* initid )
 {
-    if( initid->ptr != 0 ) {
+    if( initid->ptr != nullptr ) {
         free( initid->ptr );
-        initid->ptr = 0;
+        initid->ptr = nullptr;
     }
 }
 
@@ -489,7 +489,7 @@ char* ristrettoscalarinvert( const UDF_INIT* initid, const UDF_ARGS* args,
 {
     if( sodium_init() == -1 ) {
         *error = 1;
-        return 0;
+        return nullptr;
     }
     unsigned char s[crypto_core_ristretto255_SCALARBYTES];
     memcpy( s, args->args[0], args->lengths[0] );
@@ -514,7 +514,7 @@ my_bool ristrettoscalarnegate_init( UDF_INIT* initid, const UDF_ARGS* args,
     }
 
     initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
-    if( initid->ptr == 0 ) {
+    if( initid->ptr == nullptr ) {
         strcpy( message, "not enough memory for buffer" );
         return 1;
     }
@@ -523,9 +523,9 @@ my_bool ristrettoscalarnegate_init( UDF_INIT* initid, const UDF_ARGS* args,
 
 void ristrettoscalarnegate_deinit( UDF_INIT* initid )
 {
-    if( initid->ptr != 0 ) {
+    if( initid->ptr != nullptr ) {
         free( initid->ptr );
-        initid->ptr = 0;
+        initid->ptr = nullptr;
     }
 }
 
@@ -535,7 +535,7 @@ char* ristrettoscalarnegate( const UDF_INIT* initid, const UDF_ARGS* args,
 {
     if( sodium_init() == -1 ) {
         *error = 1;
-        return 0;
+        return nullptr;
     }
     unsigned char r[crypto_core_ristretto255_SCALARBYTES];
     memcpy( r, args->args[0], args->lengths[0] );
@@ -560,7 +560,7 @@ my_bool ristrettoscalarcomplement_init( UDF_INIT* initid, const UDF_ARGS* args,
     }
 
     initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
-    if( initid->ptr == 0 ) {
+    if( initid->ptr == nullptr ) {
         strcpy( message, "not enough memory for buffer" );
         return 1;
     }
@@ -569,9 +569,9 @@ my_bool ristrettoscalarcomplement_init( UDF_INIT* initid, const UDF_ARGS* args,
 
 void ristrettoscalarcomplement_deinit( UDF_INIT* initid )
 {
-    if( initid->ptr != 0 ) {
+    if( initid->ptr != nullptr ) {
         free( initid->ptr );
-        initid->ptr = 0;
+        initid->ptr = nullptr;
     }
 }
 
@@ -581,7 +581,7 @@ char* ristrettoscalarcomplement( const UDF_INIT* initid, const UDF_ARGS* args,
 {
     if( sodium_init() == -1 ) {
         *error = 1;
-        return 0;
+        return nullptr;
     }
     unsigned char r[crypto_core_ristretto255_SCALARBYTES];
     memcpy( r, args->args[0], args->lengths[0] );
@@ -612,7 +612,7 @@ my_bool ristrettoscalaradd_init( UDF_INIT* initid, const UDF_ARGS* args,
     }
 
     initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
-    if( initid->ptr == 0 ) {
+    if( initid->ptr == nullptr ) {
         strcpy( message, "not enough memory for buffer" );
         return 1;
     }
@@ -621,9 +621,9 @@ my_bool ristrettoscalaradd_init( UDF_INIT* initid, const UDF_ARGS* args,
 
 void ristrettoscalaradd_deinit( UDF_INIT* initid )
 {
-    if( initid->ptr != 0 ) {
+    if( initid->ptr != nullptr ) {
         free( initid->ptr );
-        initid->ptr = 0;
+        initid->ptr = nullptr;
     }
 }
 
@@ -633,7 +633,7 @@ char* ristrettoscalaradd( const UDF_INIT* initid, const UDF_ARGS* args,
 {
     if( sodium_init() == -1 ) {
         *error = 1;
-        return 0;
+        return nullptr;
     }
     unsigned char r[crypto_core_ristretto255_SCALARBYTES];
     memcpy( r, args->args[0], args->lengths[0] );
@@ -666,7 +666,7 @@ my_bool ristrettoscalarsub_init( UDF_INIT* initid, const UDF_ARGS* args,
     }
 
     initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
-    if( initid->ptr == 0 ) {
+    if( initid->ptr == nullptr ) {
         strcpy( message, "not enough memory for buffer" );
         return 1;
     }
@@ -675,9 +675,9 @@ my_bool ristrettoscalarsub_init( UDF_INIT* initid, const UDF_ARGS* args,
 
 void ristrettoscalarsub_deinit( UDF_INIT* initid )
 {
-    if( initid->ptr != 0 ) {
+    if( initid->ptr != nullptr ) {
         free( initid->ptr );
-        initid->ptr = 0;
+        initid->ptr = nullptr;
     }
 }
 
@@ -687,7 +687,7 @@ char* ristrettoscalarsub( const UDF_INIT* initid, const UDF_ARGS* args,
 {
     if( sodium_init() == -1 ) {
         *error = 1;
-        return 0;
+        return nullptr;
     }
     unsigned char r[crypto_core_ristretto255_SCALARBYTES];
     memcpy( r, args->args[0], args->lengths[0] );
@@ -720,7 +720,7 @@ my_bool ristrettoscalarmul_init( UDF_INIT* initid, const UDF_ARGS* args,
     }
 
     initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
-    if( initid->ptr == 0 ) {
+    if( initid->ptr == nullptr ) {
         strcpy( message, "not enough memory for buffer" );
         return 1;
     }
@@ -729,9 +729,9 @@ my_bool ristrettoscalarmul_init( UDF_INIT* initid, const UDF_ARGS* args,
 
 void ristrettoscalarmul_deinit( UDF_INIT* initid )
 {
-    if( initid->ptr != 0 ) {
+    if( initid->ptr != nullptr ) {
         free( initid->ptr );
-        initid->ptr = 0;
+        initid->ptr = nullptr;
     }
 }
 
@@ -741,7 +741,7 @@ char* ristrettoscalarmul( const UDF_INIT* initid, const UDF_ARGS* args,
 {
     if( sodium_init() == -1 ) {
         *error = 1;
-        return 0;
+        return nullptr;
     }
     unsigned char r[crypto_core_ristretto255_SCALARBYTES];
     memcpy( r, args->args[0], args->lengths[0] );
