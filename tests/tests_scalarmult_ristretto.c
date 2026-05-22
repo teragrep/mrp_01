@@ -162,8 +162,9 @@ void testScalarmultristretto()
     assert( crypto_core_ristretto255_is_valid_point( ristrettoPoint ) == 1 &&
             "Output of the scalarmultristretto() is not a valid ristretto point" );
     char expecteRistrettoPoint[crypto_core_ristretto255_BYTES];
-    int success = crypto_scalarmult_ristretto255( expecteRistrettoPoint, scalar, point );
-    assert(success == 0 && "crypto_scalarmult_ristretto255() was not successful");
+    int success = crypto_scalarmult_ristretto255( expecteRistrettoPoint, scalar,
+                  point );
+    assert( success == 0 && "crypto_scalarmult_ristretto255() was not successful" );
     assert( memcmp( expecteRistrettoPoint, ristrettoPoint,
                     crypto_core_ristretto255_BYTES ) == 0 &&
             "Output of the scalarmultristretto() is not as expected" );
