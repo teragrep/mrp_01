@@ -7,9 +7,9 @@
 
 void testRistrettoScalarMul_init()
 {
-    char scalar[crypto_core_ristretto255_SCALARBYTES];
+    unsigned char scalar[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_random( scalar );
-    char* testArgs[] = {scalar};
+    char* testArgs[] = {( char* )scalar};
     unsigned long testLengths[2] = {crypto_core_ristretto255_SCALARBYTES, crypto_core_ristretto255_SCALARBYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     UDF_ARGS args = { .arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
@@ -25,9 +25,9 @@ void testRistrettoScalarMul_init()
 
 void testInvalidArgsAmountRistrettoScalarMul_init()
 {
-    char scalar[crypto_core_ristretto255_SCALARBYTES];
+    unsigned char scalar[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_random( scalar );
-    char* testArgs[] = {scalar};
+    char* testArgs[] = {( char* )scalar};
     unsigned long testLengths[] = {crypto_core_ristretto255_SCALARBYTES};
     enum Item_result itemValue[] = {STRING_RESULT};
     UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
@@ -44,13 +44,13 @@ void testInvalidArgsAmountRistrettoScalarMul_init()
 
 void testInvalidFirstArgSizeRistrettoScalarMul_init()
 {
-    char secondScalar[crypto_core_ristretto255_SCALARBYTES];
+    unsigned char secondScalar[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_random( secondScalar );
-    char firstScalar[16];
+    unsigned char firstScalar[16];
     for( size_t i = 0; i < 16; i++ ) {
         firstScalar[i] = rand();
     }
-    char* testArgs[] = {firstScalar, secondScalar};
+    char* testArgs[] = {( char* )firstScalar, ( char* )secondScalar};
     unsigned long testLengths[] = {16};
     enum Item_result itemValue[] = {STRING_RESULT, STRING_RESULT};
     UDF_ARGS args = { .arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
@@ -68,13 +68,13 @@ void testInvalidFirstArgSizeRistrettoScalarMul_init()
 
 void testInvalidSecondArgSizeRistrettoScalarMul_init()
 {
-    char firstScalar[crypto_core_ristretto255_SCALARBYTES];
+    unsigned char firstScalar[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_random( firstScalar );
-    char secondScalar[16];
+    unsigned char secondScalar[16];
     for( size_t i = 0; i < 16; i++ ) {
         secondScalar[i] = rand();
     }
-    char* testArgs[] = {firstScalar, secondScalar};
+    char* testArgs[] = {( char* )firstScalar, ( char* )secondScalar};
     unsigned long testLengths[] = {crypto_core_ristretto255_SCALARBYTES, 16};
     enum Item_result itemValue[] = {STRING_RESULT, STRING_RESULT};
     UDF_ARGS args = { .arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
@@ -102,9 +102,9 @@ void testRistrettoScalarMul_deinit()
 
 void testRistrettoScalarMul()
 {
-    char inputScalar[crypto_core_ristretto255_SCALARBYTES];
+    unsigned char inputScalar[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_random( inputScalar );
-    char* testArgs[] = {inputScalar, inputScalar};
+    char* testArgs[] = {( char* )inputScalar, ( char* )inputScalar};
     unsigned long testLengths[] = {crypto_core_ristretto255_SCALARBYTES, crypto_core_ristretto255_SCALARBYTES};
     char result[255];
     unsigned long length[1];
@@ -120,7 +120,8 @@ void testRistrettoScalarMul()
     assert( returnedPtr == initid.ptr &&
             "Returned pointer does not originate from the UDF_INIT struct" );
     char expectedScalar[crypto_core_ristretto255_SCALARBYTES];
-    crypto_core_ristretto255_scalar_mul( expectedScalar, inputScalar, inputScalar );
+    crypto_core_ristretto255_scalar_mul( ( unsigned char* )expectedScalar,
+                                         inputScalar, inputScalar );
     assert( memcmp( expectedScalar, scalar,
                     crypto_core_ristretto255_SCALARBYTES ) == 0 &&
             "Output of the ristrettoscalarmul() is not as expected" );

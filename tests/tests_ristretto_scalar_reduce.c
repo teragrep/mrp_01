@@ -7,13 +7,13 @@
 
 void testRistrettoScalarReduce_init()
 {
-    char* nonReducedScalar = malloc(
-                                 crypto_core_ristretto255_NONREDUCEDSCALARBYTES );
+    unsigned char* nonReducedScalar = malloc(
+                                          crypto_core_ristretto255_NONREDUCEDSCALARBYTES );
     assert( nonReducedScalar != 0 );
     for( size_t i = 0; i < crypto_core_ristretto255_NONREDUCEDSCALARBYTES; i++ ) {
         nonReducedScalar[i] = rand();
     }
-    char* testArgs[] = {nonReducedScalar};
+    char* testArgs[] = {( char* )nonReducedScalar};
     unsigned long testLengths[1] = {crypto_core_ristretto255_NONREDUCEDSCALARBYTES};
     enum Item_result itemValue[1] = {STRING_RESULT};
     UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
@@ -30,13 +30,13 @@ void testRistrettoScalarReduce_init()
 
 void testInvalidArgsAmountRistrettoScalarReduce_init()
 {
-    char* nonReducedScalar = malloc(
-                                 crypto_core_ristretto255_NONREDUCEDSCALARBYTES );
+    unsigned char* nonReducedScalar = malloc(
+                                          crypto_core_ristretto255_NONREDUCEDSCALARBYTES );
     assert( nonReducedScalar != 0 );
     for( size_t i = 0; i < crypto_core_ristretto255_NONREDUCEDSCALARBYTES; i++ ) {
         nonReducedScalar[i] = rand();
     }
-    char* testArgs[] = {nonReducedScalar, nonReducedScalar};
+    char* testArgs[] = {( char* )nonReducedScalar, ( char* )nonReducedScalar};
     unsigned long testLengths[] = {crypto_core_ristretto255_NONREDUCEDSCALARBYTES, crypto_core_ristretto255_NONREDUCEDSCALARBYTES};
     enum Item_result itemValue[] = {STRING_RESULT, STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -56,12 +56,12 @@ void testInvalidArgsAmountRistrettoScalarReduce_init()
 
 void testInvalidFirstArgSizeRistrettoScalarReduce_init()
 {
-    char* scalar = malloc( crypto_core_ristretto255_SCALARBYTES );
+    unsigned char* scalar = malloc( crypto_core_ristretto255_SCALARBYTES );
     assert( scalar != 0 );
     for( size_t i = 0; i < crypto_core_ristretto255_SCALARBYTES; i++ ) {
         scalar[i] = rand();
     }
-    char* testArgs[] = {scalar};
+    char* testArgs[] = {( char* )scalar};
     unsigned long testLengths[] = {crypto_core_ristretto255_SCALARBYTES};
     enum Item_result itemValue[] = {STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -92,13 +92,13 @@ void testRistrettoScalarReduce_deinit()
 
 void testRistrettoScalarReduce()
 {
-    char* nonReducedScalar = malloc(
-                                 crypto_core_ristretto255_NONREDUCEDSCALARBYTES );
+    unsigned char* nonReducedScalar = malloc(
+                                          crypto_core_ristretto255_NONREDUCEDSCALARBYTES );
     assert( nonReducedScalar != 0 );
     for( size_t i = 0; i < crypto_core_ristretto255_NONREDUCEDSCALARBYTES; i++ ) {
         nonReducedScalar[i] = rand();
     }
-    char* testArgs[] = {nonReducedScalar};
+    char* testArgs[] = {( char* )nonReducedScalar};
     unsigned long testLengths[1] = {crypto_core_ristretto255_NONREDUCEDSCALARBYTES};
     char result[255];
     unsigned long length[1];
@@ -114,7 +114,8 @@ void testRistrettoScalarReduce()
     assert( returnedPtr == initid.ptr &&
             "Returned pointer does not originate from the UDF_INIT struct" );
     char expectedScalar[crypto_core_ristretto255_SCALARBYTES];
-    crypto_core_ristretto255_scalar_reduce( expectedScalar, nonReducedScalar );
+    crypto_core_ristretto255_scalar_reduce( ( unsigned char* )expectedScalar,
+                                            nonReducedScalar );
     assert( memcmp( expectedScalar, scalar,
                     crypto_core_ristretto255_SCALARBYTES ) == 0 &&
             "Output of the ristrettoscalarreduce() is not as expected" );

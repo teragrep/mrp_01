@@ -35,7 +35,8 @@ void testRistrettorandom()
                                          error );
     assert( returnedPtr == initid.ptr &&
             "Returned pointer does not originate from the UDF_INIT struct" );
-    assert( crypto_core_ristretto255_is_valid_point( initid.ptr ) == 1 &&
+    assert( crypto_core_ristretto255_is_valid_point( ( unsigned char* ) initid.ptr )
+            == 1 &&
             "Result is not 1, generated ristretto point was not valid." );
     printf( "testRistrettorandom() passed assertions!\n" );
     free( ristrettoPoint );

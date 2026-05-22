@@ -7,9 +7,9 @@
 
 void testRistrettoScalarInvert_init()
 {
-    char scalar[crypto_core_ristretto255_SCALARBYTES];
+    unsigned char scalar[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_random( scalar );
-    char* testArgs[] = {scalar};
+    char* testArgs[] = {( char* )scalar};
     unsigned long testLengths[1] = {crypto_core_ristretto255_SCALARBYTES};
     enum Item_result itemValue[1] = {STRING_RESULT};
     UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
@@ -25,9 +25,9 @@ void testRistrettoScalarInvert_init()
 
 void testInvalidArgsAmountRistrettoScalarInvert_init()
 {
-    char scalar[crypto_core_ristretto255_SCALARBYTES];
+    unsigned char scalar[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_random( scalar );
-    char* testArgs[] = {scalar, scalar};
+    char* testArgs[] = {( char* )scalar, ( char* )scalar};
     unsigned long testLengths[] = {crypto_core_ristretto255_SCALARBYTES, crypto_core_ristretto255_SCALARBYTES};
     enum Item_result itemValue[] = {STRING_RESULT, STRING_RESULT};
     UDF_ARGS args = { .arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
@@ -44,9 +44,9 @@ void testInvalidArgsAmountRistrettoScalarInvert_init()
 
 void testInvalidFirstArgSizeRistrettoScalarInvert_init()
 {
-    char scalar[16];
+    unsigned char scalar[16];
     crypto_core_ristretto255_scalar_random( scalar );
-    char* testArgs[] = {scalar};
+    char* testArgs[] = {( char* )scalar};
     unsigned long testLengths[] = {16};
     enum Item_result itemValue[] = {STRING_RESULT};
     UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
@@ -74,9 +74,9 @@ void testRistrettoScalarInvert_deinit()
 
 void testRistrettoScalarInvert()
 {
-    char inputScalar[crypto_core_ristretto255_SCALARBYTES];
+    unsigned char inputScalar[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_random( inputScalar );
-    char* testArgs[] = {inputScalar};
+    char* testArgs[] = {( char* )inputScalar};
     unsigned long testLengths[] = {crypto_core_ristretto255_SCALARBYTES};
     char result[255];
     unsigned long length[1];
@@ -92,7 +92,8 @@ void testRistrettoScalarInvert()
     assert( returnedPtr == initid.ptr &&
             "Returned pointer does not originate from the UDF_INIT struct" );
     char expectedScalar[crypto_core_ristretto255_SCALARBYTES];
-    crypto_core_ristretto255_scalar_invert( expectedScalar, inputScalar );
+    crypto_core_ristretto255_scalar_invert( ( unsigned char* )expectedScalar,
+                                            inputScalar );
     assert( memcmp( expectedScalar, scalar,
                     crypto_core_ristretto255_SCALARBYTES ) == 0 &&
             "Output of the ristrettoscalarinvert() is not as expected" );

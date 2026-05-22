@@ -11,7 +11,7 @@ void testRistrettoAdd_init()
     crypto_core_ristretto255_random( point1 );
     unsigned char point2[crypto_core_ristretto255_BYTES];
     crypto_core_ristretto255_random( point2 );
-    char* testArgs[] = {point1, point2};
+    char* testArgs[] = {( char* ) point1, ( char* ) point2};
     unsigned long testLengths[2] = {crypto_core_ristretto255_BYTES, crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -31,7 +31,7 @@ void testInvalidArgsAmountRistrettoAdd_init()
 {
     unsigned char point[crypto_core_ristretto255_BYTES];
     crypto_core_ristretto255_random( point );
-    char* testArgs[] = {point};
+    char* testArgs[] = {( char* ) point};
     unsigned long testLengths[1] = {crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[1] = {STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -54,7 +54,7 @@ void testInvalidFirstArgSizeRistrettoAdd_init()
     crypto_core_ristretto255_random( point1 );
     unsigned char point2[crypto_core_ristretto255_BYTES];
     crypto_core_ristretto255_random( point2 );
-    char* testArgs[] = {point1, point2};
+    char* testArgs[] = {( char* ) point1, ( char* ) point2};
     unsigned long testLengths[2] = {16, crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -80,7 +80,7 @@ void testInvalidFirstArgPointRistrettoAdd_init()
     }
     unsigned char point2[crypto_core_ristretto255_BYTES];
     crypto_core_ristretto255_random( point2 );
-    char* testArgs[] = {point1, point2};
+    char* testArgs[] = {( char* ) point1, ( char* ) point2};
     unsigned long testLengths[2] = {crypto_core_ristretto255_BYTES, crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -103,7 +103,7 @@ void testInvalidSecondArgSizeRistrettoAdd_init()
     crypto_core_ristretto255_random( point1 );
     unsigned char point2[16];
     crypto_core_ristretto255_random( point2 );
-    char* testArgs[] = {point1, point2};
+    char* testArgs[] = {( char* ) point1, ( char* ) point2};
     unsigned long testLengths[2] = {crypto_core_ristretto255_BYTES, 16};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -129,7 +129,7 @@ void testInvalidSecondArgPointRistrettoAdd_init()
     for( size_t i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
         point2[i] = rand();
     }
-    char* testArgs[] = {point1, point2};
+    char* testArgs[] = {( char* ) point1, ( char* ) point2};
     unsigned long testLengths[2] = {crypto_core_ristretto255_BYTES, crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -162,7 +162,7 @@ void testRistrettoAdd()
     crypto_core_ristretto255_random( point1 );
     unsigned char point2[crypto_core_ristretto255_BYTES];
     crypto_core_ristretto255_random( point2 );
-    char* testArgs[] = {point1, point2};
+    char* testArgs[] = {( char* ) point1, ( char* ) point2};
     unsigned long testLengths[2] = {crypto_core_ristretto255_BYTES, crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
@@ -179,10 +179,12 @@ void testRistrettoAdd()
                                       error );
     assert( returnedPtr == initid.ptr &&
             "Returned pointer does not originate from the UDF_INIT struct" );
-    assert( crypto_core_ristretto255_is_valid_point( ristrettoPoint ) == 1 &&
+    assert( crypto_core_ristretto255_is_valid_point( ( unsigned char* )
+            ristrettoPoint ) == 1 &&
             "Output of the ristrettoadd() is not a valid ristretto point" );
     char expecteRistrettoPoint[crypto_core_ristretto255_BYTES];
-    crypto_core_ristretto255_add( expecteRistrettoPoint, point2, point1 );
+    crypto_core_ristretto255_add( ( unsigned char* ) expecteRistrettoPoint, point2,
+                                  point1 );
     assert( memcmp( expecteRistrettoPoint, ristrettoPoint,
                     crypto_core_ristretto255_BYTES ) == 0 &&
             "Output of the ristrettoadd() is not as expected" );

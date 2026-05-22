@@ -11,7 +11,7 @@ void testScalarmultristretto_init()
     crypto_core_ristretto255_random( point );
     unsigned char scalar[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_random( scalar );
-    char* testArgs[] = {scalar, point};
+    char* testArgs[] = {( char* )scalar, ( char* )point};
     unsigned long testLengths[2] = {crypto_core_ristretto255_SCALARBYTES, crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -31,7 +31,7 @@ void testInvalidArgsAmountScalarmultristretto_init()
 {
     unsigned char scalar[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_random( scalar );
-    char* testArgs[] = {scalar};
+    char* testArgs[] = {( char* )scalar};
     unsigned long testLengths[1] = {crypto_core_ristretto255_SCALARBYTES};
     enum Item_result itemValue[1] = {STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -54,7 +54,7 @@ void testInvalidFirstArgSizeScalarmultristretto_init()
     crypto_core_ristretto255_random( point );
     unsigned char scalar[16];
     crypto_core_ristretto255_scalar_random( scalar );
-    char* testArgs[] = {scalar, point};
+    char* testArgs[] = {( char* )scalar, ( char* )point};
     unsigned long testLengths[2] = {16, crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -80,7 +80,7 @@ void testInvalidSecondArgSizeScalarmultristretto_init()
     }
     unsigned char scalar[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_random( scalar );
-    char* testArgs[] = {scalar, point};
+    char* testArgs[] = {( char* )scalar, ( char* )point};
     unsigned long testLengths[2] = {crypto_core_ristretto255_SCALARBYTES, 16};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -106,7 +106,7 @@ void testInvalidSecondArgPointScalarmultristretto_init()
     }
     unsigned char scalar[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_random( scalar );
-    char* testArgs[] = {scalar, point};
+    char* testArgs[] = {( char* )scalar, ( char* )point};
     unsigned long testLengths[2] = {crypto_core_ristretto255_SCALARBYTES, crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -140,7 +140,7 @@ void testScalarmultristretto()
     crypto_core_ristretto255_random( point );
     unsigned char scalar[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_random( scalar );
-    char* testArgs[] = {scalar, point};
+    char* testArgs[] = {( char* )scalar, ( char* )point};
     unsigned long testLengths[2] = {crypto_core_ristretto255_SCALARBYTES, crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
@@ -157,10 +157,12 @@ void testScalarmultristretto()
                         is_null, error );
     assert( returnedPtr == initid.ptr &&
             "Returned pointer does not originate from the UDF_INIT struct" );
-    assert( crypto_core_ristretto255_is_valid_point( ristrettoPoint ) == 1 &&
+    assert( crypto_core_ristretto255_is_valid_point( ( unsigned char* )
+            ristrettoPoint ) == 1 &&
             "Output of the scalarmultristretto() is not a valid ristretto point" );
     char expecteRistrettoPoint[crypto_core_ristretto255_BYTES];
-    int success = crypto_scalarmult_ristretto255( expecteRistrettoPoint, scalar,
+    int success = crypto_scalarmult_ristretto255( ( unsigned char* )
+                  expecteRistrettoPoint, scalar,
                   point );
     assert( success == 0 && "crypto_scalarmult_ristretto255() was not successful" );
     assert( memcmp( expecteRistrettoPoint, ristrettoPoint,

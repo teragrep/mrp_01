@@ -9,7 +9,7 @@ void testScalarmultristrettobase_init()
 {
     unsigned char scalar[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_random( scalar );
-    char* testArgs[] = {scalar};
+    char* testArgs[] = {( char* )scalar};
     unsigned long testLengths[1] = {crypto_core_ristretto255_SCALARBYTES};
     enum Item_result itemValue[1] = {STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -29,7 +29,7 @@ void testInvalidArgsAmountScalarmultristrettobase_init()
 {
     unsigned char scalar[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_random( scalar );
-    char* testArgs[] = {scalar, scalar};
+    char* testArgs[] = {( char* )scalar, ( char* )scalar};
     unsigned long testLengths[2] = {crypto_core_ristretto255_SCALARBYTES, crypto_core_ristretto255_SCALARBYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -50,7 +50,7 @@ void testInvalidArgSizeScalarmultristrettobase_init()
 {
     unsigned char scalar[16];
     crypto_core_ristretto255_scalar_random( scalar );
-    char* testArgs[] = {scalar};
+    char* testArgs[] = {( char* )scalar};
     unsigned long testLengths[1] = {16};
     enum Item_result itemValue[1] = {STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -82,7 +82,7 @@ void testScalarmultristrettobase()
 {
     unsigned char scalar[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_random( scalar );
-    char* testArgs[] = {scalar};
+    char* testArgs[] = {( char* )scalar};
     unsigned long testLengths[1] = {crypto_core_ristretto255_SCALARBYTES};
     enum Item_result itemValue[1] = {STRING_RESULT};
     UDF_ARGS args = {.arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
@@ -99,7 +99,8 @@ void testScalarmultristrettobase()
                         is_null, error );
     assert( returnedPtr == initid.ptr &&
             "Returned pointer does not originate from the UDF_INIT struct" );
-    assert( crypto_core_ristretto255_is_valid_point( ristrettoPoint ) == 1 &&
+    assert( crypto_core_ristretto255_is_valid_point( ( unsigned char* )
+            ristrettoPoint ) == 1 &&
             "Output of the scalarmultristrettobase() is not a valid ristretto point" );
     printf( "testScalarmultristrettobase() passed assertions!\n" );
     free( ristrettoPoint );

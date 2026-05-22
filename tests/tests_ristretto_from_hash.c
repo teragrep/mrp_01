@@ -7,12 +7,12 @@
 
 void testRistrettofromhash_init()
 {
-    char* hash = malloc( crypto_core_ristretto255_HASHBYTES );
+    unsigned char* hash = malloc( crypto_core_ristretto255_HASHBYTES );
     assert( hash != 0 );
     for( size_t i = 0; i < crypto_core_ristretto255_HASHBYTES; i++ ) {
         hash[i] = rand();
     }
-    char* testArgs[] = {hash};
+    char* testArgs[] = {( char* ) hash};
     unsigned long testLengths[1] = {crypto_core_ristretto255_HASHBYTES};
     enum Item_result itemValue[1] = {STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -31,12 +31,12 @@ void testRistrettofromhash_init()
 
 void testInvalidArgSizeRistrettofromhash_init()
 {
-    char* hash = malloc( 32 );
+    unsigned char* hash = malloc( 32 );
     assert( hash != 0 );
     for( size_t i = 0; i < 32; i++ ) {
         hash[i] = rand();
     }
-    char* testArgs[] = {hash};
+    char* testArgs[] = {( char* ) hash};
     unsigned long testLengths[1] = {32};
     enum Item_result itemValue[1] = {STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -55,12 +55,12 @@ void testInvalidArgSizeRistrettofromhash_init()
 
 void testInvalidArgAmountRistrettofromhash_init()
 {
-    char* hash = malloc( crypto_core_ristretto255_HASHBYTES );
+    unsigned char* hash = malloc( crypto_core_ristretto255_HASHBYTES );
     assert( hash != 0 );
     for( size_t i = 0; i < crypto_core_ristretto255_HASHBYTES; i++ ) {
         hash[i] = rand();
     }
-    char* testArgs[] = {hash, hash};
+    char* testArgs[] = {( char* ) hash, ( char* ) hash};
     unsigned long testLengths[2] = {crypto_core_ristretto255_HASHBYTES, crypto_core_ristretto255_HASHBYTES};
     enum Item_result itemValue[1] = {STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
@@ -88,12 +88,12 @@ void testRistrettofromhash_deinit()
 
 void testRistrettofromhash()
 {
-    char* hash = malloc( crypto_core_ristretto255_HASHBYTES );
+    unsigned char* hash = malloc( crypto_core_ristretto255_HASHBYTES );
     assert( hash != 0 );
     for( size_t i = 0; i < crypto_core_ristretto255_HASHBYTES; i++ ) {
         hash[i] = rand();
     }
-    char* testArgs[] = {hash};
+    char* testArgs[] = {( char* ) hash};
     unsigned long testLengths[1] = {crypto_core_ristretto255_HASHBYTES};
     enum Item_result itemValue[1] = {STRING_RESULT};
     char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
@@ -108,7 +108,8 @@ void testRistrettofromhash()
                                            error );
     assert( returnedPtr == initid.ptr &&
             "Returned pointer does not originate from the UDF_INIT struct" );
-    assert( crypto_core_ristretto255_is_valid_point( ristrettoPoint ) == 1 &&
+    assert( crypto_core_ristretto255_is_valid_point( ( unsigned char* )
+            ristrettoPoint ) == 1 &&
             "Result is not a valid ristretto point" );
     printf( "testRistrettofromhash() passed assertions!\n" );
     free( hash );
