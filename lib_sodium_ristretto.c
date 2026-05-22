@@ -12,7 +12,7 @@ typedef char my_bool;
 my_bool ristrettoisvalidpoint_init( UDF_INIT* initid, const UDF_ARGS* args,
                                     char* message )
 {
-    if( args->arg_count != 1 || ( args->arg_type[0] != STRING_RESULT ) ) {
+    if( args->arg_count != 1 ||  args->arg_type[0] != STRING_RESULT ) {
         strcpy( message, "requires 1 binary string argument" );
         return 1;
     }
@@ -77,7 +77,7 @@ char* ristrettorandom( const UDF_INIT* initid, UDF_ARGS* args, char* result,
 my_bool ristrettofromhash_init( UDF_INIT* initid, const UDF_ARGS* args,
                                 char* message )
 {
-    if( args->arg_count != 1 || ( args->arg_type[0] != STRING_RESULT ) ) {
+    if( args->arg_count != 1 ||  args->arg_type[0] != STRING_RESULT ) {
         strcpy( message, "requires 1 binary string argument" );
         return 1;
     }
@@ -125,8 +125,8 @@ char* ristrettofromhash( const UDF_INIT* initid, const UDF_ARGS* args,
 my_bool scalarmultristretto_init( UDF_INIT* initid, const UDF_ARGS* args,
                                   char* message )
 {
-    if( args->arg_count != 2 || ( args->arg_type[0] != STRING_RESULT ) ||
-            ( args->arg_type[1] != STRING_RESULT ) ) {
+    if( args->arg_count != 2 ||  args->arg_type[0] != STRING_RESULT  ||
+            args->arg_type[1] != STRING_RESULT ) {
         strcpy( message, "requires 2 binary string arguments" );
         return 1;
     }
@@ -191,7 +191,7 @@ char* scalarmultristretto( const UDF_INIT* initid, const UDF_ARGS* args,
 my_bool scalarmultristrettobase_init( UDF_INIT* initid, const UDF_ARGS* args,
                                       char* message )
 {
-    if( args->arg_count != 1 || ( args->arg_type[0] != STRING_RESULT ) ) {
+    if( args->arg_count != 1 ||  args->arg_type[0] != STRING_RESULT )  {
         strcpy( message, "requires 1 binary string argument" );
         return 1;
     }
@@ -239,8 +239,8 @@ char* scalarmultristrettobase( const UDF_INIT* initid, const UDF_ARGS* args,
 my_bool ristrettoadd_init( UDF_INIT* initid, const UDF_ARGS* args,
                            char* message )
 {
-    if( args->arg_count != 2 || ( args->arg_type[0] != STRING_RESULT ) ||
-            ( args->arg_type[1] != STRING_RESULT ) ) {
+    if( args->arg_count != 2 ||  args->arg_type[0] != STRING_RESULT  ||
+            args->arg_type[1] != STRING_RESULT ) {
         strcpy( message, "requires 2 binary string arguments" );
         return 1;
     }
@@ -307,8 +307,8 @@ char* ristrettoadd( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
 my_bool ristrettosub_init( UDF_INIT* initid, const UDF_ARGS* args,
                            char* message )
 {
-    if( args->arg_count != 2 || ( args->arg_type[0] != STRING_RESULT ) ||
-            ( args->arg_type[1] != STRING_RESULT ) ) {
+    if( args->arg_count != 2 ||  args->arg_type[0] != STRING_RESULT  ||
+            args->arg_type[1] != STRING_RESULT ) {
         strcpy( message, "requires 2 binary string arguments" );
         return 1;
     }
@@ -411,7 +411,7 @@ char* ristrettoscalarrandom( const UDF_INIT* initid, UDF_ARGS* args,
 my_bool ristrettoscalarreduce_init( UDF_INIT* initid, const UDF_ARGS* args,
                                     char* message )
 {
-    if( args->arg_count != 1 || ( args->arg_type[0] != STRING_RESULT ) ) {
+    if( args->arg_count != 1 ||  args->arg_type[0] != STRING_RESULT ) {
         strcpy( message, "requires 1 binary string argument" );
         return 1;
     }
@@ -457,7 +457,7 @@ char* ristrettoscalarreduce( const UDF_INIT* initid, const UDF_ARGS* args,
 my_bool ristrettoscalarinvert_init( UDF_INIT* initid, const UDF_ARGS* args,
                                     char* message )
 {
-    if( args->arg_count != 1 || ( args->arg_type[0] != STRING_RESULT ) ) {
+    if( args->arg_count != 1 ||  args->arg_type[0] != STRING_RESULT ) {
         strcpy( message, "requires 1 binary string argument" );
         return 1;
     }
@@ -503,7 +503,7 @@ char* ristrettoscalarinvert( const UDF_INIT* initid, const UDF_ARGS* args,
 my_bool ristrettoscalarnegate_init( UDF_INIT* initid, const UDF_ARGS* args,
                                     char* message )
 {
-    if( args->arg_count != 1 || ( args->arg_type[0] != STRING_RESULT ) ) {
+    if( args->arg_count != 1 ||  args->arg_type[0] != STRING_RESULT ) {
         strcpy( message, "Requires 1 binary string argument" );
         return 1;
     }
@@ -549,7 +549,7 @@ char* ristrettoscalarnegate( const UDF_INIT* initid, const UDF_ARGS* args,
 my_bool ristrettoscalarcomplement_init( UDF_INIT* initid, const UDF_ARGS* args,
                                         char* message )
 {
-    if( args->arg_count != 1 || ( args->arg_type[0] != STRING_RESULT ) ) {
+    if( args->arg_count != 1 ||  args->arg_type[0] != STRING_RESULT ) {
         strcpy( message, "requires 1 binary string argument" );
         return 1;
     }
