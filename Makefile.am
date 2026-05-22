@@ -3,8 +3,8 @@ lib_sodium_ristretto_ladir = $(pkgincludedir)
 lib_LTLIBRARIES = lib_sodium_ristretto.la
 lib_sodium_ristretto_la_SOURCES = lib_sodium_ristretto.c
 lib_sodium_ristretto_la_HEADERS = lib_sodium_ristretto.h
-lib_sodium_ristretto_la_CFLAGS = -DSTANDARD -DMYSQL_SERVER -std=c23 @MYSQL_CFLAGS@
-lib_sodium_ristretto_la_CXXFLAGS = -DSTANDARD -DMYSQL_SERVER -std=c++23 @MYSQL_CFLAGS@
+lib_sodium_ristretto_la_CFLAGS = -DSTANDARD -DMYSQL_SERVER @MYSQL_CFLAGS@
+lib_sodium_ristretto_la_CXXFLAGS = -DSTANDARD -DMYSQL_SERVER @MYSQL_CFLAGS@
 lib_sodium_ristretto_la_LDFLAGS = -module -avoid-version -no-undefined -rpath @MYSQL_PLUGINDIR@
 lib_sodium_ristretto_la_LIBADD = -lsodium
 
