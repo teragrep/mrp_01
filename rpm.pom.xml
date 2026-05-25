@@ -46,11 +46,11 @@
                     <name>${project.groupId}-${project.artifactId}</name>
                     <version>${project.version}</version>
                     <release>${env.GITHUB_RUN_NUMBER}</release>
-                    <license>Proprietary</license>
-                    <distribution>Fail-Safe Log Management Suite</distribution>
-                    <vendor>https://fail-safe.net/</vendor>
-                    <packager>Fail-Safe &lt;servicedesk@fail-safe.net&gt;</packager>
-                    <group>Fail-Safe/LogManagementSuite</group>
+                    <license>agplv3</license>
+                    <distribution>teragrep Log Management Suite</distribution>
+                    <vendor>https://teragrep.com/</vendor>
+                    <packager>teragrep &lt;servicedesk@teragrep.com&gt;</packager>
+                    <group>teragrep/LogManagementSuite</group>
                     <description>${project.groupId}-${project.artifactId}</description>
                     <needarch>true</needarch>
                     <defaultUsername>root</defaultUsername>
