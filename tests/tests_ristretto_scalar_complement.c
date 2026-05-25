@@ -15,7 +15,8 @@ void testRistrettoScalarComplement_init()
     const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = 0, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
-    const my_bool result = ristrettoscalarcomplement_init( &initid, &args, message );
+    const my_bool result = ristrettoscalarcomplement_init( &initid, &args,
+                           message );
     assert( result == 0 &&
             "Result is not 0, _init failed when it should have passed." );
     assert( initid.ptr != 0 && "Memory was not succesfully allocated" );
@@ -33,7 +34,8 @@ void testInvalidArgsAmountRistrettoScalarComplement_init()
     const UDF_ARGS args = { .arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = 0, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
-    const my_bool result = ristrettoscalarcomplement_init( &initid, &args, message );
+    const my_bool result = ristrettoscalarcomplement_init( &initid, &args,
+                           message );
     assert( result == 1 &&
             "Result is not 1, _init passed when it should have failed." );
     assert( strcmp( message, "requires 1 binary string argument" ) == 0 &&
@@ -52,7 +54,8 @@ void testInvalidFirstArgSizeRistrettoScalarComplement_init()
     const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = 0, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
-    const my_bool result = ristrettoscalarcomplement_init( &initid, &args, message );
+    const my_bool result = ristrettoscalarcomplement_init( &initid, &args,
+                           message );
     assert( result == 1 &&
             "Result is not 1, _init passed when it should have failed." );
     assert( strcmp( message,
@@ -87,8 +90,9 @@ void testRistrettoScalarComplement()
     char* scalar = malloc( crypto_core_ristretto255_SCALARBYTES );
     assert( scalar != 0 );
     const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = scalar, .const_item = 0};
-    const char* returnedPtr = ristrettoscalarcomplement( &initid, &args, result, length,
-                        is_null, error );
+    const char* returnedPtr = ristrettoscalarcomplement( &initid, &args, result,
+                              length,
+                              is_null, error );
     assert( returnedPtr == initid.ptr &&
             "Returned pointer does not originate from the UDF_INIT struct" );
     char expectedScalar[crypto_core_ristretto255_SCALARBYTES];

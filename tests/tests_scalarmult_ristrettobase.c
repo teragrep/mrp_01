@@ -95,8 +95,9 @@ void testScalarmultristrettobase()
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    const char* returnedPtr = scalarmultristrettobase( &initid, &args, result, length,
-                        is_null, error );
+    const char* returnedPtr = scalarmultristrettobase( &initid, &args, result,
+                              length,
+                              is_null, error );
     assert( returnedPtr == initid.ptr &&
             "Returned pointer does not originate from the UDF_INIT struct" );
     assert( crypto_core_ristretto255_is_valid_point( ( unsigned char* )

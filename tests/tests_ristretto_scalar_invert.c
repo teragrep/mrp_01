@@ -88,7 +88,7 @@ void testRistrettoScalarInvert()
     assert( scalar != 0 );
     const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = scalar, .const_item = 0};
     const char* returnedPtr = ristrettoscalarinvert( &initid, &args, result, length,
-                        is_null, error );
+                              is_null, error );
     assert( returnedPtr == initid.ptr &&
             "Returned pointer does not originate from the UDF_INIT struct" );
     char expectedScalar[crypto_core_ristretto255_SCALARBYTES];
