@@ -12,7 +12,7 @@ void testPassRistrettorandom_init()
     UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = 0, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
-    my_bool result = ristrettorandom_init( &initid, &args, message );
+    const my_bool result = ristrettorandom_init( &initid, &args, message );
     assert( result == 0 &&
             "Result is not 0, _init failed when it should have passed." );
     assert( initid.ptr != 0 && "Memory was not succesfully allocated" );
@@ -30,8 +30,8 @@ void testRistrettorandom()
     UDF_ARGS args = { .arg_count = 0, .arg_type = itemValue, .args = 0, .lengths = 0, .maybe_null = 0};
     char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
     assert( ristrettoPoint != 0 );
-    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0};
-    char* returnedPtr = ristrettorandom( &initid, &args, result, length, is_null,
+    const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0};
+    const char* returnedPtr = ristrettorandom( &initid, &args, result, length, is_null,
                                          error );
     assert( returnedPtr == initid.ptr &&
             "Returned pointer does not originate from the UDF_INIT struct" );

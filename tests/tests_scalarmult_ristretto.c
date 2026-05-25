@@ -15,11 +15,11 @@ void testScalarmultristretto_init()
     unsigned long testLengths[2] = {crypto_core_ristretto255_SCALARBYTES, crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
-    UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = 0, .const_item = 0
     };
-    my_bool result = scalarmultristretto_init( &initid, &args, message );
+    const my_bool result = scalarmultristretto_init( &initid, &args, message );
     assert( result == 0 &&
             "Result is not 0, _init failed when it should have passed." );
     assert( initid.ptr != 0 && "Memory was not succesfully allocated" );
@@ -35,11 +35,11 @@ void testInvalidArgsAmountScalarmultristretto_init()
     unsigned long testLengths[1] = {crypto_core_ristretto255_SCALARBYTES};
     enum Item_result itemValue[1] = {STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
-    UDF_ARGS args = {.arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    const UDF_ARGS args = {.arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = 0, .const_item = 0
     };
-    my_bool result = scalarmultristretto_init( &initid, &args, message );
+    const my_bool result = scalarmultristretto_init( &initid, &args, message );
     assert( result == 1 &&
             "Result is not 1, _init passed when it should have failed." );
     assert( strcmp( message, "requires 2 binary string arguments" ) == 0 &&
@@ -58,11 +58,11 @@ void testInvalidFirstArgSizeScalarmultristretto_init()
     unsigned long testLengths[2] = {16, crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
-    UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = 0, .const_item = 0
     };
-    my_bool result = scalarmultristretto_init( &initid, &args, message );
+    const my_bool result = scalarmultristretto_init( &initid, &args, message );
     assert( result == 1 &&
             "Result is not 1, _init passed when it should have failed." );
     assert( strcmp( message,
@@ -84,11 +84,11 @@ void testInvalidSecondArgSizeScalarmultristretto_init()
     unsigned long testLengths[2] = {crypto_core_ristretto255_SCALARBYTES, 16};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
-    UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = 0, .const_item = 0
     };
-    my_bool result = scalarmultristretto_init( &initid, &args, message );
+    const my_bool result = scalarmultristretto_init( &initid, &args, message );
     assert( result == 1 &&
             "Result is not 1, _init passed when it should have failed." );
     assert( strcmp( message,
@@ -110,11 +110,11 @@ void testInvalidSecondArgPointScalarmultristretto_init()
     unsigned long testLengths[2] = {crypto_core_ristretto255_SCALARBYTES, crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     char message[MYSQL_ERRMSG_SIZE];
-    UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = 0, .const_item = 0
     };
-    my_bool result = scalarmultristretto_init( &initid, &args, message );
+    const my_bool result = scalarmultristretto_init( &initid, &args, message );
     assert( result == 1 &&
             "Result is not 1, _init passed when it should have failed." );
     assert( strcmp( message,
@@ -143,17 +143,17 @@ void testScalarmultristretto()
     char* testArgs[] = {( char* )scalar, ( char* )point};
     unsigned long testLengths[2] = {crypto_core_ristretto255_SCALARBYTES, crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
-    UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
     assert( ristrettoPoint != 0 );
-    UDF_INIT initid = {
+    const UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0
     };
     char result[255];
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    char* returnedPtr = scalarmultristretto( &initid, &args, result, length,
+    const char* returnedPtr = scalarmultristretto( &initid, &args, result, length,
                         is_null, error );
     assert( returnedPtr == initid.ptr &&
             "Returned pointer does not originate from the UDF_INIT struct" );
@@ -161,7 +161,7 @@ void testScalarmultristretto()
             ristrettoPoint ) == 1 &&
             "Output of the scalarmultristretto() is not a valid ristretto point" );
     char expecteRistrettoPoint[crypto_core_ristretto255_BYTES];
-    int success = crypto_scalarmult_ristretto255( ( unsigned char* )
+    const int success = crypto_scalarmult_ristretto255( ( unsigned char* )
                   expecteRistrettoPoint, scalar,
                   point );
     assert( success == 0 && "crypto_scalarmult_ristretto255() was not successful" );
