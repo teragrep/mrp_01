@@ -42,13 +42,10 @@
     To the extent this program is licensed as part of the Commercial versions of
     Teragrep, the applicable Commercial License may apply to this file if you as
     a licensee so wish it.
-*/#ifndef MRP_01_LIB_SODIUM_RISTRETTO_H
+*/
+#ifndef MRP_01_LIB_SODIUM_RISTRETTO_H
 #define MRP_01_LIB_SODIUM_RISTRETTO_H
 
-my_bool ristrettoisvalidpoint_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                    char* message );
-long long ristrettoisvalidpoint( UDF_INIT* initid, const UDF_ARGS* args,
-                                 char* is_null, char* error );
 my_bool ristrettorandom_init( UDF_INIT* initid, UDF_ARGS* args, char* message );
 void ristrettorandom_deinit( UDF_INIT* initid );
 char* ristrettorandom( const UDF_INIT* initid, UDF_ARGS* args, char* result,

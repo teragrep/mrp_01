@@ -52,37 +52,6 @@
 typedef char my_bool;
 #endif
 
-// Encoded element validation
-
-my_bool ristrettoisvalidpoint_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                    char* message )
-{
-    if( args->arg_count != 1 ||  args->arg_type[0] != STRING_RESULT ) {
-        strcpy( message, "requires 1 binary string argument" );
-        return 1;
-    }
-    if( args->lengths[0] != crypto_core_ristretto255_BYTES ) {
-        strcpy( message, "First input argument is not a 32 byte binary string" );
-        return 1;
-    }
-    if( sodium_init() == -1 ) {
-        strcpy( message, "sodium failed to initialize" );
-        return 1;
-    }
-    return 0;
-}
-
-long long ristrettoisvalidpoint( UDF_INIT* initid, const UDF_ARGS* args,
-                                 char* is_null, char* error )
-{
-    unsigned char r[crypto_core_ristretto255_BYTES];
-    memcpy( r, args->args[0], args->lengths[0] );
-    if( crypto_core_ristretto255_is_valid_point( r ) == 0 ) {
-        return 0;
-    }
-    return 1;
-}
-
 // Random group element
 
 my_bool ristrettorandom_init( UDF_INIT* initid, UDF_ARGS* args, char* message )
