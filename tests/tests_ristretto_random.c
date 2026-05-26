@@ -42,11 +42,12 @@
     To the extent this program is licensed as part of the Commercial versions of
     Teragrep, the applicable Commercial License may apply to this file if you as
     a licensee so wish it.
-*/#include <assert.h>
+*/
+#include <assert.h>
 #include <mysql/mysql.h>
 #include <sodium.h>
 
-#include "../lib_sodium_ristretto.h"
+#include "../lib_sodium_ristretto_random.h"
 
 void testPassRistrettorandom_init()
 {
@@ -92,7 +93,7 @@ void testRistrettorandom_deinit()
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = 0, .const_item = 0};
     initid.ptr = malloc( crypto_core_ristretto255_BYTES );
     assert( initid.ptr != 0 );
-    ristrettoadd_deinit( &initid );
+    ristrettorandom_deinit( &initid );
     assert( initid.ptr == 0 && "_deinit failed to free the allocated memory." );
     printf( "testRistrettorandom_deinit() passed assertions!\n" );
 }

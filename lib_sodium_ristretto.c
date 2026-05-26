@@ -52,40 +52,6 @@
 typedef char my_bool;
 #endif
 
-// Random group element
-
-my_bool ristrettorandom_init( UDF_INIT* initid, UDF_ARGS* args, char* message )
-{
-    if( sodium_init() == -1 ) {
-        strcpy( message, "sodium failed to initialize" );
-        return 1;
-    }
-    initid->ptr = malloc( crypto_core_ristretto255_BYTES );
-    if( initid->ptr == 0 ) {
-        strcpy( message, "not enough memory for buffer" );
-        return 1;
-    }
-    return 0;
-}
-
-void ristrettorandom_deinit( UDF_INIT* initid )
-{
-    if( initid->ptr != 0 ) {
-        free( initid->ptr );
-        initid->ptr = 0;
-    }
-}
-
-char* ristrettorandom( const UDF_INIT* initid, UDF_ARGS* args, char* result,
-                       unsigned long* length, char* is_null, char* error )
-{
-    unsigned char p[crypto_core_ristretto255_BYTES];
-    crypto_core_ristretto255_random( p );
-    memcpy( initid->ptr, p, crypto_core_ristretto255_BYTES );
-    *length = crypto_core_ristretto255_BYTES;
-    return initid->ptr;
-}
-
 // Hash-to-group
 
 my_bool ristrettofromhash_init( UDF_INIT* initid, const UDF_ARGS* args,
