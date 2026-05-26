@@ -46,20 +46,6 @@
 #ifndef MRP_01_LIB_SODIUM_RISTRETTO_H
 #define MRP_01_LIB_SODIUM_RISTRETTO_H
 
-my_bool scalarmultristretto_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                  char* message );
-void scalarmultristretto_deinit( UDF_INIT* initid );
-char* scalarmultristretto( const UDF_INIT* initid, const UDF_ARGS* args,
-                           char* result,
-                           unsigned long* length, char* is_null,
-                           char* error );
-my_bool scalarmultristrettobase_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                      char* message );
-void scalarmultristrettobase_deinit( UDF_INIT* initid );
-char* scalarmultristrettobase( const UDF_INIT* initid, const UDF_ARGS* args,
-                               char* result,
-                               unsigned long* length, char* is_null,
-                               char* error );
 my_bool ristrettoadd_init( UDF_INIT* initid, const UDF_ARGS* args,
                            char* message );
 void ristrettoadd_deinit( UDF_INIT* initid );
