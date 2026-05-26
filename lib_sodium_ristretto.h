@@ -46,16 +46,6 @@
 #ifndef MRP_01_LIB_SODIUM_RISTRETTO_H
 #define MRP_01_LIB_SODIUM_RISTRETTO_H
 
-my_bool ristrettoadd_init( UDF_INIT* initid, const UDF_ARGS* args,
-                           char* message );
-void ristrettoadd_deinit( UDF_INIT* initid );
-char* ristrettoadd( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
-                    unsigned long* length, char* is_null, char* error );
-my_bool ristrettosub_init( UDF_INIT* initid, const UDF_ARGS* args,
-                           char* message );
-void ristrettosub_deinit( UDF_INIT* initid );
-char* ristrettosub( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
-                    unsigned long* length, char* is_null, char* error );
 my_bool ristrettoscalarrandom_init( UDF_INIT* initid, UDF_ARGS* args,
                                     char* message );
 void ristrettoscalarrandom_deinit( UDF_INIT* initid );
