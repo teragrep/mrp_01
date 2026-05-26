@@ -52,53 +52,6 @@
 typedef char my_bool;
 #endif
 
-// Hash-to-group
-
-my_bool ristrettofromhash_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                char* message )
-{
-    if( args->arg_count != 1 ||  args->arg_type[0] != STRING_RESULT ) {
-        strcpy( message, "requires 1 binary string argument" );
-        return 1;
-    }
-    if( args->lengths[0] != crypto_core_ristretto255_HASHBYTES ) {
-        strcpy( message, "First input argument is not a 64 byte binary string" );
-        return 1;
-    }
-    if( sodium_init() == -1 ) {
-        strcpy( message, "sodium failed to initialize" );
-        return 1;
-    }
-    initid->ptr = malloc( crypto_core_ristretto255_BYTES );
-    if( initid->ptr == 0 ) {
-        strcpy( message, "not enough memory for buffer" );
-        return 1;
-    }
-
-    return 0;
-}
-
-void ristrettofromhash_deinit( UDF_INIT* initid )
-{
-    if( initid->ptr != 0 ) {
-        free( initid->ptr );
-        initid->ptr = 0;
-    }
-}
-
-char* ristrettofromhash( const UDF_INIT* initid, const UDF_ARGS* args,
-                         char* result,
-                         unsigned long* length, char* is_null, char* error )
-{
-    unsigned char x[crypto_core_ristretto255_HASHBYTES];
-    memcpy( x, args->args[0], args->lengths[0] );
-    unsigned char yy[crypto_core_ristretto255_BYTES];
-    crypto_core_ristretto255_from_hash( yy, x );
-    memcpy( initid->ptr, yy, crypto_core_ristretto255_BYTES );
-    *length = crypto_core_ristretto255_BYTES;
-    return initid->ptr;
-}
-
 // Scalar multiplication
 
 my_bool scalarmultristretto_init( UDF_INIT* initid, const UDF_ARGS* args,
