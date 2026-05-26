@@ -42,7 +42,8 @@
     To the extent this program is licensed as part of the Commercial versions of
     Teragrep, the applicable Commercial License may apply to this file if you as
     a licensee so wish it.
-*/#include <assert.h>
+*/
+#include <assert.h>
 #include <mysql/mysql.h>
 #include <sodium.h>
 #include <string.h>
