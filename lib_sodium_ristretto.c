@@ -65,16 +65,16 @@ my_bool ristrettoisvalidpoint_init( UDF_INIT* initid, const UDF_ARGS* args,
         strcpy( message, "First input argument is not a 32 byte binary string" );
         return 1;
     }
+    if( sodium_init() == -1 ) {
+        strcpy( message, "sodium failed to initialize" );
+        return 1;
+    }
     return 0;
 }
 
 long long ristrettoisvalidpoint( UDF_INIT* initid, const UDF_ARGS* args,
                                  char* is_null, char* error )
 {
-    if( sodium_init() == -1 ) {
-        *error = 1;
-        return 0;
-    }
     unsigned char r[crypto_core_ristretto255_BYTES];
     memcpy( r, args->args[0], args->lengths[0] );
     if( crypto_core_ristretto255_is_valid_point( r ) == 0 ) {
@@ -87,6 +87,10 @@ long long ristrettoisvalidpoint( UDF_INIT* initid, const UDF_ARGS* args,
 
 my_bool ristrettorandom_init( UDF_INIT* initid, UDF_ARGS* args, char* message )
 {
+    if( sodium_init() == -1 ) {
+        strcpy( message, "sodium failed to initialize" );
+        return 1;
+    }
     initid->ptr = malloc( crypto_core_ristretto255_BYTES );
     if( initid->ptr == 0 ) {
         strcpy( message, "not enough memory for buffer" );
@@ -106,10 +110,6 @@ void ristrettorandom_deinit( UDF_INIT* initid )
 char* ristrettorandom( const UDF_INIT* initid, UDF_ARGS* args, char* result,
                        unsigned long* length, char* is_null, char* error )
 {
-    if( sodium_init() == -1 ) {
-        *error = 1;
-        return 0;
-    }
     unsigned char p[crypto_core_ristretto255_BYTES];
     crypto_core_ristretto255_random( p );
     memcpy( initid->ptr, p, crypto_core_ristretto255_BYTES );
@@ -130,7 +130,10 @@ my_bool ristrettofromhash_init( UDF_INIT* initid, const UDF_ARGS* args,
         strcpy( message, "First input argument is not a 64 byte binary string" );
         return 1;
     }
-
+    if( sodium_init() == -1 ) {
+        strcpy( message, "sodium failed to initialize" );
+        return 1;
+    }
     initid->ptr = malloc( crypto_core_ristretto255_BYTES );
     if( initid->ptr == 0 ) {
         strcpy( message, "not enough memory for buffer" );
@@ -152,10 +155,6 @@ char* ristrettofromhash( const UDF_INIT* initid, const UDF_ARGS* args,
                          char* result,
                          unsigned long* length, char* is_null, char* error )
 {
-    if( sodium_init() == -1 ) {
-        *error = 1;
-        return 0;
-    }
     unsigned char x[crypto_core_ristretto255_HASHBYTES];
     memcpy( x, args->args[0], args->lengths[0] );
     unsigned char yy[crypto_core_ristretto255_BYTES];
@@ -215,10 +214,6 @@ char* scalarmultristretto( const UDF_INIT* initid, const UDF_ARGS* args,
                            char* result,
                            unsigned long* length, char* is_null, char* error )
 {
-    if( sodium_init() == -1 ) {
-        *error = 1;
-        return 0;
-    }
     unsigned char n[crypto_core_ristretto255_SCALARBYTES];
     memcpy( n, args->args[0], args->lengths[0] );
     unsigned char p[crypto_core_ristretto255_BYTES];
@@ -245,7 +240,10 @@ my_bool scalarmultristrettobase_init( UDF_INIT* initid, const UDF_ARGS* args,
                 "First input argument is not a 32 byte scalar in binary string format" );
         return 1;
     }
-
+    if( sodium_init() == -1 ) {
+        strcpy( message, "sodium failed to initialize" );
+        return 1;
+    }
     initid->ptr = malloc( crypto_core_ristretto255_BYTES );
     if( initid->ptr == 0 ) {
         strcpy( message, "not enough memory for buffer" );
@@ -266,10 +264,6 @@ char* scalarmultristrettobase( const UDF_INIT* initid, const UDF_ARGS* args,
                                char* result,
                                unsigned long* length, char* is_null, char* error )
 {
-    if( sodium_init() == -1 ) {
-        *error = 1;
-        return 0;
-    }
     unsigned char r[crypto_core_ristretto255_SCALARBYTES];
     memcpy( r, args->args[0], args->lengths[0] );
     unsigned char gr[crypto_core_ristretto255_BYTES];
@@ -334,10 +328,6 @@ void ristrettoadd_deinit( UDF_INIT* initid )
 char* ristrettoadd( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
                     unsigned long* length, char* is_null, char* error )
 {
-    if( sodium_init() == -1 ) {
-        *error = 1;
-        return 0;
-    }
     unsigned char gr[crypto_core_ristretto255_BYTES];
     memcpy( gr, args->args[0], args->lengths[0] );
     unsigned char px[crypto_core_ristretto255_BYTES];
@@ -402,10 +392,6 @@ void ristrettosub_deinit( UDF_INIT* initid )
 char* ristrettosub( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
                     unsigned long* length, char* is_null, char* error )
 {
-    if( sodium_init() == -1 ) {
-        *error = 1;
-        return 0;
-    }
     unsigned char gr[crypto_core_ristretto255_BYTES];
     memcpy( gr, args->args[0], args->lengths[0] );
     unsigned char px[crypto_core_ristretto255_BYTES];
@@ -422,6 +408,10 @@ char* ristrettosub( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
 my_bool ristrettoscalarrandom_init( UDF_INIT* initid, UDF_ARGS* args,
                                     char* message )
 {
+    if( sodium_init() == -1 ) {
+        strcpy( message, "sodium failed to initialize" );
+        return 1;
+    }
     initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
     if( initid->ptr == 0 ) {
         strcpy( message, "not enough memory for buffer" );
@@ -442,10 +432,6 @@ char* ristrettoscalarrandom( const UDF_INIT* initid, UDF_ARGS* args,
                              char* result,
                              unsigned long* length, char* is_null, char* error )
 {
-    if( sodium_init() == -1 ) {
-        *error = 1;
-        return 0;
-    }
     unsigned char r[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_random( r );
     memcpy( initid->ptr, r, crypto_core_ristretto255_SCALARBYTES );
@@ -465,7 +451,10 @@ my_bool ristrettoscalarreduce_init( UDF_INIT* initid, const UDF_ARGS* args,
                 "First input is not a scalar in 64 byte binary string format" );
         return 1;
     }
-
+    if( sodium_init() == -1 ) {
+        strcpy( message, "sodium failed to initialize" );
+        return 1;
+    }
     initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
     if( initid->ptr == 0 ) {
         strcpy( message, "not enough memory for buffer" );
@@ -486,10 +475,6 @@ char* ristrettoscalarreduce( const UDF_INIT* initid, const UDF_ARGS* args,
                              char* result,
                              unsigned long* length, char* is_null, char* error )
 {
-    if( sodium_init() == -1 ) {
-        *error = 1;
-        return 0;
-    }
     unsigned char s[crypto_core_ristretto255_NONREDUCEDSCALARBYTES];
     memcpy( s, args->args[0], args->lengths[0] );
     unsigned char r[crypto_core_ristretto255_SCALARBYTES];
@@ -511,7 +496,10 @@ my_bool ristrettoscalarinvert_init( UDF_INIT* initid, const UDF_ARGS* args,
                 "First input is not a scalar in 32 byte binary string format" );
         return 1;
     }
-
+    if( sodium_init() == -1 ) {
+        strcpy( message, "sodium failed to initialize" );
+        return 1;
+    }
     initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
     if( initid->ptr == 0 ) {
         strcpy( message, "not enough memory for buffer" );
@@ -532,10 +520,6 @@ char* ristrettoscalarinvert( const UDF_INIT* initid, const UDF_ARGS* args,
                              char* result,
                              unsigned long* length, char* is_null, char* error )
 {
-    if( sodium_init() == -1 ) {
-        *error = 1;
-        return 0;
-    }
     unsigned char s[crypto_core_ristretto255_SCALARBYTES];
     memcpy( s, args->args[0], args->lengths[0] );
     unsigned char recip[crypto_core_ristretto255_SCALARBYTES];
@@ -557,7 +541,10 @@ my_bool ristrettoscalarnegate_init( UDF_INIT* initid, const UDF_ARGS* args,
                 "First input is not a scalar in 32 byte binary string format" );
         return 1;
     }
-
+    if( sodium_init() == -1 ) {
+        strcpy( message, "sodium failed to initialize" );
+        return 1;
+    }
     initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
     if( initid->ptr == 0 ) {
         strcpy( message, "not enough memory for buffer" );
@@ -578,10 +565,6 @@ char* ristrettoscalarnegate( const UDF_INIT* initid, const UDF_ARGS* args,
                              char* result,
                              unsigned long* length, char* is_null, char* error )
 {
-    if( sodium_init() == -1 ) {
-        *error = 1;
-        return 0;
-    }
     unsigned char r[crypto_core_ristretto255_SCALARBYTES];
     memcpy( r, args->args[0], args->lengths[0] );
     unsigned char ir[crypto_core_ristretto255_SCALARBYTES];
@@ -603,7 +586,10 @@ my_bool ristrettoscalarcomplement_init( UDF_INIT* initid, const UDF_ARGS* args,
                 "First input is not a scalar in 32 byte binary string format" );
         return 1;
     }
-
+    if( sodium_init() == -1 ) {
+        strcpy( message, "sodium failed to initialize" );
+        return 1;
+    }
     initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
     if( initid->ptr == 0 ) {
         strcpy( message, "not enough memory for buffer" );
@@ -624,10 +610,6 @@ char* ristrettoscalarcomplement( const UDF_INIT* initid, const UDF_ARGS* args,
                                  char* result,
                                  unsigned long* length, char* is_null, char* error )
 {
-    if( sodium_init() == -1 ) {
-        *error = 1;
-        return 0;
-    }
     unsigned char r[crypto_core_ristretto255_SCALARBYTES];
     memcpy( r, args->args[0], args->lengths[0] );
     unsigned char ir[crypto_core_ristretto255_SCALARBYTES];
@@ -655,7 +637,10 @@ my_bool ristrettoscalaradd_init( UDF_INIT* initid, const UDF_ARGS* args,
                 "Second input is not a scalar in 32 byte binary string format" );
         return 1;
     }
-
+    if( sodium_init() == -1 ) {
+        strcpy( message, "sodium failed to initialize" );
+        return 1;
+    }
     initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
     if( initid->ptr == 0 ) {
         strcpy( message, "not enough memory for buffer" );
@@ -676,10 +661,6 @@ char* ristrettoscalaradd( const UDF_INIT* initid, const UDF_ARGS* args,
                           char* result,
                           unsigned long* length, char* is_null, char* error )
 {
-    if( sodium_init() == -1 ) {
-        *error = 1;
-        return 0;
-    }
     unsigned char r[crypto_core_ristretto255_SCALARBYTES];
     memcpy( r, args->args[0], args->lengths[0] );
     unsigned char b[crypto_core_ristretto255_SCALARBYTES];
@@ -709,7 +690,10 @@ my_bool ristrettoscalarsub_init( UDF_INIT* initid, const UDF_ARGS* args,
                 "Second input is not a scalar in 32 byte binary string format" );
         return 1;
     }
-
+    if( sodium_init() == -1 ) {
+        strcpy( message, "sodium failed to initialize" );
+        return 1;
+    }
     initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
     if( initid->ptr == 0 ) {
         strcpy( message, "not enough memory for buffer" );
@@ -730,10 +714,6 @@ char* ristrettoscalarsub( const UDF_INIT* initid, const UDF_ARGS* args,
                           char* result,
                           unsigned long* length, char* is_null, char* error )
 {
-    if( sodium_init() == -1 ) {
-        *error = 1;
-        return 0;
-    }
     unsigned char r[crypto_core_ristretto255_SCALARBYTES];
     memcpy( r, args->args[0], args->lengths[0] );
     unsigned char b[crypto_core_ristretto255_SCALARBYTES];
@@ -763,7 +743,10 @@ my_bool ristrettoscalarmul_init( UDF_INIT* initid, const UDF_ARGS* args,
                 "Second input is not a scalar in 32 byte binary string format" );
         return 1;
     }
-
+    if( sodium_init() == -1 ) {
+        strcpy( message, "sodium failed to initialize" );
+        return 1;
+    }
     initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
     if( initid->ptr == 0 ) {
         strcpy( message, "not enough memory for buffer" );
@@ -784,10 +767,6 @@ char* ristrettoscalarmul( const UDF_INIT* initid, const UDF_ARGS* args,
                           char* result,
                           unsigned long* length, char* is_null, char* error )
 {
-    if( sodium_init() == -1 ) {
-        *error = 1;
-        return 0;
-    }
     unsigned char r[crypto_core_ristretto255_SCALARBYTES];
     memcpy( r, args->args[0], args->lengths[0] );
     unsigned char b[crypto_core_ristretto255_SCALARBYTES];
