@@ -1,3 +1,4 @@
+#!/bin/bash
 #    MariaDB Ristretto255 Plugin (mrp_01)
 #    Copyright (C) 2021-2024 Suomen Kanuuna Oy
 #
@@ -41,8 +42,6 @@
 #    To the extent this program is licensed as part of the Commercial versions of
 #    Teragrep, the applicable Commercial License may apply to this file if you as
 #    a licensee so wish it.
-
-#!/bin/bash
 cd /code || exit 1;
 autoreconf -fvi
 bash configure
