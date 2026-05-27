@@ -46,7 +46,7 @@
 #include <sodium.h>
 #include <string.h>
 #include <mysql/mysql.h>
-#include "lib_sodium_ristretto_sum.h"
+#include "lib_sodium_ristretto_addition.h"
 
 #ifndef my_bool
 typedef char my_bool;
