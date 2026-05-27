@@ -43,8 +43,8 @@
     Teragrep, the applicable Commercial License may apply to this file if you as
     a licensee so wish it.
 */
-#ifndef MRP_01_LIB_SODIUM_RISTRETTO_H
-#define MRP_01_LIB_SODIUM_RISTRETTO_H
+#ifndef MRP_01_LIB_SODIUM_RISTRETTO_SCALAROVERL_H
+#define MRP_01_LIB_SODIUM_RISTRETTO_SCALAROVERL_H
 
 my_bool ristrettoscalarrandom_init( UDF_INIT* initid, UDF_ARGS* args,
                                     char* message );
@@ -102,4 +102,4 @@ char* ristrettoscalarmul( const UDF_INIT* initid, const UDF_ARGS* args,
                           char* result,
                           unsigned long* length, char* is_null,
                           char* error );
-#endif //MRP_01_LIB_SODIUM_RISTRETTO_H
+#endif //MRP_01_LIB_SODIUM_RISTRETTO_SCALAROVERL_H
