@@ -26,8 +26,8 @@
 /configure
 /lib_sodium_ristretto.o
 /lib_sodium_ristretto.la
-/lib_sodium_ristretto_la-lib_sodium_ristretto.lo
-/lib_sodium_ristretto_la-lib_sodium_ristretto.o
+/*.lo
+/*.o
 /libtool
 /stamp-h1
 #Ignore all files in the test directory
