@@ -48,7 +48,7 @@
 #include <sodium.h>
 #include <string.h>
 
-#include "../lib_sodium_ristretto.h"
+#include "../lib_sodium_ristretto_scalaroverl.h"
 
 void testRistrettoScalarReduce_init()
 {

@@ -45,8 +45,8 @@
 # Build a library, lib_sodium_ristretto.la.
 lib_sodium_ristretto_ladir = $(pkgincludedir)
 lib_LTLIBRARIES = lib_sodium_ristretto.la
-lib_sodium_ristretto_la_SOURCES = lib_sodium_ristretto.c lib_sodium_ristretto_validation.c lib_sodium_ristretto_random.c lib_sodium_ristretto_hash.c lib_sodium_ristretto_scalarmult.c lib_sodium_ristretto_sum.c
-lib_sodium_ristretto_la_HEADERS = lib_sodium_ristretto.h lib_sodium_ristretto_validation.h lib_sodium_ristretto_random.h lib_sodium_ristretto_hash.h lib_sodium_ristretto_scalarmult.h lib_sodium_ristretto_sum.h
+lib_sodium_ristretto_la_SOURCES = lib_sodium_ristretto_scalaroverl.c lib_sodium_ristretto_validation.c lib_sodium_ristretto_random.c lib_sodium_ristretto_hash.c lib_sodium_ristretto_scalarmult.c lib_sodium_ristretto_sum.c
+lib_sodium_ristretto_la_HEADERS = lib_sodium_ristretto_scalaroverl.h lib_sodium_ristretto_validation.h lib_sodium_ristretto_random.h lib_sodium_ristretto_hash.h lib_sodium_ristretto_scalarmult.h lib_sodium_ristretto_sum.h
 lib_sodium_ristretto_la_CFLAGS = -DSTANDARD -DMYSQL_SERVER -std=c17 @MYSQL_CFLAGS@
 lib_sodium_ristretto_la_CXXFLAGS = -DSTANDARD -DMYSQL_SERVER -std=c++17 @MYSQL_CFLAGS@
 lib_sodium_ristretto_la_LDFLAGS = -module -avoid-version -no-undefined -rpath @MYSQL_PLUGINDIR@
