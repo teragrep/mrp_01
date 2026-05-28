@@ -139,7 +139,7 @@ void testInvalidArgTypeRistrettoisvalidpoint_init()
 
 void testPassRistrettoisvalidpoint()
 {
-    int init = sodium_init();
+    const int init = sodium_init();
     assert( init >= 0 );
     // Generate a valid ristretto point for validation using crypto_core_ristretto255_random()
     char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
