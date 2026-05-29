@@ -48,10 +48,6 @@
 #include <mysql/mysql.h>
 #include "lib_sodium_ristretto_addition.h"
 
-#ifndef my_bool
-typedef char my_bool;
-#endif
-
 // Element addition/subtraction
 
 my_bool ristrettoadd_init( UDF_INIT* initid, const UDF_ARGS* args,

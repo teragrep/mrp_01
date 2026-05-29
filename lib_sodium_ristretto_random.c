@@ -48,10 +48,6 @@
 #include <mysql/mysql.h>
 #include "lib_sodium_ristretto_random.h"
 
-#ifndef my_bool
-typedef char my_bool;
-#endif
-
 /// Random group element
 
 my_bool ristrettorandom_init( UDF_INIT* initid, UDF_ARGS* args, char* message )

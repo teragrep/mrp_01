@@ -48,10 +48,6 @@
 #include <mysql/mysql.h>
 #include "lib_sodium_ristretto_scalarmult.h"
 
-#ifndef my_bool
-typedef char my_bool;
-#endif
-
 // Scalar multiplication
 
 my_bool scalarmultristretto_init( UDF_INIT* initid, const UDF_ARGS* args,

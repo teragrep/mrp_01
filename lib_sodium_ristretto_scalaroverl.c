@@ -48,10 +48,6 @@
 #include <mysql/mysql.h>
 #include "lib_sodium_ristretto_scalaroverl.h"
 
-#ifndef my_bool
-typedef char my_bool;
-#endif
-
 // Scalar arithmetic over L
 
 my_bool ristrettoscalarrandom_init( UDF_INIT* initid, UDF_ARGS* args,

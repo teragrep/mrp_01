@@ -48,10 +48,6 @@
 #include <mysql/mysql.h>
 #include "lib_sodium_ristretto_validation.h"
 
-#ifndef my_bool
-typedef char my_bool;
-#endif
-
 // Encoded element validation
 
 my_bool ristrettoisvalidpoint_init( UDF_INIT* initid, const UDF_ARGS* args,

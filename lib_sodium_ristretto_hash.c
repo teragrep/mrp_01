@@ -48,10 +48,6 @@
 #include <mysql/mysql.h>
 #include "lib_sodium_ristretto_hash.h"
 
-#ifndef my_bool
-typedef char my_bool;
-#endif
-
 // Hash-to-group
 
 my_bool ristrettofromhash_init( UDF_INIT* initid, const UDF_ARGS* args,
