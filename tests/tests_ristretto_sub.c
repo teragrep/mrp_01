@@ -228,8 +228,8 @@ void testRistrettoSub()
             ristrettoPoint ) == 1 &&
             "Output of the ristrettosub() is not a valid ristretto point" );
     char expecteRistrettoPoint[crypto_core_ristretto255_BYTES];
-    crypto_core_ristretto255_sub( ( unsigned char* )expecteRistrettoPoint, point2,
-                                  point1 );
+    crypto_core_ristretto255_sub( ( unsigned char* )expecteRistrettoPoint, point1,
+                                  point2 );
     assert( memcmp( expecteRistrettoPoint, ristrettoPoint,
                     crypto_core_ristretto255_BYTES ) == 0 &&
             "Output of the ristrettosub() is not as expected" );

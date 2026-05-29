@@ -172,7 +172,7 @@ char* ristrettosub( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
     unsigned char secondInputPoint[crypto_core_ristretto255_BYTES];
     memcpy( secondInputPoint, args->args[1], args->lengths[1] );
     unsigned char resultPtr[crypto_core_ristretto255_BYTES];
-    crypto_core_ristretto255_sub( resultPtr, secondInputPoint, firstInputPoint );
+    crypto_core_ristretto255_sub( resultPtr, firstInputPoint, secondInputPoint );
     memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_BYTES );
     *length = crypto_core_ristretto255_BYTES;
     return initid->ptr;
