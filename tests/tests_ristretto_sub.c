@@ -48,7 +48,7 @@
 #include <sodium.h>
 #include <string.h>
 
-#include "../lib_sodium_ristretto_addition.h"
+#include "../lib_sodium_ristretto_subtraction.h"
 
 void testRistrettoSub_init()
 {

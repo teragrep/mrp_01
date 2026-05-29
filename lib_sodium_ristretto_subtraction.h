@@ -43,12 +43,12 @@
     Teragrep, the applicable Commercial License may apply to this file if you as
     a licensee so wish it.
 */
-#ifndef MRP_01_LIB_SODIUM_RISTRETTO_ADDITION_H
-#define MRP_01_LIB_SODIUM_RISTRETTO_ADDITION_H
+#ifndef MRP_01_LIB_SODIUM_RISTRETTO_SUBTRACTION_H
+#define MRP_01_LIB_SODIUM_RISTRETTO_SUBTRACTION_H
 
-my_bool ristrettoadd_init( UDF_INIT* initid, const UDF_ARGS* args,
+my_bool ristrettosub_init( UDF_INIT* initid, const UDF_ARGS* args,
                            char* message );
-void ristrettoadd_deinit( UDF_INIT* initid );
-char* ristrettoadd( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
+void ristrettosub_deinit( UDF_INIT* initid );
+char* ristrettosub( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
                     unsigned long* length, char* is_null, char* error );
-#endif //MRP_01_LIB_SODIUM_RISTRETTO_ADDITION_H
+#endif //MRP_01_LIB_SODIUM_RISTRETTO_SUBTRACTION_H

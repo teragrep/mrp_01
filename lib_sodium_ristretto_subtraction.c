@@ -46,11 +46,11 @@
 #include <sodium.h>
 #include <string.h>
 #include <mysql/mysql.h>
-#include "lib_sodium_ristretto_addition.h"
+#include "lib_sodium_ristretto_subtraction.h"
 
-// Element addition
+// Element subtraction
 
-my_bool ristrettoadd_init( UDF_INIT* initid, const UDF_ARGS* args,
+my_bool ristrettosub_init( UDF_INIT* initid, const UDF_ARGS* args,
                            char* message )
 {
     if( args->arg_count != 2 ||  args->arg_type[0] != STRING_RESULT  ||
@@ -92,7 +92,7 @@ my_bool ristrettoadd_init( UDF_INIT* initid, const UDF_ARGS* args,
     return 0;
 }
 
-void ristrettoadd_deinit( UDF_INIT* initid )
+void ristrettosub_deinit( UDF_INIT* initid )
 {
     if( initid->ptr != 0 ) {
         free( initid->ptr );
@@ -100,7 +100,7 @@ void ristrettoadd_deinit( UDF_INIT* initid )
     }
 }
 
-char* ristrettoadd( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
+char* ristrettosub( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
                     unsigned long* length, char* is_null, char* error )
 {
     unsigned char firstInputPoint[crypto_core_ristretto255_BYTES];
@@ -108,7 +108,7 @@ char* ristrettoadd( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
     unsigned char secondInputPoint[crypto_core_ristretto255_BYTES];
     memcpy( secondInputPoint, args->args[1], args->lengths[1] );
     unsigned char resultPtr[crypto_core_ristretto255_BYTES];
-    crypto_core_ristretto255_add( resultPtr, secondInputPoint, firstInputPoint );
+    crypto_core_ristretto255_sub( resultPtr, firstInputPoint, secondInputPoint );
     memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_BYTES );
     *length = crypto_core_ristretto255_BYTES;
     return initid->ptr;
