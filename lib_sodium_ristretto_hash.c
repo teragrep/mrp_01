@@ -86,11 +86,11 @@ char* ristrettofromhash( const UDF_INIT* initid, const UDF_ARGS* args,
                          char* result,
                          unsigned long* length, char* is_null, char* error )
 {
-    unsigned char x[crypto_core_ristretto255_HASHBYTES];
-    memcpy( x, args->args[0], args->lengths[0] );
-    unsigned char yy[crypto_core_ristretto255_BYTES];
-    crypto_core_ristretto255_from_hash( yy, x );
-    memcpy( initid->ptr, yy, crypto_core_ristretto255_BYTES );
+    unsigned char inputHash[crypto_core_ristretto255_HASHBYTES];
+    memcpy( inputHash, args->args[0], args->lengths[0] );
+    unsigned char resultPtr[crypto_core_ristretto255_BYTES];
+    crypto_core_ristretto255_from_hash( resultPtr, inputHash );
+    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_BYTES );
     *length = crypto_core_ristretto255_BYTES;
     return initid->ptr;
 }

@@ -77,9 +77,9 @@ char* ristrettoscalarrandom( const UDF_INIT* initid, UDF_ARGS* args,
                              char* result,
                              unsigned long* length, char* is_null, char* error )
 {
-    unsigned char r[crypto_core_ristretto255_SCALARBYTES];
-    crypto_core_ristretto255_scalar_random( r );
-    memcpy( initid->ptr, r, crypto_core_ristretto255_SCALARBYTES );
+    unsigned char resultPtr[crypto_core_ristretto255_SCALARBYTES];
+    crypto_core_ristretto255_scalar_random( resultPtr );
+    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_SCALARBYTES );
     *length = crypto_core_ristretto255_SCALARBYTES;
     return initid->ptr;
 }
@@ -120,11 +120,12 @@ char* ristrettoscalarreduce( const UDF_INIT* initid, const UDF_ARGS* args,
                              char* result,
                              unsigned long* length, char* is_null, char* error )
 {
-    unsigned char s[crypto_core_ristretto255_NONREDUCEDSCALARBYTES];
-    memcpy( s, args->args[0], args->lengths[0] );
-    unsigned char r[crypto_core_ristretto255_SCALARBYTES];
-    crypto_core_ristretto255_scalar_reduce( r, s );
-    memcpy( initid->ptr, r, crypto_core_ristretto255_SCALARBYTES );
+    unsigned char
+    inputNonreducedScalar[crypto_core_ristretto255_NONREDUCEDSCALARBYTES];
+    memcpy( inputNonreducedScalar, args->args[0], args->lengths[0] );
+    unsigned char resultPtr[crypto_core_ristretto255_SCALARBYTES];
+    crypto_core_ristretto255_scalar_reduce( resultPtr, inputNonreducedScalar );
+    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_SCALARBYTES );
     *length = crypto_core_ristretto255_SCALARBYTES;
     return initid->ptr;
 }
@@ -165,11 +166,11 @@ char* ristrettoscalarinvert( const UDF_INIT* initid, const UDF_ARGS* args,
                              char* result,
                              unsigned long* length, char* is_null, char* error )
 {
-    unsigned char s[crypto_core_ristretto255_SCALARBYTES];
-    memcpy( s, args->args[0], args->lengths[0] );
-    unsigned char recip[crypto_core_ristretto255_SCALARBYTES];
-    crypto_core_ristretto255_scalar_invert( recip, s );
-    memcpy( initid->ptr, recip, crypto_core_ristretto255_SCALARBYTES );
+    unsigned char inputScalar[crypto_core_ristretto255_SCALARBYTES];
+    memcpy( inputScalar, args->args[0], args->lengths[0] );
+    unsigned char resultPtr[crypto_core_ristretto255_SCALARBYTES];
+    crypto_core_ristretto255_scalar_invert( resultPtr, inputScalar );
+    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_SCALARBYTES );
     *length = crypto_core_ristretto255_SCALARBYTES;
     return initid->ptr;
 }
@@ -210,11 +211,11 @@ char* ristrettoscalarnegate( const UDF_INIT* initid, const UDF_ARGS* args,
                              char* result,
                              unsigned long* length, char* is_null, char* error )
 {
-    unsigned char r[crypto_core_ristretto255_SCALARBYTES];
-    memcpy( r, args->args[0], args->lengths[0] );
-    unsigned char ir[crypto_core_ristretto255_SCALARBYTES];
-    crypto_core_ristretto255_scalar_negate( ir, r );
-    memcpy( initid->ptr, ir, crypto_core_ristretto255_SCALARBYTES );
+    unsigned char inputScalar[crypto_core_ristretto255_SCALARBYTES];
+    memcpy( inputScalar, args->args[0], args->lengths[0] );
+    unsigned char resultPtr[crypto_core_ristretto255_SCALARBYTES];
+    crypto_core_ristretto255_scalar_negate( resultPtr, inputScalar );
+    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_SCALARBYTES );
     *length = crypto_core_ristretto255_SCALARBYTES;
     return initid->ptr;
 }
@@ -255,11 +256,11 @@ char* ristrettoscalarcomplement( const UDF_INIT* initid, const UDF_ARGS* args,
                                  char* result,
                                  unsigned long* length, char* is_null, char* error )
 {
-    unsigned char r[crypto_core_ristretto255_SCALARBYTES];
-    memcpy( r, args->args[0], args->lengths[0] );
-    unsigned char ir[crypto_core_ristretto255_SCALARBYTES];
-    crypto_core_ristretto255_scalar_complement( ir, r );
-    memcpy( initid->ptr, ir, crypto_core_ristretto255_SCALARBYTES );
+    unsigned char inputScalar[crypto_core_ristretto255_SCALARBYTES];
+    memcpy( inputScalar, args->args[0], args->lengths[0] );
+    unsigned char resultPtr[crypto_core_ristretto255_SCALARBYTES];
+    crypto_core_ristretto255_scalar_complement( resultPtr, inputScalar );
+    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_SCALARBYTES );
     *length = crypto_core_ristretto255_SCALARBYTES;
     return initid->ptr;
 }
@@ -306,13 +307,14 @@ char* ristrettoscalaradd( const UDF_INIT* initid, const UDF_ARGS* args,
                           char* result,
                           unsigned long* length, char* is_null, char* error )
 {
-    unsigned char r[crypto_core_ristretto255_SCALARBYTES];
-    memcpy( r, args->args[0], args->lengths[0] );
-    unsigned char b[crypto_core_ristretto255_SCALARBYTES];
-    memcpy( b, args->args[1], args->lengths[1] );
-    unsigned char ir[crypto_core_ristretto255_SCALARBYTES];
-    crypto_core_ristretto255_scalar_add( ir, r, b );
-    memcpy( initid->ptr, ir, crypto_core_ristretto255_SCALARBYTES );
+    unsigned char inputScalarFirst[crypto_core_ristretto255_SCALARBYTES];
+    memcpy( inputScalarFirst, args->args[0], args->lengths[0] );
+    unsigned char inputScalarSecond[crypto_core_ristretto255_SCALARBYTES];
+    memcpy( inputScalarSecond, args->args[1], args->lengths[1] );
+    unsigned char resultPtr[crypto_core_ristretto255_SCALARBYTES];
+    crypto_core_ristretto255_scalar_add( resultPtr, inputScalarFirst,
+                                         inputScalarSecond );
+    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_SCALARBYTES );
     *length = crypto_core_ristretto255_SCALARBYTES;
     return initid->ptr;
 }
@@ -359,13 +361,14 @@ char* ristrettoscalarsub( const UDF_INIT* initid, const UDF_ARGS* args,
                           char* result,
                           unsigned long* length, char* is_null, char* error )
 {
-    unsigned char r[crypto_core_ristretto255_SCALARBYTES];
-    memcpy( r, args->args[0], args->lengths[0] );
-    unsigned char b[crypto_core_ristretto255_SCALARBYTES];
-    memcpy( b, args->args[1], args->lengths[1] );
-    unsigned char ir[crypto_core_ristretto255_SCALARBYTES];
-    crypto_core_ristretto255_scalar_sub( ir, r, b );
-    memcpy( initid->ptr, ir, crypto_core_ristretto255_SCALARBYTES );
+    unsigned char inputScalarFirst[crypto_core_ristretto255_SCALARBYTES];
+    memcpy( inputScalarFirst, args->args[0], args->lengths[0] );
+    unsigned char inputScalarSecond[crypto_core_ristretto255_SCALARBYTES];
+    memcpy( inputScalarSecond, args->args[1], args->lengths[1] );
+    unsigned char resultPtr[crypto_core_ristretto255_SCALARBYTES];
+    crypto_core_ristretto255_scalar_sub( resultPtr, inputScalarFirst,
+                                         inputScalarSecond );
+    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_SCALARBYTES );
     *length = crypto_core_ristretto255_SCALARBYTES;
     return initid->ptr;
 }
@@ -412,13 +415,14 @@ char* ristrettoscalarmul( const UDF_INIT* initid, const UDF_ARGS* args,
                           char* result,
                           unsigned long* length, char* is_null, char* error )
 {
-    unsigned char r[crypto_core_ristretto255_SCALARBYTES];
-    memcpy( r, args->args[0], args->lengths[0] );
-    unsigned char b[crypto_core_ristretto255_SCALARBYTES];
-    memcpy( b, args->args[1], args->lengths[1] );
-    unsigned char ir[crypto_core_ristretto255_SCALARBYTES];
-    crypto_core_ristretto255_scalar_mul( ir, r, b );
-    memcpy( initid->ptr, ir, crypto_core_ristretto255_SCALARBYTES );
+    unsigned char inputScalarFirst[crypto_core_ristretto255_SCALARBYTES];
+    memcpy( inputScalarFirst, args->args[0], args->lengths[0] );
+    unsigned char inputScalarSecond[crypto_core_ristretto255_SCALARBYTES];
+    memcpy( inputScalarSecond, args->args[1], args->lengths[1] );
+    unsigned char resultPtr[crypto_core_ristretto255_SCALARBYTES];
+    crypto_core_ristretto255_scalar_mul( resultPtr, inputScalarFirst,
+                                         inputScalarSecond );
+    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_SCALARBYTES );
     *length = crypto_core_ristretto255_SCALARBYTES;
     return initid->ptr;
 }

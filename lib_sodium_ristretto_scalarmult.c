@@ -71,9 +71,9 @@ my_bool scalarmultristretto_init( UDF_INIT* initid, const UDF_ARGS* args,
         strcpy( message, "sodium failed to initialize" );
         return 1;
     }
-    unsigned char arg1[crypto_core_ristretto255_BYTES];
-    memcpy( arg1, args->args[1], args->lengths[1] );
-    if( crypto_core_ristretto255_is_valid_point( arg1 ) == 0 ) {
+    unsigned char toValidate[crypto_core_ristretto255_BYTES];
+    memcpy( toValidate, args->args[1], args->lengths[1] );
+    if( crypto_core_ristretto255_is_valid_point( toValidate ) == 0 ) {
         strcpy( message, "Second input argument is not a valid ristretto point" );
         return 1;
     }
@@ -98,16 +98,17 @@ char* scalarmultristretto( const UDF_INIT* initid, const UDF_ARGS* args,
                            char* result,
                            unsigned long* length, char* is_null, char* error )
 {
-    unsigned char n[crypto_core_ristretto255_SCALARBYTES];
-    memcpy( n, args->args[0], args->lengths[0] );
-    unsigned char p[crypto_core_ristretto255_BYTES];
-    memcpy( p, args->args[1], args->lengths[1] );
-    unsigned char q[crypto_core_ristretto255_BYTES];
-    if( crypto_scalarmult_ristretto255( q, n, p ) != 0 ) {
+    unsigned char inputScalar[crypto_core_ristretto255_SCALARBYTES];
+    memcpy( inputScalar, args->args[0], args->lengths[0] );
+    unsigned char inputPoint[crypto_core_ristretto255_BYTES];
+    memcpy( inputPoint, args->args[1], args->lengths[1] );
+    unsigned char resultPtr[crypto_core_ristretto255_BYTES];
+    if( crypto_scalarmult_ristretto255( resultPtr, inputScalar,
+                                        inputPoint ) != 0 ) {
         *error = 1;
         return 0;
     }
-    memcpy( initid->ptr, q, crypto_core_ristretto255_BYTES );
+    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_BYTES );
     *length = crypto_core_ristretto255_BYTES;
     return initid->ptr;
 }
@@ -148,11 +149,11 @@ char* scalarmultristrettobase( const UDF_INIT* initid, const UDF_ARGS* args,
                                char* result,
                                unsigned long* length, char* is_null, char* error )
 {
-    unsigned char r[crypto_core_ristretto255_SCALARBYTES];
-    memcpy( r, args->args[0], args->lengths[0] );
-    unsigned char gr[crypto_core_ristretto255_BYTES];
-    crypto_scalarmult_ristretto255_base( gr, r );
-    memcpy( initid->ptr, gr, crypto_core_ristretto255_BYTES );
+    unsigned char inputScalar[crypto_core_ristretto255_SCALARBYTES];
+    memcpy( inputScalar, args->args[0], args->lengths[0] );
+    unsigned char resultPtr[crypto_core_ristretto255_BYTES];
+    crypto_scalarmult_ristretto255_base( resultPtr, inputScalar );
+    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_BYTES );
     *length = crypto_core_ristretto255_BYTES;
     return initid->ptr;
 }

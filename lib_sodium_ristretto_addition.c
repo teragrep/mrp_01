@@ -70,15 +70,15 @@ my_bool ristrettoadd_init( UDF_INIT* initid, const UDF_ARGS* args,
         strcpy( message, "sodium failed to initialize" );
         return 1;
     }
-    unsigned char arg0[crypto_core_ristretto255_BYTES];
-    memcpy( arg0, args->args[0], args->lengths[0] );
-    if( crypto_core_ristretto255_is_valid_point( arg0 ) == 0 ) {
+    unsigned char toValidateFirst[crypto_core_ristretto255_BYTES];
+    memcpy( toValidateFirst, args->args[0], args->lengths[0] );
+    if( crypto_core_ristretto255_is_valid_point( toValidateFirst ) == 0 ) {
         strcpy( message, "First input is not a valid ristretto point" );
         return 1;
     }
-    unsigned char arg1[crypto_core_ristretto255_BYTES];
-    memcpy( arg1, args->args[1], args->lengths[1] );
-    if( crypto_core_ristretto255_is_valid_point( arg1 ) == 0 ) {
+    unsigned char toValidateSecond[crypto_core_ristretto255_BYTES];
+    memcpy( toValidateSecond, args->args[1], args->lengths[1] );
+    if( crypto_core_ristretto255_is_valid_point( toValidateSecond ) == 0 ) {
         strcpy( message, "Second input is not a valid ristretto point" );
         return 1;
     }
@@ -103,13 +103,13 @@ void ristrettoadd_deinit( UDF_INIT* initid )
 char* ristrettoadd( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
                     unsigned long* length, char* is_null, char* error )
 {
-    unsigned char gr[crypto_core_ristretto255_BYTES];
-    memcpy( gr, args->args[0], args->lengths[0] );
-    unsigned char px[crypto_core_ristretto255_BYTES];
-    memcpy( px, args->args[1], args->lengths[1] );
-    unsigned char a[crypto_core_ristretto255_BYTES];
-    crypto_core_ristretto255_add( a, px, gr );
-    memcpy( initid->ptr, a, crypto_core_ristretto255_BYTES );
+    unsigned char firstInputPoint[crypto_core_ristretto255_BYTES];
+    memcpy( firstInputPoint, args->args[0], args->lengths[0] );
+    unsigned char secondInputPoint[crypto_core_ristretto255_BYTES];
+    memcpy( secondInputPoint, args->args[1], args->lengths[1] );
+    unsigned char resultPtr[crypto_core_ristretto255_BYTES];
+    crypto_core_ristretto255_add( resultPtr, secondInputPoint, firstInputPoint );
+    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_BYTES );
     *length = crypto_core_ristretto255_BYTES;
     return initid->ptr;
 }
@@ -134,15 +134,15 @@ my_bool ristrettosub_init( UDF_INIT* initid, const UDF_ARGS* args,
         strcpy( message, "sodium failed to initialize" );
         return 1;
     }
-    unsigned char arg0[crypto_core_ristretto255_BYTES];
-    memcpy( arg0, args->args[0], args->lengths[0] );
-    if( crypto_core_ristretto255_is_valid_point( arg0 ) == 0 ) {
+    unsigned char toValidateFirst[crypto_core_ristretto255_BYTES];
+    memcpy( toValidateFirst, args->args[0], args->lengths[0] );
+    if( crypto_core_ristretto255_is_valid_point( toValidateFirst ) == 0 ) {
         strcpy( message, "First input is not a valid ristretto point" );
         return 1;
     }
-    unsigned char arg1[crypto_core_ristretto255_BYTES];
-    memcpy( arg1, args->args[1], args->lengths[1] );
-    if( crypto_core_ristretto255_is_valid_point( arg1 ) == 0 ) {
+    unsigned char toValidateSecond[crypto_core_ristretto255_BYTES];
+    memcpy( toValidateSecond, args->args[1], args->lengths[1] );
+    if( crypto_core_ristretto255_is_valid_point( toValidateSecond ) == 0 ) {
         strcpy( message, "Second input is not a valid ristretto point" );
         return 1;
     }
@@ -167,13 +167,13 @@ void ristrettosub_deinit( UDF_INIT* initid )
 char* ristrettosub( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
                     unsigned long* length, char* is_null, char* error )
 {
-    unsigned char gr[crypto_core_ristretto255_BYTES];
-    memcpy( gr, args->args[0], args->lengths[0] );
-    unsigned char px[crypto_core_ristretto255_BYTES];
-    memcpy( px, args->args[1], args->lengths[1] );
-    unsigned char a[crypto_core_ristretto255_BYTES];
-    crypto_core_ristretto255_sub( a, px, gr );
-    memcpy( initid->ptr, a, crypto_core_ristretto255_BYTES );
+    unsigned char firstInputPoint[crypto_core_ristretto255_BYTES];
+    memcpy( firstInputPoint, args->args[0], args->lengths[0] );
+    unsigned char secondInputPoint[crypto_core_ristretto255_BYTES];
+    memcpy( secondInputPoint, args->args[1], args->lengths[1] );
+    unsigned char resultPtr[crypto_core_ristretto255_BYTES];
+    crypto_core_ristretto255_sub( resultPtr, secondInputPoint, firstInputPoint );
+    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_BYTES );
     *length = crypto_core_ristretto255_BYTES;
     return initid->ptr;
 }
