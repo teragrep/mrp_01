@@ -43,21 +43,14 @@
     Teragrep, the applicable Commercial License may apply to this file if you as
     a licensee so wish it.
 */
-#ifndef MRP_01_LIB_SODIUM_RISTRETTO_SCALAROVERL_H
-#define MRP_01_LIB_SODIUM_RISTRETTO_SCALAROVERL_H
+#ifndef MRP_01_LIB_SODIUM_RISTRETTO_SCALAR_ADD_H
+#define MRP_01_LIB_SODIUM_RISTRETTO_SCALAR_ADD_H
 
-my_bool ristrettoscalarsub_init( UDF_INIT* initid, const UDF_ARGS* args,
+my_bool ristrettoscalaradd_init( UDF_INIT* initid, const UDF_ARGS* args,
                                  char* message );
-void ristrettoscalarsub_deinit( UDF_INIT* initid );
-char* ristrettoscalarsub( const UDF_INIT* initid, const UDF_ARGS* args,
+void ristrettoscalaradd_deinit( UDF_INIT* initid );
+char* ristrettoscalaradd( const UDF_INIT* initid, const UDF_ARGS* args,
                           char* result,
                           unsigned long* length, char* is_null,
                           char* error );
-my_bool ristrettoscalarmul_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                 char* message );
-void ristrettoscalarmul_deinit( UDF_INIT* initid );
-char* ristrettoscalarmul( const UDF_INIT* initid, const UDF_ARGS* args,
-                          char* result,
-                          unsigned long* length, char* is_null,
-                          char* error );
-#endif //MRP_01_LIB_SODIUM_RISTRETTO_SCALAROVERL_H
+#endif //MRP_01_LIB_SODIUM_RISTRETTO_SCALAR_ADD_H
