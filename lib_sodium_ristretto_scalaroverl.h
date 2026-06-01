@@ -46,13 +46,6 @@
 #ifndef MRP_01_LIB_SODIUM_RISTRETTO_SCALAROVERL_H
 #define MRP_01_LIB_SODIUM_RISTRETTO_SCALAROVERL_H
 
-my_bool ristrettoscalarrandom_init( UDF_INIT* initid, UDF_ARGS* args,
-                                    char* message );
-void ristrettoscalarrandom_deinit( UDF_INIT* initid );
-char* ristrettoscalarrandom( const UDF_INIT* initid, UDF_ARGS* args,
-                             char* result,
-                             unsigned long* length, char* is_null,
-                             char* error );
 my_bool ristrettoscalarreduce_init( UDF_INIT* initid, const UDF_ARGS* args,
                                     char* message );
 void ristrettoscalarreduce_deinit( UDF_INIT* initid );

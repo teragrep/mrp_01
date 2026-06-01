@@ -50,40 +50,6 @@
 
 // Scalar arithmetic over L
 
-my_bool ristrettoscalarrandom_init( UDF_INIT* initid, UDF_ARGS* args,
-                                    char* message )
-{
-    if( sodium_init() == -1 ) {
-        strcpy( message, "sodium failed to initialize" );
-        return 1;
-    }
-    initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
-    if( initid->ptr == 0 ) {
-        strcpy( message, "not enough memory for buffer" );
-        return 1;
-    }
-    return 0;
-}
-
-void ristrettoscalarrandom_deinit( UDF_INIT* initid )
-{
-    if( initid->ptr != 0 ) {
-        free( initid->ptr );
-        initid->ptr = 0;
-    }
-}
-
-char* ristrettoscalarrandom( const UDF_INIT* initid, UDF_ARGS* args,
-                             char* result,
-                             unsigned long* length, char* is_null, char* error )
-{
-    unsigned char resultPtr[crypto_core_ristretto255_SCALARBYTES];
-    crypto_core_ristretto255_scalar_random( resultPtr );
-    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_SCALARBYTES );
-    *length = crypto_core_ristretto255_SCALARBYTES;
-    return initid->ptr;
-}
-
 my_bool ristrettoscalarreduce_init( UDF_INIT* initid, const UDF_ARGS* args,
                                     char* message )
 {
