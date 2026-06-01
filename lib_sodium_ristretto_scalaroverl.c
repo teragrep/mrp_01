@@ -50,52 +50,6 @@
 
 // Scalar arithmetic over L
 
-my_bool ristrettoscalarreduce_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                    char* message )
-{
-    if( args->arg_count != 1 ||  args->arg_type[0] != STRING_RESULT ) {
-        strcpy( message, "requires 1 binary string argument" );
-        return 1;
-    }
-    if( args->lengths[0] != crypto_core_ristretto255_NONREDUCEDSCALARBYTES ) {
-        strcpy( message,
-                "First input is not a scalar in 64 byte binary string format" );
-        return 1;
-    }
-    if( sodium_init() == -1 ) {
-        strcpy( message, "sodium failed to initialize" );
-        return 1;
-    }
-    initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
-    if( initid->ptr == 0 ) {
-        strcpy( message, "not enough memory for buffer" );
-        return 1;
-    }
-    return 0;
-}
-
-void ristrettoscalarreduce_deinit( UDF_INIT* initid )
-{
-    if( initid->ptr != 0 ) {
-        free( initid->ptr );
-        initid->ptr = 0;
-    }
-}
-
-char* ristrettoscalarreduce( const UDF_INIT* initid, const UDF_ARGS* args,
-                             char* result,
-                             unsigned long* length, char* is_null, char* error )
-{
-    unsigned char
-    inputNonreducedScalar[crypto_core_ristretto255_NONREDUCEDSCALARBYTES];
-    memcpy( inputNonreducedScalar, args->args[0], args->lengths[0] );
-    unsigned char resultPtr[crypto_core_ristretto255_SCALARBYTES];
-    crypto_core_ristretto255_scalar_reduce( resultPtr, inputNonreducedScalar );
-    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_SCALARBYTES );
-    *length = crypto_core_ristretto255_SCALARBYTES;
-    return initid->ptr;
-}
-
 my_bool ristrettoscalarinvert_init( UDF_INIT* initid, const UDF_ARGS* args,
                                     char* message )
 {

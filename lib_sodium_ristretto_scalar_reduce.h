@@ -46,46 +46,11 @@
 #ifndef MRP_01_LIB_SODIUM_RISTRETTO_SCALAROVERL_H
 #define MRP_01_LIB_SODIUM_RISTRETTO_SCALAROVERL_H
 
-my_bool ristrettoscalarinvert_init( UDF_INIT* initid, const UDF_ARGS* args,
+my_bool ristrettoscalarreduce_init( UDF_INIT* initid, const UDF_ARGS* args,
                                     char* message );
-void ristrettoscalarinvert_deinit( UDF_INIT* initid );
-char* ristrettoscalarinvert( const UDF_INIT* initid, const UDF_ARGS* args,
+void ristrettoscalarreduce_deinit( UDF_INIT* initid );
+char* ristrettoscalarreduce( const UDF_INIT* initid, const UDF_ARGS* args,
                              char* result,
                              unsigned long* length, char* is_null,
                              char* error );
-my_bool ristrettoscalarnegate_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                    char* message );
-void ristrettoscalarnegate_deinit( UDF_INIT* initid );
-char* ristrettoscalarnegate( const UDF_INIT* initid, const UDF_ARGS* args,
-                             char* result,
-                             unsigned long* length, char* is_null,
-                             char* error );
-my_bool ristrettoscalarcomplement_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                        char* message );
-void ristrettoscalarcomplement_deinit( UDF_INIT* initid );
-char* ristrettoscalarcomplement( const UDF_INIT* initid, const UDF_ARGS* args,
-                                 char* result,
-                                 unsigned long* length, char* is_null,
-                                 char* error );
-my_bool ristrettoscalaradd_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                 char* message );
-void ristrettoscalaradd_deinit( UDF_INIT* initid );
-char* ristrettoscalaradd( const UDF_INIT* initid, const UDF_ARGS* args,
-                          char* result,
-                          unsigned long* length, char* is_null,
-                          char* error );
-my_bool ristrettoscalarsub_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                 char* message );
-void ristrettoscalarsub_deinit( UDF_INIT* initid );
-char* ristrettoscalarsub( const UDF_INIT* initid, const UDF_ARGS* args,
-                          char* result,
-                          unsigned long* length, char* is_null,
-                          char* error );
-my_bool ristrettoscalarmul_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                 char* message );
-void ristrettoscalarmul_deinit( UDF_INIT* initid );
-char* ristrettoscalarmul( const UDF_INIT* initid, const UDF_ARGS* args,
-                          char* result,
-                          unsigned long* length, char* is_null,
-                          char* error );
 #endif //MRP_01_LIB_SODIUM_RISTRETTO_SCALAROVERL_H
