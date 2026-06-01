@@ -46,11 +46,11 @@
 #include <sodium.h>
 #include <string.h>
 #include <mysql/mysql.h>
-#include "lib_sodium_ristretto_scalaroverl.h"
+#include "lib_sodium_ristretto_scalar_sub.h"
 
 // Scalar arithmetic over L
 
-my_bool ristrettoscalarmul_init( UDF_INIT* initid, const UDF_ARGS* args,
+my_bool ristrettoscalarsub_init( UDF_INIT* initid, const UDF_ARGS* args,
                                  char* message )
 {
     if( args->arg_count != 2 || args->arg_type[0] != STRING_RESULT ||
@@ -80,7 +80,7 @@ my_bool ristrettoscalarmul_init( UDF_INIT* initid, const UDF_ARGS* args,
     return 0;
 }
 
-void ristrettoscalarmul_deinit( UDF_INIT* initid )
+void ristrettoscalarsub_deinit( UDF_INIT* initid )
 {
     if( initid->ptr != 0 ) {
         free( initid->ptr );
@@ -88,7 +88,7 @@ void ristrettoscalarmul_deinit( UDF_INIT* initid )
     }
 }
 
-char* ristrettoscalarmul( const UDF_INIT* initid, const UDF_ARGS* args,
+char* ristrettoscalarsub( const UDF_INIT* initid, const UDF_ARGS* args,
                           char* result,
                           unsigned long* length, char* is_null, char* error )
 {
@@ -97,7 +97,7 @@ char* ristrettoscalarmul( const UDF_INIT* initid, const UDF_ARGS* args,
     unsigned char inputScalarSecond[crypto_core_ristretto255_SCALARBYTES];
     memcpy( inputScalarSecond, args->args[1], args->lengths[1] );
     unsigned char resultPtr[crypto_core_ristretto255_SCALARBYTES];
-    crypto_core_ristretto255_scalar_mul( resultPtr, inputScalarFirst,
+    crypto_core_ristretto255_scalar_sub( resultPtr, inputScalarFirst,
                                          inputScalarSecond );
     memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_SCALARBYTES );
     *length = crypto_core_ristretto255_SCALARBYTES;
