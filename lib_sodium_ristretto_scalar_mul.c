@@ -43,14 +43,61 @@
     Teragrep, the applicable Commercial License may apply to this file if you as
     a licensee so wish it.
 */
-#ifndef MRP_01_LIB_SODIUM_RISTRETTO_SCALAROVERL_H
-#define MRP_01_LIB_SODIUM_RISTRETTO_SCALAROVERL_H
+#include <sodium.h>
+#include <string.h>
+#include <mysql/mysql.h>
+#include "lib_sodium_ristretto_scalar_mul.h"
 
 my_bool ristrettoscalarmul_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                 char* message );
-void ristrettoscalarmul_deinit( UDF_INIT* initid );
+                                 char* message )
+{
+    if( args->arg_count != 2 || args->arg_type[0] != STRING_RESULT ||
+            args->arg_type[1] != STRING_RESULT ) {
+        strcpy( message, "requires 2 binary string arguments" );
+        return 1;
+    }
+    if( args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ) {
+        strcpy( message,
+                "First input is not a scalar in 32 byte binary string format" );
+        return 1;
+    }
+    if( args->lengths[1] != crypto_core_ristretto255_SCALARBYTES ) {
+        strcpy( message,
+                "Second input is not a scalar in 32 byte binary string format" );
+        return 1;
+    }
+    if( sodium_init() == -1 ) {
+        strcpy( message, "sodium failed to initialize" );
+        return 1;
+    }
+    initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
+    if( initid->ptr == 0 ) {
+        strcpy( message, "not enough memory for buffer" );
+        return 1;
+    }
+    return 0;
+}
+
+void ristrettoscalarmul_deinit( UDF_INIT* initid )
+{
+    if( initid->ptr != 0 ) {
+        free( initid->ptr );
+        initid->ptr = 0;
+    }
+}
+
 char* ristrettoscalarmul( const UDF_INIT* initid, const UDF_ARGS* args,
                           char* result,
-                          unsigned long* length, char* is_null,
-                          char* error );
-#endif //MRP_01_LIB_SODIUM_RISTRETTO_SCALAROVERL_H
+                          unsigned long* length, char* is_null, char* error )
+{
+    unsigned char inputScalarFirst[crypto_core_ristretto255_SCALARBYTES];
+    memcpy( inputScalarFirst, args->args[0], args->lengths[0] );
+    unsigned char inputScalarSecond[crypto_core_ristretto255_SCALARBYTES];
+    memcpy( inputScalarSecond, args->args[1], args->lengths[1] );
+    unsigned char resultPtr[crypto_core_ristretto255_SCALARBYTES];
+    crypto_core_ristretto255_scalar_mul( resultPtr, inputScalarFirst,
+                                         inputScalarSecond );
+    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_SCALARBYTES );
+    *length = crypto_core_ristretto255_SCALARBYTES;
+    return initid->ptr;
+}
