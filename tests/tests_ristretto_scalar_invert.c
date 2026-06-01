@@ -48,7 +48,7 @@
 #include <sodium.h>
 #include <string.h>
 
-#include "../lib_sodium_ristretto_scalaroverl.h"
+#include "../lib_sodium_ristretto_scalar_invert.h"
 
 void testRistrettoScalarInvert_init()
 {
