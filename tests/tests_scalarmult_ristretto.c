@@ -147,7 +147,7 @@ void testInvalidSecondArgPointScalarmultristretto_init()
 {
     unsigned char point[crypto_core_ristretto255_BYTES];
     for( size_t i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
-        point[i] = rand();
+        point[i] = i;
     }
     unsigned char scalar[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_random( scalar );
@@ -160,12 +160,10 @@ void testInvalidSecondArgPointScalarmultristretto_init()
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = 0, .const_item = 0
     };
     const my_bool result = scalarmultristretto_init( &initid, &args, message );
-    assert( result == 1 &&
-            "Result is not 1, _init passed when it should have failed." );
-    assert( strcmp( message,
-                    "Second input argument is not a valid ristretto point" ) == 0 &&
-            "Error message is incorrect" );
-    assert( initid.ptr == 0 && "Memory was allocated when it shouldn't" );
+    assert( result == 0 &&
+            "Result is not 0, _init failed when it should have passed." );
+    assert( initid.ptr != 0 && "Memory was not succesfully allocated" );
+    free( initid.ptr );
     printf( "testInvalidSecondArgPointScalarmultristretto_init() passed assertions!\n" );
 }
 
@@ -217,6 +215,35 @@ void testScalarmultristretto()
     free( ristrettoPoint );
 }
 
+void testInvalidSecondArgPointScalarmultristretto()
+{
+    unsigned char point[crypto_core_ristretto255_BYTES];
+    for( size_t i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
+        point[i] = i;
+    }
+    unsigned char scalar[crypto_core_ristretto255_SCALARBYTES];
+    crypto_core_ristretto255_scalar_random( scalar );
+    char* testArgs[] = {( char* )scalar, ( char* )point};
+    unsigned long testLengths[2] = {crypto_core_ristretto255_SCALARBYTES, crypto_core_ristretto255_BYTES};
+    enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
+    const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
+    assert( ristrettoPoint != 0 );
+    const UDF_INIT initid = {
+        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0
+    };
+    char result[255];
+    unsigned long length[1];
+    char error[1];
+    char is_null[1];
+    const char* returnedPtr = scalarmultristretto( &initid, &args, result, length,
+                              is_null, error );
+    assert( returnedPtr == 0 &&
+            "scalarmultristretto() did not return NULL on invalid second input argument" );
+    printf( "testInvalidSecondArgPointRistrettoSub() passed assertions!\n" );
+    free( ristrettoPoint );
+}
+
 int main()
 {
     testScalarmultristretto_init();
@@ -226,5 +253,6 @@ int main()
     testInvalidSecondArgPointScalarmultristretto_init();
     testScalarmultristretto_deinit();
     testScalarmultristretto();
+    testInvalidSecondArgPointScalarmultristretto();
     return 0;
 }

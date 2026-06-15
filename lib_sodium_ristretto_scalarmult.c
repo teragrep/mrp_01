@@ -71,12 +71,6 @@ my_bool scalarmultristretto_init( UDF_INIT* initid, const UDF_ARGS* args,
         strcpy( message, "sodium failed to initialize" );
         return 1;
     }
-    unsigned char toValidate[crypto_core_ristretto255_BYTES];
-    memcpy( toValidate, args->args[1], args->lengths[1] );
-    if( crypto_core_ristretto255_is_valid_point( toValidate ) == 0 ) {
-        strcpy( message, "Second input argument is not a valid ristretto point" );
-        return 1;
-    }
 
     initid->ptr = malloc( crypto_core_ristretto255_BYTES );
     if( initid->ptr == 0 ) {
@@ -98,6 +92,13 @@ char* scalarmultristretto( const UDF_INIT* initid, const UDF_ARGS* args,
                            char* result,
                            unsigned long* length, char* is_null, char* error )
 {
+    unsigned char toValidate[crypto_core_ristretto255_BYTES];
+    memcpy( toValidate, args->args[1], args->lengths[1] );
+    if( crypto_core_ristretto255_is_valid_point( toValidate ) == 0 ) {
+        *is_null = 1;
+        *error = 1;
+        return 0;
+    }
     unsigned char inputScalar[crypto_core_ristretto255_SCALARBYTES];
     memcpy( inputScalar, args->args[0], args->lengths[0] );
     unsigned char inputPoint[crypto_core_ristretto255_BYTES];

@@ -55,7 +55,7 @@ void testPassRistrettoisvalidpoint_init()
     unsigned char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
     assert( ristrettoPoint != 0 );
     for( size_t i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
-        ristrettoPoint[i] = rand();
+        ristrettoPoint[i] = i;
     }
     char* testArgs[1] = {( char* ) ristrettoPoint};
     unsigned long testLengths[1] = {crypto_core_ristretto255_BYTES};
@@ -75,7 +75,7 @@ void testInvalidArgSizeRistrettoisvalidpoint_init()
     unsigned char* ristrettoPoint = malloc( 64 );
     assert( ristrettoPoint != 0 );
     for( size_t i = 0; i < 64; i++ ) {
-        ristrettoPoint[i] = rand();
+        ristrettoPoint[i] = i;
     }
     char* testArgs[1] = {( char* ) ristrettoPoint};
     unsigned long testLengths[1] = {64};
@@ -98,7 +98,7 @@ void testInvalidArgAmountRistrettoisvalidpoint_init()
     unsigned char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
     assert( ristrettoPoint != 0 );
     for( size_t i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
-        ristrettoPoint[i] = rand();
+        ristrettoPoint[i] = i;
     }
     char* testArgs[2] = {( char* ) ristrettoPoint, ( char* ) ristrettoPoint};
     unsigned long testLengths[2] = {crypto_core_ristretto255_BYTES, crypto_core_ristretto255_BYTES};
@@ -120,7 +120,7 @@ void testInvalidArgTypeRistrettoisvalidpoint_init()
     unsigned char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
     assert( ristrettoPoint != 0 );
     for( size_t i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
-        ristrettoPoint[i] = rand();
+        ristrettoPoint[i] = i;
     }
     char* testArgs[1] = {( char* ) ristrettoPoint};
     unsigned long testLengths[1] = {crypto_core_ristretto255_BYTES};
@@ -165,11 +165,11 @@ void testPassRistrettoisvalidpoint()
 
 void testFailRistrettoisvalidpoint()
 {
-    // Generate an invalid ristretto point for validation using rand()
+    // Generate an invalid ristretto point for validation
     unsigned char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
     assert( ristrettoPoint != 0 );
     for( size_t i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
-        ristrettoPoint[i] = rand();
+        ristrettoPoint[i] = i;
     }
     char* testArgs[1] = {( char* ) ristrettoPoint};
     unsigned long testLengths[1] = {crypto_core_ristretto255_BYTES};
