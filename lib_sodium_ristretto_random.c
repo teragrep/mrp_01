@@ -57,7 +57,7 @@ my_bool ristrettorandom_init( UDF_INIT* initid, UDF_ARGS* args, char* message )
         return 1;
     }
     initid->ptr = malloc( crypto_core_ristretto255_BYTES );
-    if( initid->ptr == 0 ) {
+    if( initid->ptr == NULL ) {
         strcpy( message, "not enough memory for buffer" );
         return 1;
     }
@@ -66,9 +66,9 @@ my_bool ristrettorandom_init( UDF_INIT* initid, UDF_ARGS* args, char* message )
 
 void ristrettorandom_deinit( UDF_INIT* initid )
 {
-    if( initid->ptr != 0 ) {
+    if( initid->ptr != NULL ) {
         free( initid->ptr );
-        initid->ptr = 0;
+        initid->ptr = NULL;
     }
 }
 

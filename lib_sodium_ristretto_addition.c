@@ -72,7 +72,7 @@ my_bool ristrettoadd_init( UDF_INIT* initid, const UDF_ARGS* args,
     }
 
     initid->ptr = malloc( crypto_core_ristretto255_BYTES );
-    if( initid->ptr == 0 ) {
+    if( initid->ptr == NULL ) {
         strcpy( message, "not enough memory for buffer" );
         return 1;
     }
@@ -81,9 +81,9 @@ my_bool ristrettoadd_init( UDF_INIT* initid, const UDF_ARGS* args,
 
 void ristrettoadd_deinit( UDF_INIT* initid )
 {
-    if( initid->ptr != 0 ) {
+    if( initid->ptr != NULL ) {
         free( initid->ptr );
-        initid->ptr = 0;
+        initid->ptr = NULL;
     }
 }
 

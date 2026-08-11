@@ -67,7 +67,7 @@ my_bool ristrettoscalarinvert_init( UDF_INIT* initid, const UDF_ARGS* args,
         return 1;
     }
     initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
-    if( initid->ptr == 0 ) {
+    if( initid->ptr == NULL ) {
         strcpy( message, "not enough memory for buffer" );
         return 1;
     }
@@ -76,9 +76,9 @@ my_bool ristrettoscalarinvert_init( UDF_INIT* initid, const UDF_ARGS* args,
 
 void ristrettoscalarinvert_deinit( UDF_INIT* initid )
 {
-    if( initid->ptr != 0 ) {
+    if( initid->ptr != NULL ) {
         free( initid->ptr );
-        initid->ptr = 0;
+        initid->ptr = NULL;
     }
 }
 
