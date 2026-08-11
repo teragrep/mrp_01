@@ -53,7 +53,7 @@
 void testPassRistrettoisvalidpoint_init()
 {
     unsigned char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
-    assert( ristrettoPoint != 0 );
+    assert( ristrettoPoint != NULL );
     for( size_t i = 0; i < crypto_core_ristretto255_BYTES; i++ ) {
         ristrettoPoint[i] = i;
     }

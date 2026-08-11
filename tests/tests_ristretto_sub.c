@@ -249,7 +249,7 @@ void testInvalidFirstArgPointRistrettoSub()
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
-    assert( ristrettoPoint != 0 );
+    assert( ristrettoPoint != NULL );
     const UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0
     };

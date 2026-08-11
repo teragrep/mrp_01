@@ -53,7 +53,7 @@
 void testRistrettofromhash_init()
 {
     unsigned char* hash = malloc( crypto_core_ristretto255_HASHBYTES );
-    assert( hash != 0 );
+    assert( hash != NULL );
     for( size_t i = 0; i < crypto_core_ristretto255_HASHBYTES; i++ ) {
         hash[i] = rand();
     }
@@ -77,7 +77,7 @@ void testRistrettofromhash_init()
 void testInvalidArgSizeRistrettofromhash_init()
 {
     unsigned char* hash = malloc( 32 );
-    assert( hash != 0 );
+    assert( hash != NULL );
     for( size_t i = 0; i < 32; i++ ) {
         hash[i] = rand();
     }
@@ -101,7 +101,7 @@ void testInvalidArgSizeRistrettofromhash_init()
 void testInvalidArgAmountRistrettofromhash_init()
 {
     unsigned char* hash = malloc( crypto_core_ristretto255_HASHBYTES );
-    assert( hash != 0 );
+    assert( hash != NULL );
     for( size_t i = 0; i < crypto_core_ristretto255_HASHBYTES; i++ ) {
         hash[i] = rand();
     }
@@ -134,7 +134,7 @@ void testRistrettofromhash_deinit()
 void testRistrettofromhash()
 {
     unsigned char* hash = malloc( crypto_core_ristretto255_HASHBYTES );
-    assert( hash != 0 );
+    assert( hash != NULL );
     for( size_t i = 0; i < crypto_core_ristretto255_HASHBYTES; i++ ) {
         hash[i] = rand();
     }

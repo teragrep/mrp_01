@@ -158,7 +158,7 @@ void testRistrettoScalarSub()
     enum Item_result itemValue[] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     char* scalar = malloc( crypto_core_ristretto255_SCALARBYTES );
-    assert( scalar != 0 );
+    assert( scalar != NULL );
     const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = scalar, .const_item = 0};
     const char* returnedPtr = ristrettoscalarsub( &initid, &args, result, length,
                               is_null,

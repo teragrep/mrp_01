@@ -85,7 +85,7 @@ void testRistrettoScalarRandom()
     enum Item_result itemValue[1] = {STRING_RESULT};
     UDF_ARGS args = { .arg_count = 0, .arg_type = itemValue, .args = 0, .lengths = 0, .maybe_null = 0};
     char* scalar = calloc( crypto_core_ristretto255_SCALARBYTES, sizeof( char ) );
-    assert( scalar != 0 );
+    assert( scalar != NULL );
     const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = scalar, .const_item = 0};
     const char* returnedPtr = ristrettoscalarrandom( &initid, &args, result, length,
                               is_null, error );

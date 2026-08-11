@@ -54,7 +54,7 @@ void testRistrettoScalarReduce_init()
 {
     unsigned char* nonReducedScalar = malloc(
                                           crypto_core_ristretto255_NONREDUCEDSCALARBYTES );
-    assert( nonReducedScalar != 0 );
+    assert( nonReducedScalar != NULL );
     for( size_t i = 0; i < crypto_core_ristretto255_NONREDUCEDSCALARBYTES; i++ ) {
         nonReducedScalar[i] = rand();
     }
@@ -77,7 +77,7 @@ void testInvalidArgsAmountRistrettoScalarReduce_init()
 {
     unsigned char* nonReducedScalar = malloc(
                                           crypto_core_ristretto255_NONREDUCEDSCALARBYTES );
-    assert( nonReducedScalar != 0 );
+    assert( nonReducedScalar != NULL );
     for( size_t i = 0; i < crypto_core_ristretto255_NONREDUCEDSCALARBYTES; i++ ) {
         nonReducedScalar[i] = rand();
     }
@@ -102,7 +102,7 @@ void testInvalidArgsAmountRistrettoScalarReduce_init()
 void testInvalidFirstArgSizeRistrettoScalarReduce_init()
 {
     unsigned char* scalar = malloc( crypto_core_ristretto255_SCALARBYTES );
-    assert( scalar != 0 );
+    assert( scalar != NULL );
     for( size_t i = 0; i < crypto_core_ristretto255_SCALARBYTES; i++ ) {
         scalar[i] = rand();
     }
@@ -139,7 +139,7 @@ void testRistrettoScalarReduce()
 {
     unsigned char* nonReducedScalar = malloc(
                                           crypto_core_ristretto255_NONREDUCEDSCALARBYTES );
-    assert( nonReducedScalar != 0 );
+    assert( nonReducedScalar != NULL );
     for( size_t i = 0; i < crypto_core_ristretto255_NONREDUCEDSCALARBYTES; i++ ) {
         nonReducedScalar[i] = rand();
     }
@@ -152,7 +152,7 @@ void testRistrettoScalarReduce()
     enum Item_result itemValue[1] = {STRING_RESULT};
     const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     char* scalar = malloc( crypto_core_ristretto255_SCALARBYTES );
-    assert( scalar != 0 );
+    assert( scalar != NULL );
     const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = scalar, .const_item = 0};
     const char* returnedPtr = ristrettoscalarreduce( &initid, &args, result, length,
                               is_null, error );
