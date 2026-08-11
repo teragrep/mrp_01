@@ -47,6 +47,7 @@
 #include <mysql/mysql.h>
 #include <sodium.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "../lib_sodium_ristretto_hash.h"
 
@@ -66,8 +67,8 @@ void testRistrettofromhash_init()
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     const my_bool result = ristrettofromhash_init( &initid, &args, message );
-    assert( result == 0 &&
-            "Result is not 0, _init failed when it should have passed." );
+    assert( result == false &&
+            "Result is not false (0), _init failed when it should have passed." );
     assert( initid.ptr != NULL && "Memory was not succesfully allocated" );
     free( hash );
     free( initid.ptr );
@@ -88,8 +89,8 @@ void testInvalidArgSizeRistrettofromhash_init()
     const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0};
     const my_bool result = ristrettofromhash_init( &initid, &args, message );
-    assert( result == 1 &&
-            "Result is not 1, _init passed when it should have failed." );
+    assert( result == true &&
+            "Result is not true (1), _init passed when it should have failed." );
     assert( strcmp( message,
                     "First input argument is not a 64 byte binary string" ) == 0 &&
             "Error message is incorrect" );
@@ -112,8 +113,8 @@ void testInvalidArgAmountRistrettofromhash_init()
     const UDF_ARGS args = { .arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0};
     const my_bool result = ristrettofromhash_init( &initid, &args, message );
-    assert( result == 1 &&
-            "Result is not 1, _init passed when it should have failed." );
+    assert( result == true &&
+            "Result is not true (1), _init passed when it should have failed." );
     assert( strcmp( message, "requires 1 binary string argument" ) == 0 &&
             "Error message is incorrect" );
     assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );

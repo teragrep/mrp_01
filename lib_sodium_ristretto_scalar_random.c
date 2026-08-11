@@ -47,6 +47,7 @@
 #include <string.h>
 #include <mysql/mysql.h>
 #include "lib_sodium_ristretto_scalar_random.h"
+#include <stdbool.h>
 
 // Scalar arithmetic over L
 
@@ -55,14 +56,14 @@ my_bool ristrettoscalarrandom_init( UDF_INIT* initid, UDF_ARGS* args,
 {
     if( sodium_init() == -1 ) {
         strcpy( message, "sodium failed to initialize" );
-        return 1;
+        return true;
     }
     initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
     if( initid->ptr == NULL ) {
         strcpy( message, "not enough memory for buffer" );
-        return 1;
+        return true;
     }
-    return 0;
+    return false;
 }
 
 void ristrettoscalarrandom_deinit( UDF_INIT* initid )

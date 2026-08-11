@@ -47,6 +47,7 @@
 #include <string.h>
 #include <mysql/mysql.h>
 #include "lib_sodium_ristretto_scalarmult.h"
+#include <stdbool.h>
 
 // Scalar multiplication
 
@@ -56,26 +57,26 @@ my_bool scalarmultristretto_init( UDF_INIT* initid, const UDF_ARGS* args,
     if( args->arg_count != 2 ||  args->arg_type[0] != STRING_RESULT  ||
             args->arg_type[1] != STRING_RESULT ) {
         strcpy( message, "requires 2 binary string arguments" );
-        return 1;
+        return true;
     }
     if( args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ) {
         strcpy( message,
                 "First input argument is not a 32 byte scalar in binary string format" );
-        return 1;
+        return true;
     }
     if( args->lengths[1] != crypto_core_ristretto255_BYTES ) {
         strcpy( message, "Second input argument is not a 32 byte binary string" );
-        return 1;
+        return true;
     }
     if( sodium_init() == -1 ) {
         strcpy( message, "sodium failed to initialize" );
-        return 1;
+        return true;
     }
 
     initid->ptr = malloc( crypto_core_ristretto255_BYTES );
     if( initid->ptr == NULL ) {
         strcpy( message, "not enough memory for buffer" );
-        return 1;
+        return true;
     }
     return 0;
 }
@@ -119,23 +120,23 @@ my_bool scalarmultristrettobase_init( UDF_INIT* initid, const UDF_ARGS* args,
 {
     if( args->arg_count != 1 ||  args->arg_type[0] != STRING_RESULT )  {
         strcpy( message, "requires 1 binary string argument" );
-        return 1;
+        return true;
     }
     if( args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ) {
         strcpy( message,
                 "First input argument is not a 32 byte scalar in binary string format" );
-        return 1;
+        return true;
     }
     if( sodium_init() == -1 ) {
         strcpy( message, "sodium failed to initialize" );
-        return 1;
+        return true;
     }
     initid->ptr = malloc( crypto_core_ristretto255_BYTES );
     if( initid->ptr == NULL ) {
         strcpy( message, "not enough memory for buffer" );
-        return 1;
+        return true;
     }
-    return 0;
+    return false;
 }
 
 void scalarmultristrettobase_deinit( UDF_INIT* initid )

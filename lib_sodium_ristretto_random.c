@@ -47,6 +47,7 @@
 #include <string.h>
 #include <mysql/mysql.h>
 #include "lib_sodium_ristretto_random.h"
+#include <stdbool.h>
 
 /// Random group element
 
@@ -54,14 +55,14 @@ my_bool ristrettorandom_init( UDF_INIT* initid, UDF_ARGS* args, char* message )
 {
     if( sodium_init() == -1 ) {
         strcpy( message, "sodium failed to initialize" );
-        return 1;
+        return true;
     }
     initid->ptr = malloc( crypto_core_ristretto255_BYTES );
     if( initid->ptr == NULL ) {
         strcpy( message, "not enough memory for buffer" );
-        return 1;
+        return true;
     }
-    return 0;
+    return false;
 }
 
 void ristrettorandom_deinit( UDF_INIT* initid )

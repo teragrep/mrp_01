@@ -47,6 +47,7 @@
 #include <string.h>
 #include <mysql/mysql.h>
 #include "lib_sodium_ristretto_hash.h"
+#include <stdbool.h>
 
 // Hash-to-group
 
@@ -55,23 +56,23 @@ my_bool ristrettofromhash_init( UDF_INIT* initid, const UDF_ARGS* args,
 {
     if( args->arg_count != 1 ||  args->arg_type[0] != STRING_RESULT ) {
         strcpy( message, "requires 1 binary string argument" );
-        return 1;
+        return true;
     }
     if( args->lengths[0] != crypto_core_ristretto255_HASHBYTES ) {
         strcpy( message, "First input argument is not a 64 byte binary string" );
-        return 1;
+        return true;
     }
     if( sodium_init() == -1 ) {
         strcpy( message, "sodium failed to initialize" );
-        return 1;
+        return true;
     }
     initid->ptr = malloc( crypto_core_ristretto255_BYTES );
     if( initid->ptr == NULL ) {
         strcpy( message, "not enough memory for buffer" );
-        return 1;
+        return true;
     }
 
-    return 0;
+    return false;
 }
 
 void ristrettofromhash_deinit( UDF_INIT* initid )

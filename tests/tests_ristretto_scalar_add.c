@@ -47,6 +47,7 @@
 #include <mysql/mysql.h>
 #include <sodium.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "../lib_sodium_ristretto_scalar_add.h"
 
@@ -61,8 +62,8 @@ void testRistrettoScalarAdd_init()
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
     const my_bool result = ristrettoscalaradd_init( &initid, &args, message );
-    assert( result == 0 &&
-            "Result is not 0, _init failed when it should have passed." );
+    assert( result == false &&
+            "Result is not false (0), _init failed when it should have passed." );
     assert( initid.ptr != NULL && "Memory was not succesfully allocated" );
     printf( "testRistrettoScalarAdd_init() passed assertions!\n" );
     free( initid.ptr );
@@ -79,8 +80,8 @@ void testInvalidArgsAmountRistrettoScalarAdd_init()
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
     const my_bool result = ristrettoscalaradd_init( &initid, &args, message );
-    assert( result == 1 &&
-            "Result is not 1, _init passed when it should have failed." );
+    assert( result == true &&
+            "Result is not true (1), _init passed when it should have failed." );
     assert( strcmp( message, "requires 2 binary string arguments" ) == 0 &&
             "Error message is incorrect" );
     assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );
@@ -102,8 +103,8 @@ void testInvalidFirstArgSizeRistrettoScalarAdd_init()
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
     const my_bool result = ristrettoscalaradd_init( &initid, &args, message );
-    assert( result == 1 &&
-            "Result is not 1, _init passed when it should have failed." );
+    assert( result == true &&
+            "Result is not true (1), _init passed when it should have failed." );
     assert( strcmp( message,
                     "First input is not a scalar in 32 byte binary string format" ) == 0 &&
             "Error message is incorrect" );
@@ -126,8 +127,8 @@ void testInvalidSecondArgSizeRistrettoScalarAdd_init()
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
     const my_bool result = ristrettoscalaradd_init( &initid, &args, message );
-    assert( result == 1 &&
-            "Result is not 1, _init passed when it should have failed." );
+    assert( result == true &&
+            "Result is not true (1), _init passed when it should have failed." );
     assert( strcmp( message,
                     "Second input is not a scalar in 32 byte binary string format" ) == 0 &&
             "Error message is incorrect" );

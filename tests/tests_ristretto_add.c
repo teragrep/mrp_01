@@ -47,6 +47,7 @@
 #include <mysql/mysql.h>
 #include <sodium.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "../lib_sodium_ristretto_addition.h"
 
@@ -65,8 +66,8 @@ void testRistrettoAdd_init()
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     const my_bool result = ristrettoadd_init( &initid, &args, message );
-    assert( result == 0 &&
-            "Result is not 0, _init failed when it should have passed." );
+    assert( result == false &&
+            "Result is not false (0), _init failed when it should have passed." );
     assert( initid.ptr != NULL && "Memory was not succesfully allocated" );
     free( initid.ptr );
     printf( "testRistrettoAdd_init() passed assertions!\n" );
@@ -85,8 +86,8 @@ void testInvalidArgsAmountRistrettoAdd_init()
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     const my_bool result = ristrettoadd_init( &initid, &args, message );
-    assert( result == 1 &&
-            "Result is not 1, _init passed when it should have failed." );
+    assert( result == true &&
+            "Result is not true (1), _init passed when it should have failed." );
     assert( strcmp( message, "requires 2 binary string arguments" ) == 0 &&
             "Error message is incorrect" );
     assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );
@@ -108,8 +109,8 @@ void testInvalidFirstArgSizeRistrettoAdd_init()
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     const my_bool result = ristrettoadd_init( &initid, &args, message );
-    assert( result == 1 &&
-            "Result is not 1, _init passed when it should have failed." );
+    assert( result == true &&
+            "Result is not true (1), _init passed when it should have failed." );
     assert( strcmp( message,
                     "First input argument is not a 32 byte binary string" ) == 0 &&
             "Error message is incorrect" );
@@ -134,8 +135,8 @@ void testInvalidFirstArgPointRistrettoAdd_init()
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     const my_bool result = ristrettoadd_init( &initid, &args, message );
-    assert( result == 0 &&
-            "Result is not 0, _init failed when it should have passed." );
+    assert( result == false &&
+            "Result is not false (0), _init failed when it should have passed." );
     assert( initid.ptr != NULL && "Memory was not successfully allocated" );
     free( initid.ptr );
     printf( "testInvalidFirstArgPointRistrettoAdd_init() passed assertions!\n" );
@@ -156,8 +157,8 @@ void testInvalidSecondArgSizeRistrettoAdd_init()
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     const my_bool result = ristrettoadd_init( &initid, &args, message );
-    assert( result == 1 &&
-            "Result is not 1, _init passed when it should have failed." );
+    assert( result == true &&
+            "Result is not true (1), _init passed when it should have failed." );
     assert( strcmp( message,
                     "Second input argument is not a 32 byte binary string" ) == 0 &&
             "Error message is incorrect" );
@@ -182,8 +183,8 @@ void testInvalidSecondArgPointRistrettoAdd_init()
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     const my_bool result = ristrettoadd_init( &initid, &args, message );
-    assert( result == 0 &&
-            "Result is not 0, _init failed when it should have passed." );
+    assert( result == false &&
+            "Result is not false (0), _init failed when it should have passed." );
     assert( initid.ptr != NULL && "Memory was not successfully allocated" );
     free( initid.ptr );
     printf( "testInvalidSecondArgPointRistrettoAdd_init() passed assertions!\n" );

@@ -46,6 +46,7 @@
 #include <assert.h>
 #include <mysql/mysql.h>
 #include <sodium.h>
+#include <stdbool.h>
 
 #include "../lib_sodium_ristretto_random.h"
 
@@ -58,8 +59,8 @@ void testPassRistrettorandom_init()
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
     const my_bool result = ristrettorandom_init( &initid, &args, message );
-    assert( result == 0 &&
-            "Result is not 0, _init failed when it should have passed." );
+    assert( result == false &&
+            "Result is not false (0), _init failed when it should have passed." );
     assert( initid.ptr != NULL && "Memory was not succesfully allocated" );
     printf( "testPassRistrettorandom_init() passed assertions!\n" );
     free( initid.ptr );
