@@ -62,12 +62,12 @@ void testRistrettoSub_init()
     char message[MYSQL_ERRMSG_SIZE];
     const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {
-        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = 0, .const_item = 0
+        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     const my_bool result = ristrettosub_init( &initid, &args, message );
     assert( result == 0 &&
             "Result is not 0, _init failed when it should have passed." );
-    assert( initid.ptr != 0 && "Memory was not succesfully allocated" );
+    assert( initid.ptr != NULL && "Memory was not succesfully allocated" );
     free( initid.ptr );
     printf( "testRistrettoSub_init() passed assertions!\n" );
 }
@@ -82,14 +82,14 @@ void testInvalidArgsAmountRistrettoSub_init()
     char message[MYSQL_ERRMSG_SIZE];
     const UDF_ARGS args = {.arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {
-        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = 0, .const_item = 0
+        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     const my_bool result = ristrettosub_init( &initid, &args, message );
     assert( result == 1 &&
             "Result is not 1, _init passed when it should have failed." );
     assert( strcmp( message, "requires 2 binary string arguments" ) == 0 &&
             "Error message is incorrect" );
-    assert( initid.ptr == 0 && "Memory was allocated when it shouldn't" );
+    assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );
     printf( "testInvalidArgsAmountRistrettoSub_init() passed assertions!\n" );
 }
 
@@ -105,7 +105,7 @@ void testInvalidFirstArgSizeRistrettoSub_init()
     char message[MYSQL_ERRMSG_SIZE];
     const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {
-        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = 0, .const_item = 0
+        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     const my_bool result = ristrettosub_init( &initid, &args, message );
     assert( result == 1 &&
@@ -113,7 +113,7 @@ void testInvalidFirstArgSizeRistrettoSub_init()
     assert( strcmp( message,
                     "First input argument is not a 32 byte binary string" ) == 0 &&
             "Error message is incorrect" );
-    assert( initid.ptr == 0 && "Memory was allocated when it shouldn't" );
+    assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );
     printf( "testInvalidFirstArgSizeRistrettoSub_init() passed assertions!\n" );
 }
 
@@ -131,12 +131,12 @@ void testInvalidFirstArgPointRistrettoSub_init()
     char message[MYSQL_ERRMSG_SIZE];
     const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {
-        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = 0, .const_item = 0
+        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     const my_bool result = ristrettosub_init( &initid, &args, message );
     assert( result == 0 &&
             "Result is not 0, _init failed when it should have passed." );
-    assert( initid.ptr != 0 && "Memory was not successfully allocated" );
+    assert( initid.ptr != NULL && "Memory was not successfully allocated" );
     free( initid.ptr );
     printf( "testInvalidFirstArgPointRistrettoSub_init() passed assertions!\n" );
 }
@@ -153,7 +153,7 @@ void testInvalidSecondArgSizeRistrettoSub_init()
     char message[MYSQL_ERRMSG_SIZE];
     const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {
-        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = 0, .const_item = 0
+        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     const my_bool result = ristrettosub_init( &initid, &args, message );
     assert( result == 1 &&
@@ -161,7 +161,7 @@ void testInvalidSecondArgSizeRistrettoSub_init()
     assert( strcmp( message,
                     "Second input argument is not a 32 byte binary string" ) == 0 &&
             "Error message is incorrect" );
-    assert( initid.ptr == 0 && "Memory was allocated when it shouldn't" );
+    assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );
     printf( "testInvalidSecondArgSizeRistrettoSub_init() passed assertions!\n" );
 }
 
@@ -179,23 +179,23 @@ void testInvalidSecondArgPointRistrettoSub_init()
     char message[MYSQL_ERRMSG_SIZE];
     const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {
-        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = 0, .const_item = 0
+        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     const my_bool result = ristrettosub_init( &initid, &args, message );
     assert( result == 0 &&
             "Result is not 0, _init failed when it should have passed." );
-    assert( initid.ptr != 0 && "Memory was not successfully allocated" );
+    assert( initid.ptr != NULL && "Memory was not successfully allocated" );
     free( initid.ptr );
     printf( "testInvalidSecondArgPointRistrettoSub_init() passed assertions!\n" );
 }
 
 void testRistrettoSub_deinit()
 {
-    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = 0, .const_item = 0};
+    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0};
     initid.ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
-    assert( initid.ptr != 0 );
+    assert( initid.ptr != NULL );
     ristrettosub_deinit( &initid );
-    assert( initid.ptr == 0 && "_deinit failed to free the allocated memory." );
+    assert( initid.ptr == NULL && "_deinit failed to free the allocated memory." );
     printf( "testRistrettoSub_deinit() passed assertions!\n" );
 }
 
@@ -210,7 +210,7 @@ void testRistrettoSub()
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
-    assert( ristrettoPoint != 0 );
+    assert( ristrettoPoint != NULL );
     const UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0
     };
@@ -259,7 +259,7 @@ void testInvalidFirstArgPointRistrettoSub()
     char is_null[1];
     const char* returnedPtr = ristrettosub( &initid, &args, result, length, is_null,
                                             error );
-    assert( returnedPtr == 0 &&
+    assert( returnedPtr == NULL &&
             "ristrettosub() did not return NULL on invalid first input argument" );
     printf( "testInvalidFirstArgPointRistrettoSub() passed assertions!\n" );
     free( ristrettoPoint );
@@ -278,7 +278,7 @@ void testInvalidSecondArgPointRistrettoSub()
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
-    assert( ristrettoPoint != 0 );
+    assert( ristrettoPoint != NULL );
     const UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0
     };
@@ -288,7 +288,7 @@ void testInvalidSecondArgPointRistrettoSub()
     char is_null[1];
     const char* returnedPtr = ristrettosub( &initid, &args, result, length, is_null,
                                             error );
-    assert( returnedPtr == 0 &&
+    assert( returnedPtr == NULL &&
             "ristrettosub() did not return NULL on invalid second input argument" );
     printf( "testInvalidSecondArgPointRistrettoSub() passed assertions!\n" );
     free( ristrettoPoint );

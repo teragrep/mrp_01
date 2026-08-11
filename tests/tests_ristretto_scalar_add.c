@@ -58,12 +58,12 @@ void testRistrettoScalarAdd_init()
     unsigned long testLengths[2] = {crypto_core_ristretto255_SCALARBYTES, crypto_core_ristretto255_SCALARBYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = { .arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = 0, .const_item = 0};
+    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
     const my_bool result = ristrettoscalaradd_init( &initid, &args, message );
     assert( result == 0 &&
             "Result is not 0, _init failed when it should have passed." );
-    assert( initid.ptr != 0 && "Memory was not succesfully allocated" );
+    assert( initid.ptr != NULL && "Memory was not succesfully allocated" );
     printf( "testRistrettoScalarAdd_init() passed assertions!\n" );
     free( initid.ptr );
 }
@@ -76,14 +76,14 @@ void testInvalidArgsAmountRistrettoScalarAdd_init()
     unsigned long testLengths[] = {crypto_core_ristretto255_SCALARBYTES};
     enum Item_result itemValue[] = {STRING_RESULT};
     const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = 0, .const_item = 0};
+    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
     const my_bool result = ristrettoscalaradd_init( &initid, &args, message );
     assert( result == 1 &&
             "Result is not 1, _init passed when it should have failed." );
     assert( strcmp( message, "requires 2 binary string arguments" ) == 0 &&
             "Error message is incorrect" );
-    assert( initid.ptr == 0 && "Memory was allocated when it shouldn't" );
+    assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );
     printf( "testInvalidArgsAmountRistrettoScalarAdd_init() passed assertions!\n" );
 }
 
@@ -99,7 +99,7 @@ void testInvalidFirstArgSizeRistrettoScalarAdd_init()
     unsigned long testLengths[] = {16};
     enum Item_result itemValue[] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = { .arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = 0, .const_item = 0};
+    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
     const my_bool result = ristrettoscalaradd_init( &initid, &args, message );
     assert( result == 1 &&
@@ -107,7 +107,7 @@ void testInvalidFirstArgSizeRistrettoScalarAdd_init()
     assert( strcmp( message,
                     "First input is not a scalar in 32 byte binary string format" ) == 0 &&
             "Error message is incorrect" );
-    assert( initid.ptr == 0 && "Memory was allocated when it shouldn't" );
+    assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );
     printf( "testInvalidFirstArgSizeRistrettoScalarAdd_init() passed assertions!\n" );
 }
 
@@ -123,7 +123,7 @@ void testInvalidSecondArgSizeRistrettoScalarAdd_init()
     unsigned long testLengths[] = {crypto_core_ristretto255_SCALARBYTES, 16};
     enum Item_result itemValue[] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = { .arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = 0, .const_item = 0};
+    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
     const my_bool result = ristrettoscalaradd_init( &initid, &args, message );
     assert( result == 1 &&
@@ -131,17 +131,17 @@ void testInvalidSecondArgSizeRistrettoScalarAdd_init()
     assert( strcmp( message,
                     "Second input is not a scalar in 32 byte binary string format" ) == 0 &&
             "Error message is incorrect" );
-    assert( initid.ptr == 0 && "Memory was allocated when it shouldn't" );
+    assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );
     printf( "testInvalidFirstArgSizeRistrettoScalarAdd_init() passed assertions!\n" );
 }
 
 void testRistrettoScalarAdd_deinit()
 {
-    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = 0, .const_item = 0};
+    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     initid.ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
-    assert( initid.ptr != 0 );
+    assert( initid.ptr != NULL );
     ristrettoscalaradd_deinit( &initid );
-    assert( initid.ptr == 0 && "_deinit failed to free the allocated memory." );
+    assert( initid.ptr == NULL && "_deinit failed to free the allocated memory." );
     printf( "testRistrettoScalarAdd_deinit() passed assertions!\n" );
 }
 
