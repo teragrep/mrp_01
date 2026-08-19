@@ -87,11 +87,8 @@ char* ristrettofromhash( const UDF_INIT* initid, const UDF_ARGS* args,
                          char* result,
                          unsigned long* length, char* is_null, char* error )
 {
-    unsigned char inputHash[crypto_core_ristretto255_HASHBYTES];
-    memcpy( inputHash, args->args[0], args->lengths[0] );
-    unsigned char resultPtr[crypto_core_ristretto255_BYTES];
-    crypto_core_ristretto255_from_hash( resultPtr, inputHash );
-    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_BYTES );
+    const unsigned char* hash1 = ( const unsigned char* )args->args[0];
+    crypto_core_ristretto255_from_hash( ( unsigned char* )initid->ptr, hash1 );
     *length = crypto_core_ristretto255_BYTES;
     return initid->ptr;
 }

@@ -93,14 +93,10 @@ char* ristrettoscalaradd( const UDF_INIT* initid, const UDF_ARGS* args,
                           char* result,
                           unsigned long* length, char* is_null, char* error )
 {
-    unsigned char inputScalarFirst[crypto_core_ristretto255_SCALARBYTES];
-    memcpy( inputScalarFirst, args->args[0], args->lengths[0] );
-    unsigned char inputScalarSecond[crypto_core_ristretto255_SCALARBYTES];
-    memcpy( inputScalarSecond, args->args[1], args->lengths[1] );
-    unsigned char resultPtr[crypto_core_ristretto255_SCALARBYTES];
-    crypto_core_ristretto255_scalar_add( resultPtr, inputScalarFirst,
-                                         inputScalarSecond );
-    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_SCALARBYTES );
+    const unsigned char* scalar1 = ( const unsigned char* )args->args[0];
+    const unsigned char* scalar2 = ( const unsigned char* )args->args[1];
+    crypto_core_ristretto255_scalar_add( ( unsigned char* )initid->ptr, scalar1,
+                                         scalar2 );
     *length = crypto_core_ristretto255_SCALARBYTES;
     return initid->ptr;
 }

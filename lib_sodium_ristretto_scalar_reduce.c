@@ -87,12 +87,9 @@ char* ristrettoscalarreduce( const UDF_INIT* initid, const UDF_ARGS* args,
                              char* result,
                              unsigned long* length, char* is_null, char* error )
 {
-    unsigned char
-    inputNonreducedScalar[crypto_core_ristretto255_NONREDUCEDSCALARBYTES];
-    memcpy( inputNonreducedScalar, args->args[0], args->lengths[0] );
-    unsigned char resultPtr[crypto_core_ristretto255_SCALARBYTES];
-    crypto_core_ristretto255_scalar_reduce( resultPtr, inputNonreducedScalar );
-    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_SCALARBYTES );
+    const unsigned char* nonReducedScalar1 = ( const unsigned char* )args->args[0];
+    crypto_core_ristretto255_scalar_reduce( ( unsigned char* )initid->ptr,
+                                            nonReducedScalar1 );
     *length = crypto_core_ristretto255_SCALARBYTES;
     return initid->ptr;
 }

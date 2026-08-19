@@ -151,11 +151,9 @@ char* scalarmultristrettobase( const UDF_INIT* initid, const UDF_ARGS* args,
                                char* result,
                                unsigned long* length, char* is_null, char* error )
 {
-    unsigned char inputScalar[crypto_core_ristretto255_SCALARBYTES];
-    memcpy( inputScalar, args->args[0], args->lengths[0] );
-    unsigned char resultPtr[crypto_core_ristretto255_BYTES];
-    crypto_scalarmult_ristretto255_base( resultPtr, inputScalar );
-    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_BYTES );
+    const unsigned char* scalar1 = ( const unsigned char* )args->args[0];
+    crypto_scalarmult_ristretto255_base( ( unsigned char* )initid->ptr,
+                                         scalar1 );
     *length = crypto_core_ristretto255_BYTES;
     return initid->ptr;
 }

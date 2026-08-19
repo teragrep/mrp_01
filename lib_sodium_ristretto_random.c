@@ -76,9 +76,7 @@ void ristrettorandom_deinit( UDF_INIT* initid )
 char* ristrettorandom( const UDF_INIT* initid, UDF_ARGS* args, char* result,
                        unsigned long* length, char* is_null, char* error )
 {
-    unsigned char resultPtr[crypto_core_ristretto255_BYTES];
-    crypto_core_ristretto255_random( resultPtr );
-    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_BYTES );
+    crypto_core_ristretto255_random( ( unsigned char* )initid->ptr );
     *length = crypto_core_ristretto255_BYTES;
     return initid->ptr;
 }

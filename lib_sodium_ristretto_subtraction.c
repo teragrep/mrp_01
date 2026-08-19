@@ -91,27 +91,20 @@ void ristrettosub_deinit( UDF_INIT* initid )
 char* ristrettosub( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
                     unsigned long* length, char* is_null, char* error )
 {
-    unsigned char toValidateFirst[crypto_core_ristretto255_BYTES];
-    memcpy( toValidateFirst, args->args[0], args->lengths[0] );
-    if( crypto_core_ristretto255_is_valid_point( toValidateFirst ) == 0 ) {
+    const unsigned char* point1 = ( const unsigned char* )args->args[0];
+    if( crypto_core_ristretto255_is_valid_point( point1 ) == 0 ) {
         *is_null = 1;
         *error = 1;
         return NULL;
     }
-    unsigned char toValidateSecond[crypto_core_ristretto255_BYTES];
-    memcpy( toValidateSecond, args->args[1], args->lengths[1] );
-    if( crypto_core_ristretto255_is_valid_point( toValidateSecond ) == 0 ) {
+    const unsigned char* point2 = ( const unsigned char* )args->args[1];
+    if( crypto_core_ristretto255_is_valid_point( point2 ) == 0 ) {
         *is_null = 1;
         *error = 1;
         return NULL;
     }
-    unsigned char firstInputPoint[crypto_core_ristretto255_BYTES];
-    memcpy( firstInputPoint, args->args[0], args->lengths[0] );
-    unsigned char secondInputPoint[crypto_core_ristretto255_BYTES];
-    memcpy( secondInputPoint, args->args[1], args->lengths[1] );
-    unsigned char resultPtr[crypto_core_ristretto255_BYTES];
-    crypto_core_ristretto255_sub( resultPtr, firstInputPoint, secondInputPoint );
-    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_BYTES );
+    crypto_core_ristretto255_sub( ( unsigned char* )initid->ptr, point1,
+                                  point2 );
     *length = crypto_core_ristretto255_BYTES;
     return initid->ptr;
 }

@@ -87,11 +87,9 @@ char* ristrettoscalarinvert( const UDF_INIT* initid, const UDF_ARGS* args,
                              char* result,
                              unsigned long* length, char* is_null, char* error )
 {
-    unsigned char inputScalar[crypto_core_ristretto255_SCALARBYTES];
-    memcpy( inputScalar, args->args[0], args->lengths[0] );
-    unsigned char resultPtr[crypto_core_ristretto255_SCALARBYTES];
-    crypto_core_ristretto255_scalar_invert( resultPtr, inputScalar );
-    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_SCALARBYTES );
+    const unsigned char* scalar1 = ( const unsigned char* )args->args[0];
+    crypto_core_ristretto255_scalar_invert( ( unsigned char* )initid->ptr,
+                                            scalar1 );
     *length = crypto_core_ristretto255_SCALARBYTES;
     return initid->ptr;
 }
