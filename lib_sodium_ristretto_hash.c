@@ -87,6 +87,11 @@ char* ristrettofromhash( const UDF_INIT* initid, const UDF_ARGS* args,
                          char* result,
                          unsigned long* length, char* is_null, char* error )
 {
+    if( args->lengths[0] != crypto_core_ristretto255_HASHBYTES ) {
+        *is_null = 1;
+        *error = 1;
+        return NULL;
+    }
     const unsigned char* hash1 = ( const unsigned char* )args->args[0];
     crypto_core_ristretto255_from_hash( ( unsigned char* )initid->ptr, hash1 );
     *length = crypto_core_ristretto255_BYTES;

@@ -87,6 +87,11 @@ char* ristrettoscalarreduce( const UDF_INIT* initid, const UDF_ARGS* args,
                              char* result,
                              unsigned long* length, char* is_null, char* error )
 {
+    if( args->lengths[0] != crypto_core_ristretto255_NONREDUCEDSCALARBYTES ) {
+        *is_null = 1;
+        *error = 1;
+        return NULL;
+    }
     const unsigned char* nonReducedScalar1 = ( const unsigned char* )args->args[0];
     crypto_core_ristretto255_scalar_reduce( ( unsigned char* )initid->ptr,
                                             nonReducedScalar1 );

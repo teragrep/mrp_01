@@ -93,6 +93,12 @@ char* ristrettoscalarsub( const UDF_INIT* initid, const UDF_ARGS* args,
                           char* result,
                           unsigned long* length, char* is_null, char* error )
 {
+    if( args->lengths[0] != crypto_core_ristretto255_SCALARBYTES &&
+            args->lengths[1] != crypto_core_ristretto255_SCALARBYTES ) {
+        *is_null = 1;
+        *error = 1;
+        return NULL;
+    }
     const unsigned char* scalar1 = ( const unsigned char* )args->args[0];
     const unsigned char* scalar2 = ( const unsigned char* )args->args[1];
     crypto_core_ristretto255_scalar_sub( ( unsigned char* )initid->ptr,

@@ -72,6 +72,11 @@ my_bool ristrettoisvalidpoint_init( UDF_INIT* initid, const UDF_ARGS* args,
 long long ristrettoisvalidpoint( UDF_INIT* initid, const UDF_ARGS* args,
                                  char* is_null, char* error )
 {
+    if( args->lengths[0] != crypto_core_ristretto255_BYTES ) {
+        *is_null = 1;
+        *error = 1;
+        return 0;
+    }
     const unsigned char* point1 = ( const unsigned char* )args->args[0];
     if( crypto_core_ristretto255_is_valid_point( point1 ) == 0 ) {
         return 0;
