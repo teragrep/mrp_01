@@ -78,7 +78,7 @@ my_bool scalarmultristretto_init( UDF_INIT* initid, const UDF_ARGS* args,
         strcpy( message, "not enough memory for buffer" );
         return true;
     }
-    return 0;
+    return false;
 }
 
 void scalarmultristretto_deinit( UDF_INIT* initid )
