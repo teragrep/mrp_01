@@ -59,15 +59,6 @@ my_bool scalarmultristretto_init( UDF_INIT* initid, const UDF_ARGS* args,
         strcpy( message, "requires 2 binary string arguments" );
         return true;
     }
-    if( args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ) {
-        strcpy( message,
-                "First input argument is not a 32 byte scalar in binary string format" );
-        return true;
-    }
-    if( args->lengths[1] != crypto_core_ristretto255_BYTES ) {
-        strcpy( message, "Second input argument is not a 32 byte binary string" );
-        return true;
-    }
     if( sodium_init() == -1 ) {
         strcpy( message, "sodium failed to initialize" );
         return true;
@@ -93,7 +84,8 @@ char* scalarmultristretto( const UDF_INIT* initid, const UDF_ARGS* args,
                            char* result,
                            unsigned long* length, char* is_null, char* error )
 {
-    if( args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ||
+    if( args->args[0] == NULL || args->args[1] == NULL ||
+            args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ||
             args->lengths[1] != crypto_core_ristretto255_BYTES ) {
         *is_null = 1;
         *error = 1;
@@ -124,11 +116,6 @@ my_bool scalarmultristrettobase_init( UDF_INIT* initid, const UDF_ARGS* args,
         strcpy( message, "requires 1 binary string argument" );
         return true;
     }
-    if( args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ) {
-        strcpy( message,
-                "First input argument is not a 32 byte scalar in binary string format" );
-        return true;
-    }
     if( sodium_init() == -1 ) {
         strcpy( message, "sodium failed to initialize" );
         return true;
@@ -153,7 +140,8 @@ char* scalarmultristrettobase( const UDF_INIT* initid, const UDF_ARGS* args,
                                char* result,
                                unsigned long* length, char* is_null, char* error )
 {
-    if( args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ) {
+    if( args->args[0] == NULL ||
+            args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ) {
         *is_null = 1;
         *error = 1;
         return NULL;

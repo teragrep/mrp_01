@@ -58,10 +58,6 @@ my_bool ristrettoisvalidpoint_init( UDF_INIT* initid, const UDF_ARGS* args,
         strcpy( message, "requires 1 binary string argument" );
         return true;
     }
-    if( args->lengths[0] != crypto_core_ristretto255_BYTES ) {
-        strcpy( message, "First input argument is not a 32 byte binary string" );
-        return true;
-    }
     if( sodium_init() == -1 ) {
         strcpy( message, "sodium failed to initialize" );
         return true;
@@ -72,7 +68,8 @@ my_bool ristrettoisvalidpoint_init( UDF_INIT* initid, const UDF_ARGS* args,
 long long ristrettoisvalidpoint( UDF_INIT* initid, const UDF_ARGS* args,
                                  char* is_null, char* error )
 {
-    if( args->lengths[0] != crypto_core_ristretto255_BYTES ) {
+    if( args->args[0] == NULL ||
+            args->lengths[0] != crypto_core_ristretto255_BYTES ) {
         *is_null = 1;
         *error = 1;
         return 0;

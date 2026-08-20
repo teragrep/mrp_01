@@ -58,10 +58,6 @@ my_bool ristrettofromhash_init( UDF_INIT* initid, const UDF_ARGS* args,
         strcpy( message, "requires 1 binary string argument" );
         return true;
     }
-    if( args->lengths[0] != crypto_core_ristretto255_HASHBYTES ) {
-        strcpy( message, "First input argument is not a 64 byte binary string" );
-        return true;
-    }
     if( sodium_init() == -1 ) {
         strcpy( message, "sodium failed to initialize" );
         return true;
@@ -87,7 +83,8 @@ char* ristrettofromhash( const UDF_INIT* initid, const UDF_ARGS* args,
                          char* result,
                          unsigned long* length, char* is_null, char* error )
 {
-    if( args->lengths[0] != crypto_core_ristretto255_HASHBYTES ) {
+    if( args->args[0] == NULL ||
+            args->lengths[0] != crypto_core_ristretto255_HASHBYTES ) {
         *is_null = 1;
         *error = 1;
         return NULL;
