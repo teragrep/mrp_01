@@ -93,24 +93,25 @@ char* scalarmultristretto( const UDF_INIT* initid, const UDF_ARGS* args,
                            char* result,
                            unsigned long* length, char* is_null, char* error )
 {
-    unsigned char toValidate[crypto_core_ristretto255_BYTES];
-    memcpy( toValidate, args->args[1], args->lengths[1] );
-    if( crypto_core_ristretto255_is_valid_point( toValidate ) == 0 ) {
+    if( args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ||
+            args->lengths[1] != crypto_core_ristretto255_BYTES ) {
+        *is_null = 1;
+        *error = 1;
+        return NULL;
+    }
+    if( crypto_core_ristretto255_is_valid_point( ( const unsigned char* )
+            args->args[1] ) == 0 ) {
         *is_null = 1;
         *error = 1;
         return 0;
     }
-    unsigned char inputScalar[crypto_core_ristretto255_SCALARBYTES];
-    memcpy( inputScalar, args->args[0], args->lengths[0] );
-    unsigned char inputPoint[crypto_core_ristretto255_BYTES];
-    memcpy( inputPoint, args->args[1], args->lengths[1] );
-    unsigned char resultPtr[crypto_core_ristretto255_BYTES];
-    if( crypto_scalarmult_ristretto255( resultPtr, inputScalar,
-                                        inputPoint ) != 0 ) {
+    const unsigned char* scalar1 = ( const unsigned char* )args->args[0];
+    const unsigned char* point1 = ( const unsigned char* )args->args[1];
+    if( crypto_scalarmult_ristretto255( ( unsigned char* )initid->ptr, scalar1,
+                                        point1 ) != 0 ) {
         *error = 1;
         return 0;
     }
-    memcpy( initid->ptr, resultPtr, crypto_core_ristretto255_BYTES );
     *length = crypto_core_ristretto255_BYTES;
     return initid->ptr;
 }
