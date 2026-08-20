@@ -91,7 +91,7 @@ char* ristrettoscalarmul( const UDF_INIT* initid, const UDF_ARGS* args,
                           char* result,
                           unsigned long* length, char* is_null, char* error )
 {
-    if( args->lengths[0] != crypto_core_ristretto255_SCALARBYTES &&
+    if( args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ||
             args->lengths[1] != crypto_core_ristretto255_SCALARBYTES ) {
         *is_null = 1;
         *error = 1;

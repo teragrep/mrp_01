@@ -91,7 +91,7 @@ void ristrettoadd_deinit( UDF_INIT* initid )
 char* ristrettoadd( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
                     unsigned long* length, char* is_null, char* error )
 {
-    if( args->lengths[0] != crypto_core_ristretto255_BYTES &&
+    if( args->lengths[0] != crypto_core_ristretto255_BYTES ||
             args->lengths[1] != crypto_core_ristretto255_BYTES ) {
         *is_null = 1;
         *error = 1;
