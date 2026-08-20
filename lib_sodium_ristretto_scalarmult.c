@@ -103,14 +103,15 @@ char* scalarmultristretto( const UDF_INIT* initid, const UDF_ARGS* args,
             args->args[1] ) == 0 ) {
         *is_null = 1;
         *error = 1;
-        return 0;
+        return NULL;
     }
     const unsigned char* scalar1 = ( const unsigned char* )args->args[0];
     const unsigned char* point1 = ( const unsigned char* )args->args[1];
     if( crypto_scalarmult_ristretto255( ( unsigned char* )initid->ptr, scalar1,
                                         point1 ) != 0 ) {
+        *is_null = 1;
         *error = 1;
-        return 0;
+        return NULL;
     }
     *length = crypto_core_ristretto255_BYTES;
     return initid->ptr;
