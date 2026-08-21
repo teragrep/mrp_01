@@ -68,8 +68,6 @@ void testRistrettoAdd_init()
     const my_bool result = ristrettoadd_init( &initid, &args, message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
-    assert( initid.ptr != NULL && "Memory was not succesfully allocated" );
-    free( initid.ptr );
     printf( "testRistrettoAdd_init() passed assertions!\n" );
 }
 
@@ -90,7 +88,6 @@ void testInvalidArgsAmountRistrettoAdd_init()
             "Result is not true (1), _init passed when it should have failed." );
     assert( strcmp( message, "requires 2 binary string arguments" ) == 0 &&
             "Error message is incorrect" );
-    assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );
     printf( "testInvalidArgsAmountRistrettoAdd_init() passed assertions!\n" );
 }
 
@@ -113,8 +110,6 @@ void testInvalidFirstArgPointRistrettoAdd_init()
     const my_bool result = ristrettoadd_init( &initid, &args, message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
-    assert( initid.ptr != NULL && "Memory was not successfully allocated" );
-    free( initid.ptr );
     printf( "testInvalidFirstArgPointRistrettoAdd_init() passed assertions!\n" );
 }
 
@@ -137,19 +132,7 @@ void testInvalidSecondArgPointRistrettoAdd_init()
     const my_bool result = ristrettoadd_init( &initid, &args, message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
-    assert( initid.ptr != NULL && "Memory was not successfully allocated" );
-    free( initid.ptr );
     printf( "testInvalidSecondArgPointRistrettoAdd_init() passed assertions!\n" );
-}
-
-void testRistrettoAdd_deinit()
-{
-    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0};
-    initid.ptr = malloc( crypto_core_ristretto255_BYTES );
-    assert( initid.ptr != NULL );
-    ristrettoadd_deinit( &initid );
-    assert( initid.ptr == NULL && "_deinit failed to free the allocated memory." );
-    printf( "testRistrettoAdd_deinit() passed assertions!\n" );
 }
 
 void testRistrettoAdd()
@@ -162,10 +145,8 @@ void testRistrettoAdd()
     unsigned long testLengths[2] = {crypto_core_ristretto255_BYTES, crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
-    assert( ristrettoPoint != NULL );
     const UDF_INIT initid = {
-        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0
+        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     char result[255];
     unsigned long length[1];
@@ -173,19 +154,18 @@ void testRistrettoAdd()
     char is_null[1];
     const char* returnedPtr = ristrettoadd( &initid, &args, result, length, is_null,
                                             error );
-    assert( returnedPtr == initid.ptr &&
-            "Returned pointer does not originate from the UDF_INIT struct" );
+    assert( returnedPtr == result &&
+            "Returned pointer does not originate from the result argument" );
     assert( crypto_core_ristretto255_is_valid_point( ( unsigned char* )
-            ristrettoPoint ) == 1 &&
+            result ) == 1 &&
             "Output of the ristrettoadd() is not a valid ristretto point" );
     char expecteRistrettoPoint[crypto_core_ristretto255_BYTES];
     crypto_core_ristretto255_add( ( unsigned char* ) expecteRistrettoPoint, point2,
                                   point1 );
-    assert( memcmp( expecteRistrettoPoint, ristrettoPoint,
+    assert( memcmp( expecteRistrettoPoint, result,
                     crypto_core_ristretto255_BYTES ) == 0 &&
             "Output of the ristrettoadd() is not as expected" );
     printf( "testRistrettoAdd() passed assertions!\n" );
-    free( ristrettoPoint );
 }
 
 void testInvalidFirstArgSizeRistrettoAdd()
@@ -200,10 +180,8 @@ void testInvalidFirstArgSizeRistrettoAdd()
     unsigned long testLengths[2] = {16, crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
-    assert( ristrettoPoint != NULL );
     const UDF_INIT initid = {
-        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0
+        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     char result[255];
     unsigned long length[1];
@@ -214,7 +192,6 @@ void testInvalidFirstArgSizeRistrettoAdd()
     assert( returnedPtr == NULL &&
             "ristrettoadd() did not return NULL on invalid sized first input argument" );
     printf( "testInvalidFirstArgSizeRistrettoAdd() passed assertions!\n" );
-    free( ristrettoPoint );
 }
 
 void testInvalidSecondArgSizeRistrettoAdd()
@@ -229,10 +206,8 @@ void testInvalidSecondArgSizeRistrettoAdd()
     unsigned long testLengths[2] = {crypto_core_ristretto255_BYTES, 16};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
-    assert( ristrettoPoint != NULL );
     const UDF_INIT initid = {
-        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0
+        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     char result[255];
     unsigned long length[1];
@@ -243,7 +218,6 @@ void testInvalidSecondArgSizeRistrettoAdd()
     assert( returnedPtr == NULL &&
             "ristrettoadd() did not return NULL on invalid sized second input argument" );
     printf( "testInvalidSecondArgSizeRistrettoAdd() passed assertions!\n" );
-    free( ristrettoPoint );
 }
 
 void testInvalidFirstArgPointRistrettoAdd()
@@ -258,10 +232,8 @@ void testInvalidFirstArgPointRistrettoAdd()
     unsigned long testLengths[2] = {crypto_core_ristretto255_BYTES, crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
-    assert( ristrettoPoint != NULL );
     const UDF_INIT initid = {
-        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0
+        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     char result[255];
     unsigned long length[1];
@@ -272,7 +244,6 @@ void testInvalidFirstArgPointRistrettoAdd()
     assert( returnedPtr == NULL &&
             "ristrettoadd() did not return NULL on invalid first input argument" );
     printf( "testInvalidFirstArgPointRistrettoAdd() passed assertions!\n" );
-    free( ristrettoPoint );
 }
 
 void testInvalidSecondArgPointRistrettoAdd()
@@ -287,10 +258,8 @@ void testInvalidSecondArgPointRistrettoAdd()
     unsigned long testLengths[2] = {crypto_core_ristretto255_BYTES, crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
-    assert( ristrettoPoint != NULL );
     const UDF_INIT initid = {
-        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0
+        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     char result[255];
     unsigned long length[1];
@@ -301,7 +270,6 @@ void testInvalidSecondArgPointRistrettoAdd()
     assert( returnedPtr == NULL &&
             "ristrettoadd() did not return NULL on invalid first input argument" );
     printf( "testInvalidSecondArgPointRistrettoAdd() passed assertions!\n" );
-    free( ristrettoPoint );
 }
 
 int main()
@@ -310,7 +278,6 @@ int main()
     testInvalidArgsAmountRistrettoAdd_init();
     testInvalidFirstArgPointRistrettoAdd_init();
     testInvalidSecondArgPointRistrettoAdd_init();
-    testRistrettoAdd_deinit();
     testRistrettoAdd();
     testInvalidFirstArgSizeRistrettoAdd();
     testInvalidSecondArgSizeRistrettoAdd();

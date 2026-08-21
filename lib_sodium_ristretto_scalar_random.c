@@ -58,27 +58,14 @@ my_bool ristrettoscalarrandom_init( UDF_INIT* initid, UDF_ARGS* args,
         strcpy( message, "sodium failed to initialize" );
         return true;
     }
-    initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
-    if( initid->ptr == NULL ) {
-        strcpy( message, "not enough memory for buffer" );
-        return true;
-    }
     return false;
-}
-
-void ristrettoscalarrandom_deinit( UDF_INIT* initid )
-{
-    if( initid->ptr != NULL ) {
-        free( initid->ptr );
-        initid->ptr = NULL;
-    }
 }
 
 char* ristrettoscalarrandom( const UDF_INIT* initid, UDF_ARGS* args,
                              char* result,
                              unsigned long* length, char* is_null, char* error )
 {
-    crypto_core_ristretto255_scalar_random( ( unsigned char* )initid->ptr );
+    crypto_core_ristretto255_scalar_random( ( unsigned char* )result );
     *length = crypto_core_ristretto255_SCALARBYTES;
-    return initid->ptr;
+    return result;
 }

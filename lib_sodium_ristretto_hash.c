@@ -62,21 +62,8 @@ my_bool ristrettofromhash_init( UDF_INIT* initid, const UDF_ARGS* args,
         strcpy( message, "sodium failed to initialize" );
         return true;
     }
-    initid->ptr = malloc( crypto_core_ristretto255_BYTES );
-    if( initid->ptr == NULL ) {
-        strcpy( message, "not enough memory for buffer" );
-        return true;
-    }
 
     return false;
-}
-
-void ristrettofromhash_deinit( UDF_INIT* initid )
-{
-    if( initid->ptr != NULL ) {
-        free( initid->ptr );
-        initid->ptr = NULL;
-    }
 }
 
 char* ristrettofromhash( const UDF_INIT* initid, const UDF_ARGS* args,
@@ -90,12 +77,12 @@ char* ristrettofromhash( const UDF_INIT* initid, const UDF_ARGS* args,
         return NULL;
     }
     const unsigned char* hash1 = ( const unsigned char* )args->args[0];
-    if( crypto_core_ristretto255_from_hash( ( unsigned char* )initid->ptr,
+    if( crypto_core_ristretto255_from_hash( ( unsigned char* )result,
                                             hash1 ) != 0 ) {
         *is_null = 1;
         *error = 1;
         return NULL;
     }
     *length = crypto_core_ristretto255_BYTES;
-    return initid->ptr;
+    return result;
 }

@@ -62,19 +62,7 @@ void testRistrettoScalarRandom_init()
     const my_bool result = ristrettoscalarrandom_init( &initid, &args, message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
-    assert( initid.ptr != NULL && "Memory was not succesfully allocated" );
     printf( "testRistrettoScalarRandom_init() passed assertions!\n" );
-    free( initid.ptr );
-}
-
-void testRistrettoScalarRandom_deinit()
-{
-    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
-    initid.ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
-    assert( initid.ptr != NULL );
-    ristrettoscalarrandom_deinit( &initid );
-    assert( initid.ptr == NULL && "_deinit failed to free the allocated memory." );
-    printf( "testRistrettoScalarRandom_deinit() passed assertions!\n" );
 }
 
 void testRistrettoScalarRandom()
@@ -85,26 +73,22 @@ void testRistrettoScalarRandom()
     char is_null[1];
     enum Item_result itemValue[1] = {STRING_RESULT};
     UDF_ARGS args = { .arg_count = 0, .arg_type = itemValue, .args = 0, .lengths = 0, .maybe_null = 0};
-    char* scalar = calloc( crypto_core_ristretto255_SCALARBYTES, sizeof( char ) );
-    assert( scalar != NULL );
-    const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = scalar, .const_item = 0};
+    const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     const char* returnedPtr = ristrettoscalarrandom( &initid, &args, result, length,
                               is_null, error );
-    assert( returnedPtr == initid.ptr &&
-            "Returned pointer does not originate from the UDF_INIT struct" );
+    assert( returnedPtr == result &&
+            "Returned pointer does not originate from the result argument" );
     char* zeroArray = calloc( crypto_core_ristretto255_SCALARBYTES,
                               sizeof( char ) );
-    assert( memcmp( zeroArray, scalar, crypto_core_ristretto255_SCALARBYTES ) < 0 &&
+    assert( memcmp( zeroArray, result, crypto_core_ristretto255_SCALARBYTES ) < 0 &&
             "ristrettoscalarrandom() did not populate the output with a random 32-byte scalar" );
     printf( "testRistrettoScalarRandom() passed assertions!\n" );
-    free( scalar );
     free( zeroArray );
 }
 
 int main()
 {
     testRistrettoScalarRandom_init();
-    testRistrettoScalarRandom_deinit();
     testRistrettoScalarRandom();
     return 0;
 }

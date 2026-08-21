@@ -64,9 +64,7 @@ void testRistrettoScalarNegate_init()
     const my_bool result = ristrettoscalarnegate_init( &initid, &args, message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
-    assert( initid.ptr != NULL && "Memory was not succesfully allocated" );
     printf( "testRistrettoScalarNegate_init() passed assertions!\n" );
-    free( initid.ptr );
 }
 
 void testInvalidArgsAmountRistrettoScalarNegate_init()
@@ -84,18 +82,7 @@ void testInvalidArgsAmountRistrettoScalarNegate_init()
             "Result is not true (1), _init passed when it should have failed." );
     assert( strcmp( message, "Requires 1 binary string argument" ) == 0 &&
             "Error message is incorrect" );
-    assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );
     printf( "testInvalidArgsAmountRistrettoScalarNegate_init() passed assertions!\n" );
-}
-
-void testRistrettoScalarNegate_deinit()
-{
-    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
-    initid.ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
-    assert( initid.ptr != NULL );
-    ristrettoscalarnegate_deinit( &initid );
-    assert( initid.ptr == NULL && "_deinit failed to free the allocated memory." );
-    printf( "testRistrettoScalarNegate_deinit() passed assertions!\n" );
 }
 
 void testRistrettoScalarNegate()
@@ -110,21 +97,18 @@ void testRistrettoScalarNegate()
     char is_null[1];
     enum Item_result itemValue[1] = {STRING_RESULT};
     const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    char* scalar = malloc( crypto_core_ristretto255_SCALARBYTES );
-    assert( scalar != NULL );
-    const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = scalar, .const_item = 0};
+    const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     const char* returnedPtr = ristrettoscalarnegate( &initid, &args, result, length,
                               is_null, error );
-    assert( returnedPtr == initid.ptr &&
-            "Returned pointer does not originate from the UDF_INIT struct" );
+    assert( returnedPtr == result &&
+            "Returned pointer does not originate from the result argument" );
     char expectedScalar[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_negate( ( unsigned char* )expectedScalar,
                                             inputScalar );
-    assert( memcmp( expectedScalar, scalar,
+    assert( memcmp( expectedScalar, result,
                     crypto_core_ristretto255_SCALARBYTES ) == 0 &&
             "Output of the ristrettoscalarnegate() is not as expected" );
     printf( "testRistrettoScalarNegate() passed assertions!\n" );
-    free( scalar );
 }
 
 void testInvalidFirstArgSizeRistrettoScalarNegate()
@@ -141,22 +125,18 @@ void testInvalidFirstArgSizeRistrettoScalarNegate()
     char is_null[1];
     enum Item_result itemValue[1] = {STRING_RESULT};
     const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    char* scalar = malloc( crypto_core_ristretto255_SCALARBYTES );
-    assert( scalar != NULL );
-    const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = scalar, .const_item = 0};
+    const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     const char* returnedPtr = ristrettoscalarnegate( &initid, &args, result, length,
                               is_null, error );
     assert( returnedPtr == NULL &&
             "ristrettoscalarnegate() did not return NULL on invalid first input argument" );
     printf( "testInvalidFirstArgSizeRistrettoScalarNegate() passed assertions!\n" );
-    free( scalar );
 }
 
 int main()
 {
     testRistrettoScalarNegate_init();
     testInvalidArgsAmountRistrettoScalarNegate_init();
-    testRistrettoScalarNegate_deinit();
     testRistrettoScalarNegate();
     testInvalidFirstArgSizeRistrettoScalarNegate();
     return 0;

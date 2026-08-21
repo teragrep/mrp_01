@@ -48,7 +48,6 @@
 
 my_bool ristrettoscalarnegate_init( UDF_INIT* initid, const UDF_ARGS* args,
                                     char* message );
-void ristrettoscalarnegate_deinit( UDF_INIT* initid );
 char* ristrettoscalarnegate( const UDF_INIT* initid, const UDF_ARGS* args,
                              char* result,
                              unsigned long* length, char* is_null,

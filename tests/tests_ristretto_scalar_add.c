@@ -64,7 +64,6 @@ void testRistrettoScalarAdd_init()
     const my_bool result = ristrettoscalaradd_init( &initid, &args, message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
-    assert( initid.ptr != NULL && "Memory was not succesfully allocated" );
     printf( "testRistrettoScalarAdd_init() passed assertions!\n" );
     free( initid.ptr );
 }
@@ -84,18 +83,7 @@ void testInvalidArgsAmountRistrettoScalarAdd_init()
             "Result is not true (1), _init passed when it should have failed." );
     assert( strcmp( message, "requires 2 binary string arguments" ) == 0 &&
             "Error message is incorrect" );
-    assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );
     printf( "testInvalidArgsAmountRistrettoScalarAdd_init() passed assertions!\n" );
-}
-
-void testRistrettoScalarAdd_deinit()
-{
-    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
-    initid.ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
-    assert( initid.ptr != NULL );
-    ristrettoscalaradd_deinit( &initid );
-    assert( initid.ptr == NULL && "_deinit failed to free the allocated memory." );
-    printf( "testRistrettoScalarAdd_deinit() passed assertions!\n" );
 }
 
 void testRistrettoScalarAdd()
@@ -110,22 +98,19 @@ void testRistrettoScalarAdd()
     char is_null[1];
     enum Item_result itemValue[] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    char* scalar = malloc( crypto_core_ristretto255_SCALARBYTES );
-    assert( scalar != NULL );
-    const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = scalar, .const_item = 0};
+    const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     const char* returnedPtr = ristrettoscalaradd( &initid, &args, result, length,
                               is_null,
                               error );
-    assert( returnedPtr == initid.ptr &&
-            "Returned pointer does not originate from the UDF_INIT struct" );
+    assert( returnedPtr == result &&
+            "Returned pointer does not originate from the result argument" );
     char expectedScalar[crypto_core_ristretto255_SCALARBYTES];
     crypto_core_ristretto255_scalar_add( ( unsigned char* ) expectedScalar,
                                          inputScalar, inputScalar );
-    assert( memcmp( expectedScalar, scalar,
+    assert( memcmp( expectedScalar, result,
                     crypto_core_ristretto255_SCALARBYTES ) == 0 &&
             "Output of the ristrettoscalaradd() is not as expected" );
     printf( "testRistrettoScalarAdd() passed assertions!\n" );
-    free( scalar );
 }
 
 void testInvalidFirstArgSizeRistrettoScalarAdd()
@@ -144,16 +129,13 @@ void testInvalidFirstArgSizeRistrettoScalarAdd()
     char is_null[1];
     enum Item_result itemValue[] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    char* scalar = malloc( crypto_core_ristretto255_SCALARBYTES );
-    assert( scalar != NULL );
-    const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = scalar, .const_item = 0};
+    const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     const char* returnedPtr = ristrettoscalaradd( &initid, &args, result, length,
                               is_null,
                               error );
     assert( returnedPtr == NULL &&
             "ristrettoscalaradd() did not return NULL on invalid first input argument" );
     printf( "testInvalidFirstArgSizeRistrettoScalarAdd() passed assertions!\n" );
-    free( scalar );
 }
 
 void testInvalidSecondArgSizeRistrettoScalarAdd()
@@ -172,23 +154,19 @@ void testInvalidSecondArgSizeRistrettoScalarAdd()
     char is_null[1];
     enum Item_result itemValue[] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    char* scalar = malloc( crypto_core_ristretto255_SCALARBYTES );
-    assert( scalar != NULL );
-    const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = scalar, .const_item = 0};
+    const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     const char* returnedPtr = ristrettoscalaradd( &initid, &args, result, length,
                               is_null,
                               error );
     assert( returnedPtr == NULL &&
             "ristrettoscalaradd() did not return NULL on invalid second input argument" );
     printf( "testInvalidSecondArgSizeRistrettoScalarAdd() passed assertions!\n" );
-    free( scalar );
 }
 
 int main()
 {
     testRistrettoScalarAdd_init();
     testInvalidArgsAmountRistrettoScalarAdd_init();
-    testRistrettoScalarAdd_deinit();
     testRistrettoScalarAdd();
     testInvalidFirstArgSizeRistrettoScalarAdd();
     testInvalidSecondArgSizeRistrettoScalarAdd();

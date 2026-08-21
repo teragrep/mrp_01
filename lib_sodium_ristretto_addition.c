@@ -63,21 +63,7 @@ my_bool ristrettoadd_init( UDF_INIT* initid, const UDF_ARGS* args,
         strcpy( message, "sodium failed to initialize" );
         return true;
     }
-
-    initid->ptr = malloc( crypto_core_ristretto255_BYTES );
-    if( initid->ptr == NULL ) {
-        strcpy( message, "not enough memory for buffer" );
-        return true;
-    }
     return false;
-}
-
-void ristrettoadd_deinit( UDF_INIT* initid )
-{
-    if( initid->ptr != NULL ) {
-        free( initid->ptr );
-        initid->ptr = NULL;
-    }
 }
 
 char* ristrettoadd( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
@@ -102,12 +88,12 @@ char* ristrettoadd( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
         *error = 1;
         return NULL;
     }
-    if( crypto_core_ristretto255_add( ( unsigned char* )initid->ptr, point2,
+    if( crypto_core_ristretto255_add( ( unsigned char* )result, point2,
                                       point1 ) != 0 ) {
         *is_null = 1;
         *error = 1;
         return NULL;
     }
     *length = crypto_core_ristretto255_BYTES;
-    return initid->ptr;
+    return result;
 }

@@ -48,7 +48,6 @@
 
 my_bool ristrettoadd_init( UDF_INIT* initid, const UDF_ARGS* args,
                            char* message );
-void ristrettoadd_deinit( UDF_INIT* initid );
 char* ristrettoadd( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
                     unsigned long* length, char* is_null, char* error );
 #endif //MRP_01_LIB_SODIUM_RISTRETTO_ADDITION_H

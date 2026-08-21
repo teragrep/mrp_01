@@ -48,7 +48,6 @@
 
 my_bool ristrettoscalaradd_init( UDF_INIT* initid, const UDF_ARGS* args,
                                  char* message );
-void ristrettoscalaradd_deinit( UDF_INIT* initid );
 char* ristrettoscalaradd( const UDF_INIT* initid, const UDF_ARGS* args,
                           char* result,
                           unsigned long* length, char* is_null,

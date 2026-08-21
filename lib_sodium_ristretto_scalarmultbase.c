@@ -60,20 +60,7 @@ my_bool scalarmultristrettobase_init( UDF_INIT* initid, const UDF_ARGS* args,
         strcpy( message, "sodium failed to initialize" );
         return true;
     }
-    initid->ptr = malloc( crypto_core_ristretto255_BYTES );
-    if( initid->ptr == NULL ) {
-        strcpy( message, "not enough memory for buffer" );
-        return true;
-    }
     return false;
-}
-
-void scalarmultristrettobase_deinit( UDF_INIT* initid )
-{
-    if( initid->ptr != NULL ) {
-        free( initid->ptr );
-        initid->ptr = NULL;
-    }
 }
 
 char* scalarmultristrettobase( const UDF_INIT* initid, const UDF_ARGS* args,
@@ -87,12 +74,12 @@ char* scalarmultristrettobase( const UDF_INIT* initid, const UDF_ARGS* args,
         return NULL;
     }
     const unsigned char* scalar1 = ( const unsigned char* )args->args[0];
-    if( crypto_scalarmult_ristretto255_base( ( unsigned char* )initid->ptr,
+    if( crypto_scalarmult_ristretto255_base( ( unsigned char* )result,
             scalar1 ) != 0 ) {
         *is_null = 1;
         *error = 1;
         return NULL;
     }
     *length = crypto_core_ristretto255_BYTES;
-    return initid->ptr;
+    return result;
 }

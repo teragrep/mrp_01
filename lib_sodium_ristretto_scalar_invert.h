@@ -48,7 +48,6 @@
 
 my_bool ristrettoscalarinvert_init( UDF_INIT* initid, const UDF_ARGS* args,
                                     char* message );
-void ristrettoscalarinvert_deinit( UDF_INIT* initid );
 char* ristrettoscalarinvert( const UDF_INIT* initid, const UDF_ARGS* args,
                              char* result,
                              unsigned long* length, char* is_null,

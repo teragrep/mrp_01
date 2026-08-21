@@ -48,7 +48,6 @@
 
 my_bool ristrettoscalarmul_init( UDF_INIT* initid, const UDF_ARGS* args,
                                  char* message );
-void ristrettoscalarmul_deinit( UDF_INIT* initid );
 char* ristrettoscalarmul( const UDF_INIT* initid, const UDF_ARGS* args,
                           char* result,
                           unsigned long* length, char* is_null,

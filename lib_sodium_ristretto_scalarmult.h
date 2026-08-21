@@ -48,7 +48,6 @@
 
 my_bool scalarmultristretto_init( UDF_INIT* initid, const UDF_ARGS* args,
                                   char* message );
-void scalarmultristretto_deinit( UDF_INIT* initid );
 char* scalarmultristretto( const UDF_INIT* initid, const UDF_ARGS* args,
                            char* result,
                            unsigned long* length, char* is_null,

@@ -62,20 +62,7 @@ my_bool ristrettoscalarcomplement_init( UDF_INIT* initid, const UDF_ARGS* args,
         strcpy( message, "sodium failed to initialize" );
         return true;
     }
-    initid->ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
-    if( initid->ptr == NULL ) {
-        strcpy( message, "not enough memory for buffer" );
-        return true;
-    }
     return false;
-}
-
-void ristrettoscalarcomplement_deinit( UDF_INIT* initid )
-{
-    if( initid->ptr != NULL ) {
-        free( initid->ptr );
-        initid->ptr = NULL;
-    }
 }
 
 char* ristrettoscalarcomplement( const UDF_INIT* initid, const UDF_ARGS* args,
@@ -89,8 +76,8 @@ char* ristrettoscalarcomplement( const UDF_INIT* initid, const UDF_ARGS* args,
         return NULL;
     }
     const unsigned char* scalar1 = ( const unsigned char* )args->args[0];
-    crypto_core_ristretto255_scalar_complement( ( unsigned char* )initid->ptr,
+    crypto_core_ristretto255_scalar_complement( ( unsigned char* )result,
             scalar1 );
     *length = crypto_core_ristretto255_SCALARBYTES;
-    return initid->ptr;
+    return result;
 }

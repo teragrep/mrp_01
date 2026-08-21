@@ -68,8 +68,6 @@ void testScalarmultristretto_init()
     const my_bool result = scalarmultristretto_init( &initid, &args, message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
-    assert( initid.ptr != NULL && "Memory was not succesfully allocated" );
-    free( initid.ptr );
     printf( "testScalarmultristretto_init() passed assertions!\n" );
 }
 
@@ -90,7 +88,6 @@ void testInvalidArgsAmountScalarmultristretto_init()
             "Result is not true (1), _init passed when it should have failed." );
     assert( strcmp( message, "requires 2 binary string arguments" ) == 0 &&
             "Error message is incorrect" );
-    assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );
     printf( "testInvalidArgsAmountScalarmultristretto_init() passed assertions!\n" );
 }
 
@@ -113,19 +110,7 @@ void testInvalidSecondArgPointScalarmultristretto_init()
     const my_bool result = scalarmultristretto_init( &initid, &args, message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
-    assert( initid.ptr != NULL && "Memory was not succesfully allocated" );
-    free( initid.ptr );
     printf( "testInvalidSecondArgPointScalarmultristretto_init() passed assertions!\n" );
-}
-
-void testScalarmultristretto_deinit()
-{
-    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0};
-    initid.ptr = malloc( crypto_core_ristretto255_SCALARBYTES );
-    assert( initid.ptr != NULL );
-    scalarmultristretto_deinit( &initid );
-    assert( initid.ptr == NULL && "_deinit failed to free the allocated memory." );
-    printf( "testScalarmultristretto_deinit() passed assertions!\n" );
 }
 
 void testScalarmultristretto()
@@ -138,10 +123,8 @@ void testScalarmultristretto()
     unsigned long testLengths[2] = {crypto_core_ristretto255_SCALARBYTES, crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
-    assert( ristrettoPoint != NULL );
     const UDF_INIT initid = {
-        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0
+        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     char result[255];
     unsigned long length[1];
@@ -149,21 +132,20 @@ void testScalarmultristretto()
     char is_null[1];
     const char* returnedPtr = scalarmultristretto( &initid, &args, result, length,
                               is_null, error );
-    assert( returnedPtr == initid.ptr &&
-            "Returned pointer does not originate from the UDF_INIT struct" );
+    assert( returnedPtr == result &&
+            "Returned pointer does not originate from the result argument" );
     assert( crypto_core_ristretto255_is_valid_point( ( unsigned char* )
-            ristrettoPoint ) == 1 &&
+            result ) == 1 &&
             "Output of the scalarmultristretto() is not a valid ristretto point" );
     char expecteRistrettoPoint[crypto_core_ristretto255_BYTES];
     const int success = crypto_scalarmult_ristretto255( ( unsigned char* )
                         expecteRistrettoPoint, scalar,
                         point );
     assert( success == 0 && "crypto_scalarmult_ristretto255() was not successful" );
-    assert( memcmp( expecteRistrettoPoint, ristrettoPoint,
+    assert( memcmp( expecteRistrettoPoint, result,
                     crypto_core_ristretto255_BYTES ) == 0 &&
             "Output of the scalarmultristretto() is not as expected" );
     printf( "testScalarmultristretto() passed assertions!\n" );
-    free( ristrettoPoint );
 }
 
 void testInvalidSecondArgPointScalarmultristretto()
@@ -178,10 +160,8 @@ void testInvalidSecondArgPointScalarmultristretto()
     unsigned long testLengths[2] = {crypto_core_ristretto255_SCALARBYTES, crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
-    assert( ristrettoPoint != NULL );
     const UDF_INIT initid = {
-        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0
+        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     char result[255];
     unsigned long length[1];
@@ -192,7 +172,6 @@ void testInvalidSecondArgPointScalarmultristretto()
     assert( returnedPtr == NULL &&
             "scalarmultristretto() did not return NULL on invalid second input argument" );
     printf( "testInvalidSecondArgPointRistrettoSub() passed assertions!\n" );
-    free( ristrettoPoint );
 }
 
 void testInvalidFirstArgSizeScalarmultristretto()
@@ -207,10 +186,8 @@ void testInvalidFirstArgSizeScalarmultristretto()
     unsigned long testLengths[2] = {16, crypto_core_ristretto255_BYTES};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
-    assert( ristrettoPoint != NULL );
     const UDF_INIT initid = {
-        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0
+        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     char result[255];
     unsigned long length[1];
@@ -221,7 +198,6 @@ void testInvalidFirstArgSizeScalarmultristretto()
     assert( returnedPtr == NULL &&
             "scalarmultristretto() did not return NULL on invalid first input argument" );
     printf( "testInvalidFirstArgSizeScalarmultristretto() passed assertions!\n" );
-    free( ristrettoPoint );
 }
 
 void testInvalidSecondArgSizeScalarmultristretto()
@@ -236,10 +212,8 @@ void testInvalidSecondArgSizeScalarmultristretto()
     unsigned long testLengths[2] = {crypto_core_ristretto255_SCALARBYTES, 16};
     enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
-    assert( ristrettoPoint != NULL );
     const UDF_INIT initid = {
-        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0
+        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
     char result[255];
     unsigned long length[1];
@@ -250,7 +224,6 @@ void testInvalidSecondArgSizeScalarmultristretto()
     assert( returnedPtr == NULL &&
             "scalarmultristretto() did not return NULL on invalid second input argument" );
     printf( "testInvalidSecondArgSizeScalarmultristretto() passed assertions!\n" );
-    free( ristrettoPoint );
 }
 
 int main()
@@ -258,7 +231,6 @@ int main()
     testScalarmultristretto_init();
     testInvalidArgsAmountScalarmultristretto_init();
     testInvalidSecondArgPointScalarmultristretto_init();
-    testScalarmultristretto_deinit();
     testScalarmultristretto();
     testInvalidSecondArgPointScalarmultristretto();
     testInvalidFirstArgSizeScalarmultristretto();
