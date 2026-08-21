@@ -43,14 +43,52 @@
     Teragrep, the applicable Commercial License may apply to this file if you as
     a licensee so wish it.
 */
-#ifndef MRP_01_LIB_SODIUM_RISTRETTO_SCALARMULT_H
-#define MRP_01_LIB_SODIUM_RISTRETTO_SCALARMULT_H
+#include <sodium.h>
+#include <string.h>
+#include <mysql/mysql.h>
+#include "lib_sodium_ristretto_scalarmultbase.h"
+#include <stdbool.h>
 
-my_bool scalarmultristretto_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                  char* message );
-void scalarmultristretto_deinit( UDF_INIT* initid );
-char* scalarmultristretto( const UDF_INIT* initid, const UDF_ARGS* args,
-                           char* result,
-                           unsigned long* length, char* is_null,
-                           char* error );
-#endif //MRP_01_LIB_SODIUM_RISTRETTO_SCALARMULT_H
+my_bool scalarmultristrettobase_init( UDF_INIT* initid, const UDF_ARGS* args,
+                                      char* message )
+{
+    if( args->arg_count != 1 ||  args->arg_type[0] != STRING_RESULT )  {
+        strcpy( message, "requires 1 binary string argument" );
+        return true;
+    }
+    if( sodium_init() == -1 ) {
+        strcpy( message, "sodium failed to initialize" );
+        return true;
+    }
+    initid->ptr = malloc( crypto_core_ristretto255_BYTES );
+    if( initid->ptr == NULL ) {
+        strcpy( message, "not enough memory for buffer" );
+        return true;
+    }
+    return false;
+}
+
+void scalarmultristrettobase_deinit( UDF_INIT* initid )
+{
+    if( initid->ptr != NULL ) {
+        free( initid->ptr );
+        initid->ptr = NULL;
+    }
+}
+
+char* scalarmultristrettobase( const UDF_INIT* initid, const UDF_ARGS* args,
+                               char* result,
+                               unsigned long* length, char* is_null, char* error )
+{
+    if( args->args[0] == NULL ||
+            args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ) {
+        *is_null = 1;
+        *error = 1;
+        return NULL;
+    }
+    const unsigned char* scalar1 = ( const unsigned char* )args->args[0];
+    crypto_scalarmult_ristretto255_base( ( unsigned char* )initid->ptr,
+                                         scalar1 );
+    *length = crypto_core_ristretto255_BYTES;
+    return initid->ptr;
+}

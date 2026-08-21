@@ -48,7 +48,7 @@
 #include <sodium.h>
 #include <string.h>
 
-#include "../lib_sodium_ristretto_scalarmult.h"
+#include "../lib_sodium_ristretto_scalarmultbase.h"
 
 void testScalarmultristrettobase_init()
 {
