@@ -102,7 +102,12 @@ char* ristrettoadd( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
         *error = 1;
         return NULL;
     }
-    crypto_core_ristretto255_add( ( unsigned char* )initid->ptr, point2, point1 );
+    if( crypto_core_ristretto255_add( ( unsigned char* )initid->ptr, point2,
+                                      point1 ) != 0 ) {
+        *is_null = 1;
+        *error = 1;
+        return NULL;
+    }
     *length = crypto_core_ristretto255_BYTES;
     return initid->ptr;
 }

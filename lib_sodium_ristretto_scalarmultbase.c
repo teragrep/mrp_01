@@ -87,8 +87,12 @@ char* scalarmultristrettobase( const UDF_INIT* initid, const UDF_ARGS* args,
         return NULL;
     }
     const unsigned char* scalar1 = ( const unsigned char* )args->args[0];
-    crypto_scalarmult_ristretto255_base( ( unsigned char* )initid->ptr,
-                                         scalar1 );
+    if( crypto_scalarmult_ristretto255_base( ( unsigned char* )initid->ptr,
+            scalar1 ) != 0 ) {
+        *is_null = 1;
+        *error = 1;
+        return NULL;
+    }
     *length = crypto_core_ristretto255_BYTES;
     return initid->ptr;
 }

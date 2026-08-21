@@ -102,8 +102,12 @@ char* ristrettosub( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
         *error = 1;
         return NULL;
     }
-    crypto_core_ristretto255_sub( ( unsigned char* )initid->ptr, point1,
-                                  point2 );
+    if( crypto_core_ristretto255_sub( ( unsigned char* )initid->ptr, point1,
+                                      point2 ) != 0 ) {
+        *is_null = 1;
+        *error = 1;
+        return NULL;
+    }
     *length = crypto_core_ristretto255_BYTES;
     return initid->ptr;
 }
