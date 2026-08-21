@@ -70,29 +70,6 @@ void testPassRistrettoisvalidpoint_init()
     free( ristrettoPoint );
 }
 
-void testInvalidArgSizeRistrettoisvalidpoint_init()
-{
-    unsigned char* ristrettoPoint = malloc( 64 );
-    assert( ristrettoPoint != NULL );
-    for( size_t i = 0; i < 64; i++ ) {
-        ristrettoPoint[i] = i;
-    }
-    char* testArgs[1] = {( char* ) ristrettoPoint};
-    unsigned long testLengths[1] = {64};
-    enum Item_result itemValue[1] = {STRING_RESULT};
-    const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = 64, .ptr = NULL, .const_item = 0};
-    char message[MYSQL_ERRMSG_SIZE];
-    const my_bool result = ristrettoisvalidpoint_init( &initid, &args, message );
-    assert( result == true &&
-            "Result is not true (1), _init passed when it should have failed." );
-    assert( strcmp( message,
-                    "First input argument is not a 32 byte binary string" ) == 0 &&
-            "Error message is incorrect" );
-    printf( "testInvalidArgSizeRistrettoisvalidpoint_init() passed assertions!\n" );
-    free( ristrettoPoint );
-}
-
 void testInvalidArgAmountRistrettoisvalidpoint_init()
 {
     unsigned char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
@@ -163,6 +140,28 @@ void testPassRistrettoisvalidpoint()
     free( ristrettoPoint );
 }
 
+void testInvalidArgSizeRistrettoisvalidpoint()
+{
+    // Generate an invalid sized ristretto point for validation
+    unsigned char* ristrettoPoint = malloc( sizeof( char ) * 16 );
+    assert( ristrettoPoint != NULL );
+    for( size_t i = 0; i < 16; i++ ) {
+        ristrettoPoint[i] = i;
+    }
+    char* testArgs[1] = {( char* ) ristrettoPoint};
+    unsigned long testLengths[1] = {16};
+    enum Item_result itemValue[1] = {STRING_RESULT};
+    const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = 21, .ptr = NULL, .const_item = 0};
+    char error[1];
+    char is_null[1];
+    const long result = ristrettoisvalidpoint( &initid, &args, is_null, error );
+    assert( result == 0 &&
+            "Result is not 0, Ristretto point validation passed when it should have failed." );
+    printf( "testInvalidArgSizeRistrettoisvalidpoint() passed assertions!\n" );
+    free( ristrettoPoint );
+}
+
 void testFailRistrettoisvalidpoint()
 {
     // Generate an invalid ristretto point for validation
@@ -188,10 +187,10 @@ void testFailRistrettoisvalidpoint()
 int main()
 {
     testPassRistrettoisvalidpoint_init();
-    testInvalidArgSizeRistrettoisvalidpoint_init();
     testInvalidArgAmountRistrettoisvalidpoint_init();
     testInvalidArgTypeRistrettoisvalidpoint_init();
     testPassRistrettoisvalidpoint();
+    testInvalidArgSizeRistrettoisvalidpoint();
     testFailRistrettoisvalidpoint();
     return 0;
 }

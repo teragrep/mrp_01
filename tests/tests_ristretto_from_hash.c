@@ -75,30 +75,6 @@ void testRistrettofromhash_init()
     printf( "testRistrettofromhash_init() passed assertions!\n" );
 }
 
-void testInvalidArgSizeRistrettofromhash_init()
-{
-    unsigned char* hash = malloc( 32 );
-    assert( hash != NULL );
-    for( size_t i = 0; i < 32; i++ ) {
-        hash[i] = rand();
-    }
-    char* testArgs[] = {( char* ) hash};
-    unsigned long testLengths[1] = {32};
-    enum Item_result itemValue[1] = {STRING_RESULT};
-    char message[MYSQL_ERRMSG_SIZE];
-    const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0};
-    const my_bool result = ristrettofromhash_init( &initid, &args, message );
-    assert( result == true &&
-            "Result is not true (1), _init passed when it should have failed." );
-    assert( strcmp( message,
-                    "First input argument is not a 64 byte binary string" ) == 0 &&
-            "Error message is incorrect" );
-    assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );
-    free( hash );
-    printf( "testInvalidArgSizeRistrettofromhash_init() passed assertions!\n" );
-}
-
 void testInvalidArgAmountRistrettofromhash_init()
 {
     unsigned char* hash = malloc( crypto_core_ristretto255_HASHBYTES );
@@ -163,12 +139,40 @@ void testRistrettofromhash()
     free( ristrettoPoint );
 }
 
+void testInvalidArgSizeRistrettofromhash()
+{
+    unsigned char* hash = malloc( sizeof( char ) * 16 );
+    assert( hash != NULL );
+    for( size_t i = 0; i < 16; i++ ) {
+        hash[i] = i;
+    }
+    char* testArgs[] = {( char* ) hash};
+    unsigned long testLengths[1] = {16};
+    enum Item_result itemValue[1] = {STRING_RESULT};
+    char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
+    assert( ristrettoPoint != NULL );
+    const UDF_ARGS args = {.arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0};
+    char result[255];
+    unsigned long length[1];
+    char error[1];
+    char is_null[1];
+    const char* returnedPtr = ristrettofromhash( &initid, &args, result, length,
+                              is_null,
+                              error );
+    assert( returnedPtr == NULL &&
+            "Returned pointer is not NULL" );
+    printf( "testInvalidArgSizeRistrettofromhash() passed assertions!\n" );
+    free( hash );
+    free( ristrettoPoint );
+}
+
 int main()
 {
     testRistrettofromhash_init();
-    testInvalidArgSizeRistrettofromhash_init();
     testInvalidArgAmountRistrettofromhash_init();
     testRistrettofromhash_deinit();
     testRistrettofromhash();
+    testInvalidArgSizeRistrettofromhash();
     return 0;
 }

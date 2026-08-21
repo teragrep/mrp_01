@@ -88,54 +88,6 @@ void testInvalidArgsAmountRistrettoScalarAdd_init()
     printf( "testInvalidArgsAmountRistrettoScalarAdd_init() passed assertions!\n" );
 }
 
-void testInvalidFirstArgSizeRistrettoScalarAdd_init()
-{
-    unsigned char secondScalar[crypto_core_ristretto255_SCALARBYTES];
-    crypto_core_ristretto255_scalar_random( secondScalar );
-    unsigned char firstScalar[16];
-    for( size_t i = 0; i < 16; i++ ) {
-        firstScalar[i] = rand();
-    }
-    char* testArgs[] = {( char* ) firstScalar, ( char* ) secondScalar};
-    unsigned long testLengths[] = {16};
-    enum Item_result itemValue[] = {STRING_RESULT, STRING_RESULT};
-    const UDF_ARGS args = { .arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
-    char message[MYSQL_ERRMSG_SIZE];
-    const my_bool result = ristrettoscalaradd_init( &initid, &args, message );
-    assert( result == true &&
-            "Result is not true (1), _init passed when it should have failed." );
-    assert( strcmp( message,
-                    "First input is not a scalar in 32 byte binary string format" ) == 0 &&
-            "Error message is incorrect" );
-    assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );
-    printf( "testInvalidFirstArgSizeRistrettoScalarAdd_init() passed assertions!\n" );
-}
-
-void testInvalidSecondArgSizeRistrettoScalarAdd_init()
-{
-    unsigned char firstScalar[crypto_core_ristretto255_SCALARBYTES];
-    crypto_core_ristretto255_scalar_random( firstScalar );
-    unsigned char secondScalar[16];
-    for( size_t i = 0; i < 16; i++ ) {
-        secondScalar[i] = rand();
-    }
-    char* testArgs[] = {( char* ) firstScalar, ( char* ) secondScalar};
-    unsigned long testLengths[] = {crypto_core_ristretto255_SCALARBYTES, 16};
-    enum Item_result itemValue[] = {STRING_RESULT, STRING_RESULT};
-    const UDF_ARGS args = { .arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
-    char message[MYSQL_ERRMSG_SIZE];
-    const my_bool result = ristrettoscalaradd_init( &initid, &args, message );
-    assert( result == true &&
-            "Result is not true (1), _init passed when it should have failed." );
-    assert( strcmp( message,
-                    "Second input is not a scalar in 32 byte binary string format" ) == 0 &&
-            "Error message is incorrect" );
-    assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );
-    printf( "testInvalidFirstArgSizeRistrettoScalarAdd_init() passed assertions!\n" );
-}
-
 void testRistrettoScalarAdd_deinit()
 {
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
@@ -176,13 +128,69 @@ void testRistrettoScalarAdd()
     free( scalar );
 }
 
+void testInvalidFirstArgSizeRistrettoScalarAdd()
+{
+    unsigned char firstScalar[16];
+    for( size_t i = 0; i < 16; i++ ) {
+        firstScalar[i] = rand();
+    }
+    unsigned char secondScalar[crypto_core_ristretto255_SCALARBYTES];
+    crypto_core_ristretto255_scalar_random( secondScalar );
+    char* testArgs[] = {( char* ) firstScalar, ( char* ) secondScalar};
+    unsigned long testLengths[] = {16, crypto_core_ristretto255_SCALARBYTES};
+    char result[255];
+    unsigned long length[1];
+    char error[1];
+    char is_null[1];
+    enum Item_result itemValue[] = {STRING_RESULT, STRING_RESULT};
+    const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    char* scalar = malloc( crypto_core_ristretto255_SCALARBYTES );
+    assert( scalar != NULL );
+    const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = scalar, .const_item = 0};
+    const char* returnedPtr = ristrettoscalaradd( &initid, &args, result, length,
+                              is_null,
+                              error );
+    assert( returnedPtr == NULL &&
+            "ristrettoscalaradd() did not return NULL on invalid first input argument" );
+    printf( "testInvalidFirstArgSizeRistrettoScalarAdd() passed assertions!\n" );
+    free( scalar );
+}
+
+void testInvalidSecondArgSizeRistrettoScalarAdd()
+{
+    unsigned char firstScalar[crypto_core_ristretto255_SCALARBYTES];
+    crypto_core_ristretto255_scalar_random( firstScalar );
+    unsigned char secondScalar[16];
+    for( size_t i = 0; i < 16; i++ ) {
+        secondScalar[i] = rand();
+    }
+    char* testArgs[] = {( char* ) firstScalar, ( char* ) secondScalar};
+    unsigned long testLengths[] = {crypto_core_ristretto255_SCALARBYTES, 16};
+    char result[255];
+    unsigned long length[1];
+    char error[1];
+    char is_null[1];
+    enum Item_result itemValue[] = {STRING_RESULT, STRING_RESULT};
+    const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    char* scalar = malloc( crypto_core_ristretto255_SCALARBYTES );
+    assert( scalar != NULL );
+    const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = scalar, .const_item = 0};
+    const char* returnedPtr = ristrettoscalaradd( &initid, &args, result, length,
+                              is_null,
+                              error );
+    assert( returnedPtr == NULL &&
+            "ristrettoscalaradd() did not return NULL on invalid second input argument" );
+    printf( "testInvalidSecondArgSizeRistrettoScalarAdd() passed assertions!\n" );
+    free( scalar );
+}
+
 int main()
 {
     testRistrettoScalarAdd_init();
     testInvalidArgsAmountRistrettoScalarAdd_init();
-    testInvalidFirstArgSizeRistrettoScalarAdd_init();
-    testInvalidSecondArgSizeRistrettoScalarAdd_init();
     testRistrettoScalarAdd_deinit();
     testRistrettoScalarAdd();
+    testInvalidFirstArgSizeRistrettoScalarAdd();
+    testInvalidSecondArgSizeRistrettoScalarAdd();
     return 0;
 }

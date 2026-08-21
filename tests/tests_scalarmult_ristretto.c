@@ -94,56 +94,6 @@ void testInvalidArgsAmountScalarmultristretto_init()
     printf( "testInvalidArgsAmountScalarmultristretto_init() passed assertions!\n" );
 }
 
-void testInvalidFirstArgSizeScalarmultristretto_init()
-{
-    unsigned char point[crypto_core_ristretto255_BYTES];
-    crypto_core_ristretto255_random( point );
-    unsigned char scalar[16];
-    crypto_core_ristretto255_scalar_random( scalar );
-    char* testArgs[] = {( char* )scalar, ( char* )point};
-    unsigned long testLengths[2] = {16, crypto_core_ristretto255_BYTES};
-    enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
-    char message[MYSQL_ERRMSG_SIZE];
-    const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    UDF_INIT initid = {
-        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
-    };
-    const my_bool result = scalarmultristretto_init( &initid, &args, message );
-    assert( result == true &&
-            "Result is not true (1), _init passed when it should have failed." );
-    assert( strcmp( message,
-                    "First input argument is not a 32 byte scalar in binary string format" ) == 0 &&
-            "Error message is incorrect" );
-    assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );
-    printf( "testInvalidFirstArgSizeScalarmultristretto_init() passed assertions!\n" );
-}
-
-void testInvalidSecondArgSizeScalarmultristretto_init()
-{
-    unsigned char point[16];
-    for( size_t i = 0; i < 16; i++ ) {
-        point[i] = rand();
-    }
-    unsigned char scalar[crypto_core_ristretto255_SCALARBYTES];
-    crypto_core_ristretto255_scalar_random( scalar );
-    char* testArgs[] = {( char* )scalar, ( char* )point};
-    unsigned long testLengths[2] = {crypto_core_ristretto255_SCALARBYTES, 16};
-    enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
-    char message[MYSQL_ERRMSG_SIZE];
-    const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    UDF_INIT initid = {
-        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
-    };
-    const my_bool result = scalarmultristretto_init( &initid, &args, message );
-    assert( result == true &&
-            "Result is not true (1), _init passed when it should have failed." );
-    assert( strcmp( message,
-                    "Second input argument is not a 32 byte binary string" ) == 0 &&
-            "Error message is incorrect" );
-    assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );
-    printf( "testInvalidSecondArgSizeScalarmultristretto_init() passed assertions!\n" );
-}
-
 void testInvalidSecondArgPointScalarmultristretto_init()
 {
     unsigned char point[crypto_core_ristretto255_BYTES];
@@ -245,15 +195,73 @@ void testInvalidSecondArgPointScalarmultristretto()
     free( ristrettoPoint );
 }
 
+void testInvalidFirstArgSizeScalarmultristretto()
+{
+    unsigned char scalar[16];
+    for( size_t i = 0; i < 16; i++ ) {
+        scalar[i] = rand();
+    }
+    unsigned char point[crypto_core_ristretto255_BYTES];
+    crypto_core_ristretto255_random( point );
+    char* testArgs[] = {( char* )scalar, ( char* )point};
+    unsigned long testLengths[2] = {16, crypto_core_ristretto255_BYTES};
+    enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
+    const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
+    assert( ristrettoPoint != NULL );
+    const UDF_INIT initid = {
+        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0
+    };
+    char result[255];
+    unsigned long length[1];
+    char error[1];
+    char is_null[1];
+    const char* returnedPtr = scalarmultristretto( &initid, &args, result, length,
+                              is_null, error );
+    assert( returnedPtr == NULL &&
+            "scalarmultristretto() did not return NULL on invalid first input argument" );
+    printf( "testInvalidFirstArgSizeScalarmultristretto() passed assertions!\n" );
+    free( ristrettoPoint );
+}
+
+void testInvalidSecondArgSizeScalarmultristretto()
+{
+    unsigned char scalar[crypto_core_ristretto255_SCALARBYTES];
+    crypto_core_ristretto255_scalar_random( scalar );
+    unsigned char point[16];
+    for( size_t i = 0; i < 16; i++ ) {
+        point[i] = i;
+    }
+    char* testArgs[] = {( char* )scalar, ( char* )point};
+    unsigned long testLengths[2] = {crypto_core_ristretto255_SCALARBYTES, 16};
+    enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
+    const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
+    assert( ristrettoPoint != NULL );
+    const UDF_INIT initid = {
+        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0
+    };
+    char result[255];
+    unsigned long length[1];
+    char error[1];
+    char is_null[1];
+    const char* returnedPtr = scalarmultristretto( &initid, &args, result, length,
+                              is_null, error );
+    assert( returnedPtr == NULL &&
+            "scalarmultristretto() did not return NULL on invalid second input argument" );
+    printf( "testInvalidSecondArgSizeScalarmultristretto() passed assertions!\n" );
+    free( ristrettoPoint );
+}
+
 int main()
 {
     testScalarmultristretto_init();
     testInvalidArgsAmountScalarmultristretto_init();
-    testInvalidFirstArgSizeScalarmultristretto_init();
-    testInvalidSecondArgSizeScalarmultristretto_init();
     testInvalidSecondArgPointScalarmultristretto_init();
     testScalarmultristretto_deinit();
     testScalarmultristretto();
     testInvalidSecondArgPointScalarmultristretto();
+    testInvalidFirstArgSizeScalarmultristretto();
+    testInvalidSecondArgSizeScalarmultristretto();
     return 0;
 }

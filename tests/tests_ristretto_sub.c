@@ -94,30 +94,6 @@ void testInvalidArgsAmountRistrettoSub_init()
     printf( "testInvalidArgsAmountRistrettoSub_init() passed assertions!\n" );
 }
 
-void testInvalidFirstArgSizeRistrettoSub_init()
-{
-    unsigned char point1[16];
-    crypto_core_ristretto255_random( point1 );
-    unsigned char point2[crypto_core_ristretto255_BYTES];
-    crypto_core_ristretto255_random( point2 );
-    char* testArgs[] = {( char* )point1, ( char* )point2};
-    unsigned long testLengths[2] = {16, crypto_core_ristretto255_BYTES};
-    enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
-    char message[MYSQL_ERRMSG_SIZE];
-    const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    UDF_INIT initid = {
-        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
-    };
-    const my_bool result = ristrettosub_init( &initid, &args, message );
-    assert( result == true &&
-            "Result is not true (1), _init passed when it should have failed." );
-    assert( strcmp( message,
-                    "First input argument is not a 32 byte binary string" ) == 0 &&
-            "Error message is incorrect" );
-    assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );
-    printf( "testInvalidFirstArgSizeRistrettoSub_init() passed assertions!\n" );
-}
-
 void testInvalidFirstArgPointRistrettoSub_init()
 {
     unsigned char point1[crypto_core_ristretto255_BYTES];
@@ -140,30 +116,6 @@ void testInvalidFirstArgPointRistrettoSub_init()
     assert( initid.ptr != NULL && "Memory was not successfully allocated" );
     free( initid.ptr );
     printf( "testInvalidFirstArgPointRistrettoSub_init() passed assertions!\n" );
-}
-
-void testInvalidSecondArgSizeRistrettoSub_init()
-{
-    unsigned char point1[crypto_core_ristretto255_BYTES];
-    crypto_core_ristretto255_random( point1 );
-    unsigned char point2[16];
-    crypto_core_ristretto255_random( point2 );
-    char* testArgs[] = {( char* )point1, ( char* )point2};
-    unsigned long testLengths[2] = {crypto_core_ristretto255_BYTES, 16};
-    enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
-    char message[MYSQL_ERRMSG_SIZE];
-    const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    UDF_INIT initid = {
-        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
-    };
-    const my_bool result = ristrettosub_init( &initid, &args, message );
-    assert( result == true &&
-            "Result is not true (1), _init passed when it should have failed." );
-    assert( strcmp( message,
-                    "Second input argument is not a 32 byte binary string" ) == 0 &&
-            "Error message is incorrect" );
-    assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );
-    printf( "testInvalidSecondArgSizeRistrettoSub_init() passed assertions!\n" );
 }
 
 void testInvalidSecondArgPointRistrettoSub_init()
@@ -295,17 +247,75 @@ void testInvalidSecondArgPointRistrettoSub()
     free( ristrettoPoint );
 }
 
+void testInvalidFirstArgSizeRistrettoSub()
+{
+    unsigned char point1[16];
+    for( size_t i = 0; i < 16; i++ ) {
+        point1[i] = i;
+    }
+    unsigned char point2[crypto_core_ristretto255_BYTES];
+    crypto_core_ristretto255_random( point2 );
+    char* testArgs[] = {( char* )point1, ( char* )point2};
+    unsigned long testLengths[2] = {16, crypto_core_ristretto255_BYTES};
+    enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
+    const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
+    assert( ristrettoPoint != NULL );
+    const UDF_INIT initid = {
+        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0
+    };
+    char result[255];
+    unsigned long length[1];
+    char error[1];
+    char is_null[1];
+    const char* returnedPtr = ristrettosub( &initid, &args, result, length, is_null,
+                                            error );
+    assert( returnedPtr == NULL &&
+            "ristrettosub() did not return NULL on invalid first input argument" );
+    printf( "testInvalidFirstArgSizeRistrettoSub() passed assertions!\n" );
+    free( ristrettoPoint );
+}
+
+void testInvalidSecondArgSizeRistrettoSub()
+{
+    unsigned char point1[crypto_core_ristretto255_BYTES];
+    crypto_core_ristretto255_random( point1 );
+    unsigned char point2[16];
+    for( size_t i = 0; i < 16; i++ ) {
+        point2[i] = i;
+    }
+    char* testArgs[] = {( char* )point1, ( char* )point2};
+    unsigned long testLengths[2] = {crypto_core_ristretto255_BYTES, 16};
+    enum Item_result itemValue[2] = {STRING_RESULT, STRING_RESULT};
+    const UDF_ARGS args = {.arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
+    assert( ristrettoPoint != NULL );
+    const UDF_INIT initid = {
+        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0
+    };
+    char result[255];
+    unsigned long length[1];
+    char error[1];
+    char is_null[1];
+    const char* returnedPtr = ristrettosub( &initid, &args, result, length, is_null,
+                                            error );
+    assert( returnedPtr == NULL &&
+            "ristrettosub() did not return NULL on invalid second input argument" );
+    printf( "testInvalidSecondArgSizeRistrettoSub() passed assertions!\n" );
+    free( ristrettoPoint );
+}
+
 int main()
 {
     testRistrettoSub_init();
     testInvalidArgsAmountRistrettoSub_init();
-    testInvalidFirstArgSizeRistrettoSub_init();
     testInvalidFirstArgPointRistrettoSub_init();
-    testInvalidSecondArgSizeRistrettoSub_init();
     testInvalidSecondArgPointRistrettoSub_init();
     testRistrettoSub_deinit();
     testRistrettoSub();
     testInvalidFirstArgPointRistrettoSub();
     testInvalidSecondArgPointRistrettoSub();
+    testInvalidFirstArgSizeRistrettoSub();
+    testInvalidSecondArgSizeRistrettoSub();
     return 0;
 }

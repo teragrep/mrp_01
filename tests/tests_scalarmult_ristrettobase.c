@@ -91,28 +91,6 @@ void testInvalidArgsAmountScalarmultristrettobase_init()
     printf( "testInvalidArgsAmountScalarmultristrettobase_init() passed assertions!\n" );
 }
 
-void testInvalidArgSizeScalarmultristrettobase_init()
-{
-    unsigned char scalar[16];
-    crypto_core_ristretto255_scalar_random( scalar );
-    char* testArgs[] = {( char* )scalar};
-    unsigned long testLengths[1] = {16};
-    enum Item_result itemValue[1] = {STRING_RESULT};
-    char message[MYSQL_ERRMSG_SIZE];
-    const UDF_ARGS args = {.arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    UDF_INIT initid = {
-        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
-    };
-    const my_bool result = scalarmultristrettobase_init( &initid, &args, message );
-    assert( result == true &&
-            "Result is not true (1), _init passed when it should have failed." );
-    assert( strcmp( message,
-                    "First input argument is not a 32 byte scalar in binary string format" ) == 0 &&
-            "Error message is incorrect" );
-    assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );
-    printf( "testInvalidArgSizeScalarmultristrettobase_init() passed assertions!\n" );
-}
-
 void testScalarmultristrettobase_deinit()
 {
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0};
@@ -152,12 +130,40 @@ void testScalarmultristrettobase()
     free( ristrettoPoint );
 }
 
+void testInvalidArgSizeScalarmultristrettobase()
+{
+    unsigned char scalar[16];
+    for( size_t i = 0; i < 16; i++ ) {
+        scalar[i] = rand();
+    }
+    char* testArgs[] = {( char* )scalar};
+    unsigned long testLengths[1] = {16};
+    enum Item_result itemValue[1] = {STRING_RESULT};
+    const UDF_ARGS args = {.arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    char* ristrettoPoint = malloc( crypto_core_ristretto255_BYTES );
+    assert( ristrettoPoint != NULL );
+    const UDF_INIT initid = {
+        .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = ristrettoPoint, .const_item = 0
+    };
+    char result[255];
+    unsigned long length[1];
+    char error[1];
+    char is_null[1];
+    const char* returnedPtr = scalarmultristrettobase( &initid, &args, result,
+                              length,
+                              is_null, error );
+    assert( returnedPtr == NULL &&
+            "scalarmultristrettobase() did not return NULL on invalid input argument" );
+    printf( "testInvalidArgSizeScalarmultristrettobase() passed assertions!\n" );
+    free( ristrettoPoint );
+}
+
 int main()
 {
     testScalarmultristrettobase_init();
     testInvalidArgsAmountScalarmultristrettobase_init();
-    testInvalidArgSizeScalarmultristrettobase_init();
     testScalarmultristrettobase_deinit();
     testScalarmultristrettobase();
+    testInvalidArgSizeScalarmultristrettobase();
     return 0;
 }

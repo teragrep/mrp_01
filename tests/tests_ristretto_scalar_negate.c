@@ -88,26 +88,6 @@ void testInvalidArgsAmountRistrettoScalarNegate_init()
     printf( "testInvalidArgsAmountRistrettoScalarNegate_init() passed assertions!\n" );
 }
 
-void testInvalidFirstArgSizeRistrettoScalarNegate_init()
-{
-    unsigned char scalar[16];
-    crypto_core_ristretto255_scalar_random( scalar );
-    char* testArgs[] = {( char* )scalar};
-    unsigned long testLengths[] = {16};
-    enum Item_result itemValue[] = {STRING_RESULT};
-    const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
-    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
-    char message[MYSQL_ERRMSG_SIZE];
-    const my_bool result = ristrettoscalarnegate_init( &initid, &args, message );
-    assert( result == true &&
-            "Result is not true (1), _init passed when it should have failed." );
-    assert( strcmp( message,
-                    "First input is not a scalar in 32 byte binary string format" ) == 0 &&
-            "Error message is incorrect" );
-    assert( initid.ptr == NULL && "Memory was allocated when it shouldn't" );
-    printf( "testInvalidFirstArgSizeRistrettoScalarNegate_init() passed assertions!\n" );
-}
-
 void testRistrettoScalarNegate_deinit()
 {
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
@@ -147,12 +127,37 @@ void testRistrettoScalarNegate()
     free( scalar );
 }
 
+void testInvalidFirstArgSizeRistrettoScalarNegate()
+{
+    unsigned char inputScalar[16];
+    for( size_t i = 0; i < 16; i++ ) {
+        inputScalar[i] = rand();
+    }
+    char* testArgs[] = {( char* )inputScalar};
+    unsigned long testLengths[] = {16};
+    char result[255];
+    unsigned long length[1];
+    char error[1];
+    char is_null[1];
+    enum Item_result itemValue[1] = {STRING_RESULT};
+    const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    char* scalar = malloc( crypto_core_ristretto255_SCALARBYTES );
+    assert( scalar != NULL );
+    const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = scalar, .const_item = 0};
+    const char* returnedPtr = ristrettoscalarnegate( &initid, &args, result, length,
+                              is_null, error );
+    assert( returnedPtr == NULL &&
+            "ristrettoscalarnegate() did not return NULL on invalid first input argument" );
+    printf( "testInvalidFirstArgSizeRistrettoScalarNegate() passed assertions!\n" );
+    free( scalar );
+}
+
 int main()
 {
     testRistrettoScalarNegate_init();
     testInvalidArgsAmountRistrettoScalarNegate_init();
-    testInvalidFirstArgSizeRistrettoScalarNegate_init();
     testRistrettoScalarNegate_deinit();
     testRistrettoScalarNegate();
+    testInvalidFirstArgSizeRistrettoScalarNegate();
     return 0;
 }
