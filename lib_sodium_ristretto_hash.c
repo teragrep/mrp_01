@@ -63,6 +63,7 @@ my_bool ristrettofromhash_init( UDF_INIT* initid, const UDF_ARGS* args,
         return true;
     }
     initid->maybe_null = 1;
+    initid->max_length = crypto_core_ristretto255_BYTES;
     return false;
 }
 

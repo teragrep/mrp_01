@@ -58,6 +58,7 @@ my_bool ristrettorandom_init( UDF_INIT* initid, UDF_ARGS* args, char* message )
         return true;
     }
     initid->maybe_null = 1;
+    initid->max_length = crypto_core_ristretto255_BYTES;
     return false;
 }
 
