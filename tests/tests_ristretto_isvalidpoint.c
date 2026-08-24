@@ -106,10 +106,10 @@ void testInvalidArgTypeRistrettoisvalidpoint_init()
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
     const my_bool result = ristrettoisvalidpoint_init( &initid, &args, message );
-    assert( result == true &&
-            "Result is not true (1), _init passed when it should have failed." );
-    assert( strcmp( message, "requires 1 binary string argument" ) == 0 &&
-            "Error message is incorrect" );
+    assert( result == false &&
+            "Result is not false (0), _init failed when it should have passed." );
+    assert( args.arg_type[0] == STRING_RESULT &&
+            "arg_type[0] was not set to STRING_RESULT by ristrettoisvalidpoint_init()" );
     printf( "testInvalidArgTypeRistrettoisvalidpoint_init() passed assertions!\n" );
     free( ristrettoPoint );
 }

@@ -54,7 +54,8 @@
 my_bool ristrettoscalarnegate_init( UDF_INIT* initid, const UDF_ARGS* args,
                                     char* message )
 {
-    if( args->arg_count != 1 ||  args->arg_type[0] != STRING_RESULT ) {
+    args->arg_type[0] = STRING_RESULT;
+    if( args->arg_count != 1 ) {
         strcpy( message, "Requires 1 binary string argument" );
         return true;
     }

@@ -54,8 +54,9 @@
 my_bool ristrettoscalarsub_init( UDF_INIT* initid, const UDF_ARGS* args,
                                  char* message )
 {
-    if( args->arg_count != 2 || args->arg_type[0] != STRING_RESULT ||
-            args->arg_type[1] != STRING_RESULT ) {
+    args->arg_type[0] = STRING_RESULT;
+    args->arg_type[1] = STRING_RESULT;
+    if( args->arg_count != 2 ) {
         strcpy( message, "requires 2 binary string arguments" );
         return true;
     }
