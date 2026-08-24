@@ -58,6 +58,7 @@ my_bool ristrettoscalarrandom_init( UDF_INIT* initid, UDF_ARGS* args,
         strcpy( message, "sodium failed to initialize" );
         return true;
     }
+    initid->maybe_null = 1;
     return false;
 }
 

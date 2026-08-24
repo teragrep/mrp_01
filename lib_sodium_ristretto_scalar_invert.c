@@ -62,6 +62,7 @@ my_bool ristrettoscalarinvert_init( UDF_INIT* initid, const UDF_ARGS* args,
         strcpy( message, "sodium failed to initialize" );
         return true;
     }
+    initid->maybe_null = 1;
     return false;
 }
 
