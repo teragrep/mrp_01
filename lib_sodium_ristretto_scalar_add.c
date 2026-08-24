@@ -65,6 +65,7 @@ my_bool ristrettoscalaradd_init( UDF_INIT* initid, const UDF_ARGS* args,
     }
     initid->maybe_null = 1;
     initid->max_length = crypto_core_ristretto255_SCALARBYTES;
+    initid->const_item = ( args->args[0] != NULL && args->args[1] != NULL );
     return false;
 }
 

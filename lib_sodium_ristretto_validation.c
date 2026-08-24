@@ -62,6 +62,7 @@ my_bool ristrettoisvalidpoint_init( UDF_INIT* initid, const UDF_ARGS* args,
         strcpy( message, "sodium failed to initialize" );
         return true;
     }
+    initid->const_item = ( args->args[0] != NULL );
     return false;
 }
 
