@@ -1,35 +1,287 @@
-// Before publishing your new repository:
-// 1. Write the readme file
-// 2. Update the issues link in Contributing section in the readme file
-// 3. Update the discussion link in config.yml file in .github/ISSUE_TEMPLATE directory
+= MRP_01: MariaDB Ristretto255 Plugin
 
-= repo-template
+This package provides all the functionalities of libsodium ristretto255 methods in the form of user-defined functions (UDFs) for MySQL.
 
-// Add a short description of your project. Tell what your project does and what it's used for.
+== Installation
 
-This is a template repository for Teragrep organization.
+Install the mrp_01 package:
 
-== Features
+[source,shell]
+----
+yum install mrp_01.rpm
+----
 
-// List your project's features
+Install the user defined functions via the included SQL script:
 
-== Documentation
+[source,shell]
+----
+mariadb < /opt/teragrep/mrp_01/share/install_ristretto.sql
+----
 
-See the official documentation on https://docs.teragrep.com[docs.teragrep.com].
+Or alternatively, install the user defined functions manually via queries:
 
-== Limitations
+[source,sql]
+----
+USE mysql;
 
-// If your project has limitations, please list them. Otherwise remove this section.
+DROP FUNCTION IF EXISTS ristrettoisvalidpoint;
+CREATE FUNCTION ristrettoisvalidpoint RETURNS INTEGER SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristrettorandom;
+CREATE FUNCTION ristrettorandom RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristrettofromhash;
+CREATE FUNCTION ristrettofromhash RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS scalarmultristretto;
+CREATE FUNCTION scalarmultristretto RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS scalarmultristrettobase;
+CREATE FUNCTION scalarmultristrettobase RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristrettoadd;
+CREATE FUNCTION ristrettoadd RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristrettosub;
+CREATE FUNCTION ristrettosub RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristrettoscalarrandom;
+CREATE FUNCTION ristrettoscalarrandom RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristrettoscalarreduce;
+CREATE FUNCTION ristrettoscalarreduce RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristrettoscalarinvert;
+CREATE FUNCTION ristrettoscalarinvert RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristrettoscalarnegate;
+CREATE FUNCTION ristrettoscalarnegate RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristrettoscalarcomplement;
+CREATE FUNCTION ristrettoscalarcomplement RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristrettoscalaradd;
+CREATE FUNCTION ristrettoscalaradd RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristrettoscalarsub;
+CREATE FUNCTION ristrettoscalarsub RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristrettoscalarmul;
+CREATE FUNCTION ristrettoscalarmul RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+----
 
-== How to [compile/use/implement]
+== SQL Functions
 
-// add instructions how people can start to use your project
+=== Encoded element validation
+
+`ristrettoisvalidpoint(BINARY(32) p)`
+
+The function checks that the input argument `p` is a valid ristretto255-encoded element. Returns 1 on success, 0 if the check didn't pass.
+
+=== Random group element
+
+`ristrettorandom()`
+
+The function returns a random ristretto255 group element in binary string format.
+
+=== Hash-to-group
+
+`ristrettofromhash(BINARY(64) a)`
+
+The function maps a 64 bytes vector that given as input argument `a` to a ristretto255 group element and returns it.
+
+=== Scalar multiplication
+
+`scalarmultristretto(BINARY(32) a, BINARY(32) b);`
+
+The function multiplies a ristretto element `b` by a scalar `a` and returns the resulting element.
+
+`scalarmultristrettobase(BINARY(32) a);`
+
+The function multiplies the randomly generated ristretto element by a scalar `a` and returns the resulting element.
+
+=== Element addition and subtraction
+
+`ristrettoadd(BINARY(32) a, BINARY(32) b)`
+
+The function adds the ristretto element `a` to ristretto element `b` and returns the resulting element.
+
+`ristrettosub(BINARY(32) a, BINARY(32) b)`
+
+The function subtracts the ristretto element `a` to the ristretto element `b` and returns the resulting element.
+
+=== Scalar arithmetic over L
+
+The ristrettoscalar*() function set operates over scalars in the `[0..L[` interval, `L` being the order of the ristretto255 group: (2^252 + 27742317777372353535851937790883648493).
+
+`ristrettoscalarrandom()`
+
+The function returns a random scalar in binary string format.
+
+`ristrettoscalarreduce(BINARY(64) s)`
+
+The function reduces a larger scalar value `s` to `s mod L` and returns the resulting 32 byte integer in binary string format.
+
+`ristrettoscalarinvert(BINARY(32) a)`
+
+The function computes the multiplicative inverse of `a over L` and returns the result in binary string format.
+
+`ristrettoscalarnegate(BINARY(32) a)`
+
+The function returns `neg` so that `a + neg = 0 (mod L)`.
+
+`ristrettoscalarcomplement(BINARY(32) a)`
+
+The function returns `comp` so that `a + comp = 1 (mod L)`.
+
+`ristrettoscalaradd(BINARY(32) a, BINARY(32) b)`
+
+The function returns the result of `a + b (mod L)`.
+
+`ristrettoscalarsub(BINARY(32) a, BINARY(32) b)`
+
+The function returns the result of `a - b (mod L)`.
+
+`ristrettoscalarmul(BINARY(32) a, BINARY(32) b)`
+
+The function returns the result of `a * b (mod L)`.
+
+== Query examples
+
+A short introduction on how to use the new user defined functions in SQL queries.
+
+=== Random group element
+
+[source,sql]
+----
+SELECT ristrettorandom();
+----
+
+=== Hash-to-group
+
+[source,sql]
+----
+# The SHA2() function produces a nonbinary string, UNHEX() is used to convert it to binary string.
+SELECT ristrettofromhash(UNHEX(SHA2('Maria', 512)));
+----
+
+=== Encoded element validation
+
+[source,sql]
+----
+SELECT ristrettoisvalidpoint(ristrettofromhash(UNHEX(SHA2('Maria', 512))));
+SELECT ristrettoisvalidpoint(0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45);
+----
+
+=== Scalar multiplication
+
+[source,sql]
+----
+SELECT scalarmultristretto(0x34ABF3B816C051FE1BA7315760B5854800959D776AF87ACF540CC55F3701A905, 0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45);
+----
+
+[source,sql]
+----
+SELECT scalarmultristrettobase(0x34ABF3B816C051FE1BA7315760B5854800959D776AF87ACF540CC55F3701A905);
+----
+
+=== Element addition and subtraction
+
+[source,sql]
+----
+SELECT ristrettoadd(0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45, 0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45);
+----
+
+[source,sql]
+----
+SELECT ristrettosub(0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45, 0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45);
+----
+
+=== Scalar arithmetic over L
+
+[source,sql]
+----
+SELECT ristrettoscalarrandom();
+----
+
+[source,sql]
+----
+SELECT ristrettoscalarreduce(RANDOM_BYTES(64));
+----
+
+[source,sql]
+----
+SELECT ristrettoscalarinvert(ristrettoscalarrandom());
+----
+
+[source,sql]
+----
+SELECT ristrettoscalarnegate(ristrettoscalarrandom());
+----
+
+[source,sql]
+----
+SELECT ristrettoscalarcomplement(ristrettoscalarrandom());
+----
+
+[source,sql]
+----
+SELECT ristrettoscalaradd(ristrettoscalarrandom(), ristrettoscalarrandom());
+----
+
+[source,sql]
+----
+SELECT ristrettoscalarsub(ristrettoscalarrandom(), ristrettoscalarrandom());
+----
+
+[source,sql]
+----
+SELECT ristrettoscalarmul(ristrettoscalarrandom(), ristrettoscalarrandom());
+----
+
+== Development
+
+Compiling this project requires at least the following packages to be installed:
+
+- `make`
+- `automake`
+- `autoconf`
+- `libtool`
+- `mariadb-devel`
+- `libsodium-devel`
+
+To install, run the following commands in project root directory:
+[source,shell]
+----
+autoreconf -fvi
+
+./configure
+make
+sudo make install
+sudo make installdb
+----
+And to uninstall, run the following commands:
+[source,shell]
+----
+sudo make uninstalldb
+sudo make uninstall
+----
+
+Tests can be run with:
+[source,shell]
+----
+make check
+----
+
+If more test files are added to the link:Makefile.am[Makefile.am]:
+[source,text]
+----
+tests_{test_file_name}_SOURCES = tests/{test_file_name}.c
+tests_{test_file_name}_LDADD = -lsodium lib_sodium_ristretto.la
+----
+and add the new test file after the rest of the RISTRETTO_BUILT_TESTS:
+[source,text]
+----
+RISTRETTO_BUILT_TESTS = tests/tests_ristretto_isvalidpoint tests/tests_ristretto_random tests/{test_file_name}
+----
+
+C-code formatting for all source code files can be done using astyle:
+[source,shell]
+----
+dnf install astyle
+
+astyle --options=astyle-options.ini --mode=c --recursive "./*.c, *.h"
+----
 
 == Contributing
 
-// Change the repository name in the issues link to match with your project's name
-
-You can involve yourself with our project by https://github.com/teragrep/repo-template/issues/new/choose[opening an issue] or submitting a pull request.
+You can involve yourself with our project by https://github.com/teragrep/mrp_01/issues/new/choose[opening an issue] or submitting a pull request.
 
 Contribution requirements:
 
