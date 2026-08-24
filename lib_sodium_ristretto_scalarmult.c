@@ -75,12 +75,14 @@ char* scalarmultristretto( const UDF_INIT* initid, const UDF_ARGS* args,
             args->lengths[1] != crypto_core_ristretto255_BYTES ) {
         *is_null = 1;
         *error = 1;
+        memset( result, 0, crypto_core_ristretto255_BYTES );
         return NULL;
     }
     if( crypto_core_ristretto255_is_valid_point( ( const unsigned char* )
             args->args[1] ) == 0 ) {
         *is_null = 1;
         *error = 1;
+        memset( result, 0, crypto_core_ristretto255_BYTES );
         return NULL;
     }
     const unsigned char* scalar1 = ( const unsigned char* )args->args[0];
@@ -89,6 +91,7 @@ char* scalarmultristretto( const UDF_INIT* initid, const UDF_ARGS* args,
                                         point1 ) != 0 ) {
         *is_null = 1;
         *error = 1;
+        memset( result, 0, crypto_core_ristretto255_BYTES );
         return NULL;
     }
     *length = crypto_core_ristretto255_BYTES;

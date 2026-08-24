@@ -73,6 +73,7 @@ char* ristrettoscalarnegate( const UDF_INIT* initid, const UDF_ARGS* args,
             args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ) {
         *is_null = 1;
         *error = 1;
+        memset( result, 0, crypto_core_ristretto255_SCALARBYTES );
         return NULL;
     }
     const unsigned char* scalar1 = ( const unsigned char* )args->args[0];

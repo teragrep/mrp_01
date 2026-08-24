@@ -71,6 +71,7 @@ char* scalarmultristrettobase( const UDF_INIT* initid, const UDF_ARGS* args,
             args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ) {
         *is_null = 1;
         *error = 1;
+        memset( result, 0, crypto_core_ristretto255_BYTES );
         return NULL;
     }
     const unsigned char* scalar1 = ( const unsigned char* )args->args[0];
@@ -78,6 +79,7 @@ char* scalarmultristrettobase( const UDF_INIT* initid, const UDF_ARGS* args,
             scalar1 ) != 0 ) {
         *is_null = 1;
         *error = 1;
+        memset( result, 0, crypto_core_ristretto255_BYTES );
         return NULL;
     }
     *length = crypto_core_ristretto255_BYTES;

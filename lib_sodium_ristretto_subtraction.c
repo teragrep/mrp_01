@@ -74,24 +74,28 @@ char* ristrettosub( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
             args->lengths[1] != crypto_core_ristretto255_BYTES ) {
         *is_null = 1;
         *error = 1;
+        memset( result, 0, crypto_core_ristretto255_BYTES );
         return NULL;
     }
     const unsigned char* point1 = ( const unsigned char* )args->args[0];
     if( crypto_core_ristretto255_is_valid_point( point1 ) == 0 ) {
         *is_null = 1;
         *error = 1;
+        memset( result, 0, crypto_core_ristretto255_BYTES );
         return NULL;
     }
     const unsigned char* point2 = ( const unsigned char* )args->args[1];
     if( crypto_core_ristretto255_is_valid_point( point2 ) == 0 ) {
         *is_null = 1;
         *error = 1;
+        memset( result, 0, crypto_core_ristretto255_BYTES );
         return NULL;
     }
     if( crypto_core_ristretto255_sub( ( unsigned char* )result, point1,
                                       point2 ) != 0 ) {
         *is_null = 1;
         *error = 1;
+        memset( result, 0, crypto_core_ristretto255_BYTES );
         return NULL;
     }
     *length = crypto_core_ristretto255_BYTES;
