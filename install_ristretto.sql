@@ -45,47 +45,47 @@
 */
 USE mysql;
 
-DROP FUNCTION IF EXISTS ristrettoisvalidpoint;
-CREATE FUNCTION ristrettoisvalidpoint RETURNS INTEGER SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_is_valid_point;
+CREATE FUNCTION ristretto255_is_valid_point RETURNS INTEGER SONAME 'lib_sodium_ristretto.so';
 
-DROP FUNCTION IF EXISTS ristrettorandom;
-CREATE FUNCTION ristrettorandom RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_random;
+CREATE FUNCTION ristretto255_random RETURNS STRING SONAME 'lib_sodium_ristretto.so';
 
-DROP FUNCTION IF EXISTS ristrettofromhash;
-CREATE FUNCTION ristrettofromhash RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_from_hash;
+CREATE FUNCTION ristretto255_from_hash RETURNS STRING SONAME 'lib_sodium_ristretto.so';
 
-DROP FUNCTION IF EXISTS scalarmultristretto;
-CREATE FUNCTION scalarmultristretto RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS scalarmult_ristretto255;
+CREATE FUNCTION scalarmult_ristretto255 RETURNS STRING SONAME 'lib_sodium_ristretto.so';
 
-DROP FUNCTION IF EXISTS scalarmultristrettobase;
-CREATE FUNCTION scalarmultristrettobase RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS scalarmult_ristretto255_base;
+CREATE FUNCTION scalarmult_ristretto255_base RETURNS STRING SONAME 'lib_sodium_ristretto.so';
 
-DROP FUNCTION IF EXISTS ristrettoadd;
-CREATE FUNCTION ristrettoadd RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_add;
+CREATE FUNCTION ristretto255_add RETURNS STRING SONAME 'lib_sodium_ristretto.so';
 
-DROP FUNCTION IF EXISTS ristrettosub;
-CREATE FUNCTION ristrettosub RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_sub;
+CREATE FUNCTION ristretto255_sub RETURNS STRING SONAME 'lib_sodium_ristretto.so';
 
-DROP FUNCTION IF EXISTS ristrettoscalarrandom;
-CREATE FUNCTION ristrettoscalarrandom RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_scalar_random;
+CREATE FUNCTION ristretto255_scalar_random RETURNS STRING SONAME 'lib_sodium_ristretto.so';
 
-DROP FUNCTION IF EXISTS ristrettoscalarreduce;
-CREATE FUNCTION ristrettoscalarreduce RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_scalar_reduce;
+CREATE FUNCTION ristretto255_scalar_reduce RETURNS STRING SONAME 'lib_sodium_ristretto.so';
 
-DROP FUNCTION IF EXISTS ristrettoscalarinvert;
-CREATE FUNCTION ristrettoscalarinvert RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_scalar_invert;
+CREATE FUNCTION ristretto255_scalar_invert RETURNS STRING SONAME 'lib_sodium_ristretto.so';
 
-DROP FUNCTION IF EXISTS ristrettoscalarnegate;
-CREATE FUNCTION ristrettoscalarnegate RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_scalar_negate;
+CREATE FUNCTION ristretto255_scalar_negate RETURNS STRING SONAME 'lib_sodium_ristretto.so';
 
-DROP FUNCTION IF EXISTS ristrettoscalarcomplement;
-CREATE FUNCTION ristrettoscalarcomplement RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_scalar_complement;
+CREATE FUNCTION ristretto255_scalar_complement RETURNS STRING SONAME 'lib_sodium_ristretto.so';
 
-DROP FUNCTION IF EXISTS ristrettoscalaradd;
-CREATE FUNCTION ristrettoscalaradd RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_scalar_add;
+CREATE FUNCTION ristretto255_scalar_add RETURNS STRING SONAME 'lib_sodium_ristretto.so';
 
-DROP FUNCTION IF EXISTS ristrettoscalarsub;
-CREATE FUNCTION ristrettoscalarsub RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_scalar_sub;
+CREATE FUNCTION ristretto255_scalar_sub RETURNS STRING SONAME 'lib_sodium_ristretto.so';
 
-DROP FUNCTION IF EXISTS ristrettoscalarmul;
-CREATE FUNCTION ristrettoscalarmul RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_scalar_mul;
+CREATE FUNCTION ristretto255_scalar_mul RETURNS STRING SONAME 'lib_sodium_ristretto.so';
