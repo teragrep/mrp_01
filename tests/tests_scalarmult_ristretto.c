@@ -65,7 +65,7 @@ void testScalarmultristretto_init()
     UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
-    const my_bool result = scalarmultristretto_init( &initid, &args, message );
+    const my_bool result = scalar_mult_ristretto_init( &initid, &args, message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
     printf( "testScalarmultristretto_init() passed assertions!\n" );
@@ -83,7 +83,7 @@ void testInvalidArgsAmountScalarmultristretto_init()
     UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
-    const my_bool result = scalarmultristretto_init( &initid, &args, message );
+    const my_bool result = scalar_mult_ristretto_init( &initid, &args, message );
     assert( result == true &&
             "Result is not true (1), _init passed when it should have failed." );
     assert( strcmp( message, "requires 2 binary string arguments" ) == 0 &&
@@ -107,7 +107,7 @@ void testInvalidSecondArgPointScalarmultristretto_init()
     UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
-    const my_bool result = scalarmultristretto_init( &initid, &args, message );
+    const my_bool result = scalar_mult_ristretto_init( &initid, &args, message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
     printf( "testInvalidSecondArgPointScalarmultristretto_init() passed assertions!\n" );
@@ -130,7 +130,7 @@ void testScalarmultristretto()
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    const char* returnedPtr = scalarmultristretto( &initid, &args, result, length,
+    const char* returnedPtr = scalar_mult_ristretto( &initid, &args, result, length,
                               is_null, error );
     assert( returnedPtr == result &&
             "Returned pointer does not originate from the result argument" );
@@ -167,7 +167,7 @@ void testInvalidSecondArgPointScalarmultristretto()
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    const char* returnedPtr = scalarmultristretto( &initid, &args, result, length,
+    const char* returnedPtr = scalar_mult_ristretto( &initid, &args, result, length,
                               is_null, error );
     assert( returnedPtr == NULL &&
             "scalarmultristretto() did not return NULL on invalid second input argument" );
@@ -193,7 +193,7 @@ void testInvalidFirstArgSizeScalarmultristretto()
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    const char* returnedPtr = scalarmultristretto( &initid, &args, result, length,
+    const char* returnedPtr = scalar_mult_ristretto( &initid, &args, result, length,
                               is_null, error );
     assert( returnedPtr == NULL &&
             "scalarmultristretto() did not return NULL on invalid first input argument" );
@@ -219,7 +219,7 @@ void testInvalidSecondArgSizeScalarmultristretto()
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    const char* returnedPtr = scalarmultristretto( &initid, &args, result, length,
+    const char* returnedPtr = scalar_mult_ristretto( &initid, &args, result, length,
                               is_null, error );
     assert( returnedPtr == NULL &&
             "scalarmultristretto() did not return NULL on invalid second input argument" );

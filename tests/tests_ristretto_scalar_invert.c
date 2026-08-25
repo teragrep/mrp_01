@@ -61,7 +61,7 @@ void testRistrettoScalarInvert_init()
     const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
-    const my_bool result = ristrettoscalarinvert_init( &initid, &args, message );
+    const my_bool result = ristretto_scalar_invert_init( &initid, &args, message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
     printf( "testRistrettoScalarInvert_init() passed assertions!\n" );
@@ -78,7 +78,7 @@ void testInvalidArgsAmountRistrettoScalarInvert_init()
     const UDF_ARGS args = { .arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
-    const my_bool result = ristrettoscalarinvert_init( &initid, &args, message );
+    const my_bool result = ristretto_scalar_invert_init( &initid, &args, message );
     assert( result == true &&
             "Result is not true (1), _init passed when it should have failed." );
     assert( strcmp( message, "requires 1 binary string argument" ) == 0 &&
@@ -99,7 +99,8 @@ void testRistrettoScalarInvert()
     enum Item_result itemValue[1] = {STRING_RESULT};
     const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
-    const char* returnedPtr = ristrettoscalarinvert( &initid, &args, result, length,
+    const char* returnedPtr = ristretto_scalar_invert( &initid, &args, result,
+                              length,
                               is_null, error );
     assert( returnedPtr == result &&
             "Returned pointer does not originate from the result argument" );
@@ -127,7 +128,8 @@ void testInvalidFirstArgSizeRistrettoScalarInvert()
     enum Item_result itemValue[1] = {STRING_RESULT};
     const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
-    const char* returnedPtr = ristrettoscalarinvert( &initid, &args, result, length,
+    const char* returnedPtr = ristretto_scalar_invert( &initid, &args, result,
+                              length,
                               is_null, error );
     assert( returnedPtr == NULL &&
             "ristrettoscalarinvert() did not return NULL on invalid first input argument" );

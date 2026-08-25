@@ -46,10 +46,11 @@
 #ifndef MRP_01_LIB_SODIUM_RISTRETTO_SCALAR_COMPLEMENT_H
 #define MRP_01_LIB_SODIUM_RISTRETTO_SCALAR_COMPLEMENT_H
 
-my_bool ristrettoscalarcomplement_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                        char* message );
-char* ristrettoscalarcomplement( const UDF_INIT* initid, const UDF_ARGS* args,
-                                 char* result,
-                                 unsigned long* length, char* is_null,
-                                 char* error );
+my_bool ristretto_scalar_complement_init( UDF_INIT* initid,
+        const UDF_ARGS* args,
+        char* message );
+char* ristretto_scalar_complement( const UDF_INIT* initid, const UDF_ARGS* args,
+                                   char* result,
+                                   unsigned long* length, char* is_null,
+                                   char* error );
 #endif //MRP_01_LIB_SODIUM_RISTRETTO_SCALAR_COMPLEMENT_H

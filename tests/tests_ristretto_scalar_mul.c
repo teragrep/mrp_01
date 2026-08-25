@@ -61,7 +61,7 @@ void testRistrettoScalarMul_init()
     const UDF_ARGS args = { .arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
-    const my_bool result = ristrettoscalarmul_init( &initid, &args, message );
+    const my_bool result = ristretto_scalar_mul_init( &initid, &args, message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
     printf( "testRistrettoScalarMul_init() passed assertions!\n" );
@@ -77,7 +77,7 @@ void testInvalidArgsAmountRistrettoScalarMul_init()
     const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
-    const my_bool result = ristrettoscalarmul_init( &initid, &args, message );
+    const my_bool result = ristretto_scalar_mul_init( &initid, &args, message );
     assert( result == true &&
             "Result is not true (1), _init passed when it should have failed." );
     assert( strcmp( message, "requires 2 binary string arguments" ) == 0 &&
@@ -98,7 +98,7 @@ void testRistrettoScalarMul()
     enum Item_result itemValue[] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
-    const char* returnedPtr = ristrettoscalarmul( &initid, &args, result, length,
+    const char* returnedPtr = ristretto_scalar_mul( &initid, &args, result, length,
                               is_null,
                               error );
     assert( returnedPtr == result &&
@@ -129,7 +129,7 @@ void testInvalidFirstArgSizeRistrettoScalarMul()
     enum Item_result itemValue[] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
-    const char* returnedPtr = ristrettoscalarmul( &initid, &args, result, length,
+    const char* returnedPtr = ristretto_scalar_mul( &initid, &args, result, length,
                               is_null,
                               error );
     assert( returnedPtr == NULL &&
@@ -154,7 +154,7 @@ void testInvalidSecondArgSizeRistrettoScalarMul()
     enum Item_result itemValue[] = {STRING_RESULT, STRING_RESULT};
     const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
-    const char* returnedPtr = ristrettoscalarmul( &initid, &args, result, length,
+    const char* returnedPtr = ristretto_scalar_mul( &initid, &args, result, length,
                               is_null,
                               error );
     assert( returnedPtr == NULL &&

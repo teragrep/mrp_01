@@ -46,10 +46,10 @@
 #ifndef MRP_01_LIB_SODIUM_RISTRETTO_SCALAROVERL_H
 #define MRP_01_LIB_SODIUM_RISTRETTO_SCALAROVERL_H
 
-my_bool ristrettoscalarreduce_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                    char* message );
-char* ristrettoscalarreduce( const UDF_INIT* initid, const UDF_ARGS* args,
-                             char* result,
-                             unsigned long* length, char* is_null,
-                             char* error );
+my_bool ristretto_scalar_reduce_init( UDF_INIT* initid, const UDF_ARGS* args,
+                                      char* message );
+char* ristretto_scalar_reduce( const UDF_INIT* initid, const UDF_ARGS* args,
+                               char* result,
+                               unsigned long* length, char* is_null,
+                               char* error );
 #endif //MRP_01_LIB_SODIUM_RISTRETTO_SCALAROVERL_H

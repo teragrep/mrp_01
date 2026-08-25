@@ -46,8 +46,8 @@
 #ifndef MRP_01_LIB_SODIUM_RISTRETTO_SUBTRACTION_H
 #define MRP_01_LIB_SODIUM_RISTRETTO_SUBTRACTION_H
 
-my_bool ristrettosub_init( UDF_INIT* initid, const UDF_ARGS* args,
-                           char* message );
-char* ristrettosub( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
-                    unsigned long* length, char* is_null, char* error );
+my_bool ristretto_sub_init( UDF_INIT* initid, const UDF_ARGS* args,
+                            char* message );
+char* ristretto_sub( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
+                     unsigned long* length, char* is_null, char* error );
 #endif //MRP_01_LIB_SODIUM_RISTRETTO_SUBTRACTION_H

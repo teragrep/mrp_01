@@ -51,8 +51,8 @@
 
 // Scalar arithmetic over L
 
-my_bool ristrettoscalarsub_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                 char* message )
+my_bool ristretto_scalar_sub_init( UDF_INIT* initid, const UDF_ARGS* args,
+                                   char* message )
 {
     args->arg_type[0] = STRING_RESULT;
     args->arg_type[1] = STRING_RESULT;
@@ -70,9 +70,9 @@ my_bool ristrettoscalarsub_init( UDF_INIT* initid, const UDF_ARGS* args,
     return false;
 }
 
-char* ristrettoscalarsub( const UDF_INIT* initid, const UDF_ARGS* args,
-                          char* result,
-                          unsigned long* length, char* is_null, char* error )
+char* ristretto_scalar_sub( const UDF_INIT* initid, const UDF_ARGS* args,
+                            char* result,
+                            unsigned long* length, char* is_null, char* error )
 {
     if( args->args[0] == NULL || args->args[1] == NULL ||
             args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ||

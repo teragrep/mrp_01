@@ -46,10 +46,10 @@
 #ifndef MRP_01_LIB_SODIUM_RISTRETTO_SCALAR_NEGATE_H
 #define MRP_01_LIB_SODIUM_RISTRETTO_SCALAR_NEGATE_H
 
-my_bool ristrettoscalarnegate_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                    char* message );
-char* ristrettoscalarnegate( const UDF_INIT* initid, const UDF_ARGS* args,
-                             char* result,
-                             unsigned long* length, char* is_null,
-                             char* error );
+my_bool ristretto_scalar_negate_init( UDF_INIT* initid, const UDF_ARGS* args,
+                                      char* message );
+char* ristretto_scalar_negate( const UDF_INIT* initid, const UDF_ARGS* args,
+                               char* result,
+                               unsigned long* length, char* is_null,
+                               char* error );
 #endif //MRP_01_LIB_SODIUM_RISTRETTO_SCALAR_NEGATE_H

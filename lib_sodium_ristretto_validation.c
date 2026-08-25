@@ -51,8 +51,8 @@
 
 // Encoded element validation
 
-my_bool ristrettoisvalidpoint_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                    char* message )
+my_bool ristretto_is_valid_point_init( UDF_INIT* initid, const UDF_ARGS* args,
+                                       char* message )
 {
     args->arg_type[0] = STRING_RESULT;
     if( args->arg_count != 1 ) {
@@ -68,8 +68,8 @@ my_bool ristrettoisvalidpoint_init( UDF_INIT* initid, const UDF_ARGS* args,
     return false;
 }
 
-long long ristrettoisvalidpoint( UDF_INIT* initid, const UDF_ARGS* args,
-                                 char* is_null, char* error )
+long long ristretto_is_valid_point( UDF_INIT* initid, const UDF_ARGS* args,
+                                    char* is_null, char* error )
 {
     if( args->args[0] == NULL ) {
         *is_null = 1; // return NULL instead of long 0
