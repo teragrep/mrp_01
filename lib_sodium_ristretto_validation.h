@@ -46,8 +46,9 @@
 #ifndef MRP_01_LIB_SODIUM_RISTRETTO_VALIDATION_H
 #define MRP_01_LIB_SODIUM_RISTRETTO_VALIDATION_H
 
-my_bool ristrettoisvalidpoint_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                    char* message );
-long long ristrettoisvalidpoint( UDF_INIT* initid, const UDF_ARGS* args,
-                                 char* is_null, char* error );
+my_bool ristretto255_is_valid_point_init( UDF_INIT* initid,
+        const UDF_ARGS* args,
+        char* message );
+long long ristretto255_is_valid_point( UDF_INIT* initid, const UDF_ARGS* args,
+                                       char* is_null, char* error );
 #endif //MRP_01_LIB_SODIUM_RISTRETTO_VALIDATION_H

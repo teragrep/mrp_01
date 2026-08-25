@@ -51,7 +51,8 @@
 
 /// Random group element
 
-my_bool ristrettorandom_init( UDF_INIT* initid, UDF_ARGS* args, char* message )
+my_bool ristretto255_random_init( UDF_INIT* initid, UDF_ARGS* args,
+                                  char* message )
 {
     if( sodium_init() == -1 ) {
         strcpy( message, "sodium failed to initialize" );
@@ -61,8 +62,8 @@ my_bool ristrettorandom_init( UDF_INIT* initid, UDF_ARGS* args, char* message )
     return false;
 }
 
-char* ristrettorandom( const UDF_INIT* initid, UDF_ARGS* args, char* result,
-                       unsigned long* length, char* is_null, char* error )
+char* ristretto255_random( const UDF_INIT* initid, UDF_ARGS* args, char* result,
+                           unsigned long* length, char* is_null, char* error )
 {
     crypto_core_ristretto255_random( ( unsigned char* )result );
     *length = crypto_core_ristretto255_BYTES;

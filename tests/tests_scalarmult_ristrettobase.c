@@ -62,7 +62,8 @@ void testScalarmultristrettobase_init()
     UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
-    const my_bool result = scalarmultristrettobase_init( &initid, &args, message );
+    const my_bool result = scalarmult_ristretto255_base_init( &initid, &args,
+                           message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
     printf( "testScalarmultristrettobase_init() passed assertions!\n" );
@@ -80,7 +81,8 @@ void testInvalidArgsAmountScalarmultristrettobase_init()
     UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
-    const my_bool result = scalarmultristrettobase_init( &initid, &args, message );
+    const my_bool result = scalarmult_ristretto255_base_init( &initid, &args,
+                           message );
     assert( result == true &&
             "Result is not true (1), _init passed when it should have failed." );
     assert( strcmp( message, "requires 1 binary string argument" ) == 0 &&
@@ -103,7 +105,7 @@ void testScalarmultristrettobase()
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    const char* returnedPtr = scalarmultristrettobase( &initid, &args, result,
+    const char* returnedPtr = scalarmult_ristretto255_base( &initid, &args, result,
                               length,
                               is_null, error );
     assert( returnedPtr == result &&
@@ -131,7 +133,7 @@ void testInvalidArgSizeScalarmultristrettobase()
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    const char* returnedPtr = scalarmultristrettobase( &initid, &args, result,
+    const char* returnedPtr = scalarmult_ristretto255_base( &initid, &args, result,
                               length,
                               is_null, error );
     assert( returnedPtr == NULL &&

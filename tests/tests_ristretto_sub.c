@@ -65,7 +65,7 @@ void testRistrettoSub_init()
     UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
-    const my_bool result = ristrettosub_init( &initid, &args, message );
+    const my_bool result = ristretto255_sub_init( &initid, &args, message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
     printf( "testRistrettoSub_init() passed assertions!\n" );
@@ -83,7 +83,7 @@ void testInvalidArgsAmountRistrettoSub_init()
     UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
-    const my_bool result = ristrettosub_init( &initid, &args, message );
+    const my_bool result = ristretto255_sub_init( &initid, &args, message );
     assert( result == true &&
             "Result is not true (1), _init passed when it should have failed." );
     assert( strcmp( message, "requires 2 binary string arguments" ) == 0 &&
@@ -107,7 +107,7 @@ void testInvalidFirstArgPointRistrettoSub_init()
     UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
-    const my_bool result = ristrettosub_init( &initid, &args, message );
+    const my_bool result = ristretto255_sub_init( &initid, &args, message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
     printf( "testInvalidFirstArgPointRistrettoSub_init() passed assertions!\n" );
@@ -129,7 +129,7 @@ void testInvalidSecondArgPointRistrettoSub_init()
     UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
-    const my_bool result = ristrettosub_init( &initid, &args, message );
+    const my_bool result = ristretto255_sub_init( &initid, &args, message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
     printf( "testInvalidSecondArgPointRistrettoSub_init() passed assertions!\n" );
@@ -152,8 +152,9 @@ void testRistrettoSub()
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    const char* returnedPtr = ristrettosub( &initid, &args, result, length, is_null,
-                                            error );
+    const char* returnedPtr = ristretto255_sub( &initid, &args, result, length,
+                              is_null,
+                              error );
     assert( returnedPtr == result &&
             "Returned pointer does not originate from the result argument" );
     assert( crypto_core_ristretto255_is_valid_point( ( unsigned char* )
@@ -188,8 +189,9 @@ void testInvalidFirstArgPointRistrettoSub()
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    const char* returnedPtr = ristrettosub( &initid, &args, result, length, is_null,
-                                            error );
+    const char* returnedPtr = ristretto255_sub( &initid, &args, result, length,
+                              is_null,
+                              error );
     assert( returnedPtr == NULL &&
             "ristrettosub() did not return NULL on invalid first input argument" );
     printf( "testInvalidFirstArgPointRistrettoSub() passed assertions!\n" );
@@ -214,8 +216,9 @@ void testInvalidSecondArgPointRistrettoSub()
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    const char* returnedPtr = ristrettosub( &initid, &args, result, length, is_null,
-                                            error );
+    const char* returnedPtr = ristretto255_sub( &initid, &args, result, length,
+                              is_null,
+                              error );
     assert( returnedPtr == NULL &&
             "ristrettosub() did not return NULL on invalid second input argument" );
     printf( "testInvalidSecondArgPointRistrettoSub() passed assertions!\n" );
@@ -240,8 +243,9 @@ void testInvalidFirstArgSizeRistrettoSub()
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    const char* returnedPtr = ristrettosub( &initid, &args, result, length, is_null,
-                                            error );
+    const char* returnedPtr = ristretto255_sub( &initid, &args, result, length,
+                              is_null,
+                              error );
     assert( returnedPtr == NULL &&
             "ristrettosub() did not return NULL on invalid first input argument" );
     printf( "testInvalidFirstArgSizeRistrettoSub() passed assertions!\n" );
@@ -266,8 +270,9 @@ void testInvalidSecondArgSizeRistrettoSub()
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    const char* returnedPtr = ristrettosub( &initid, &args, result, length, is_null,
-                                            error );
+    const char* returnedPtr = ristretto255_sub( &initid, &args, result, length,
+                              is_null,
+                              error );
     assert( returnedPtr == NULL &&
             "ristrettosub() did not return NULL on invalid second input argument" );
     printf( "testInvalidSecondArgSizeRistrettoSub() passed assertions!\n" );

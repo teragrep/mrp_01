@@ -45,18 +45,18 @@
 */
 USE mysql;
 
-DROP FUNCTION IF EXISTS ristrettoisvalidpoint;
-DROP FUNCTION IF EXISTS ristrettorandom;
-DROP FUNCTION IF EXISTS ristrettofromhash;
-DROP FUNCTION IF EXISTS scalarmultristretto;
-DROP FUNCTION IF EXISTS scalarmultristrettobase;
-DROP FUNCTION IF EXISTS ristrettoadd;
-DROP FUNCTION IF EXISTS ristrettosub;
-DROP FUNCTION IF EXISTS ristrettoscalarrandom;
-DROP FUNCTION IF EXISTS ristrettoscalarreduce;
-DROP FUNCTION IF EXISTS ristrettoscalarinvert;
-DROP FUNCTION IF EXISTS ristrettoscalarnegate;
-DROP FUNCTION IF EXISTS ristrettoscalarcomplement;
-DROP FUNCTION IF EXISTS ristrettoscalaradd;
-DROP FUNCTION IF EXISTS ristrettoscalarsub;
-DROP FUNCTION IF EXISTS ristrettoscalarmul;
+DROP FUNCTION IF EXISTS ristretto255_is_valid_point;
+DROP FUNCTION IF EXISTS ristretto255_random;
+DROP FUNCTION IF EXISTS ristretto255_from_hash;
+DROP FUNCTION IF EXISTS scalarmult_ristretto255;
+DROP FUNCTION IF EXISTS scalarmult_ristretto255_base;
+DROP FUNCTION IF EXISTS ristretto255_add;
+DROP FUNCTION IF EXISTS ristretto255_sub;
+DROP FUNCTION IF EXISTS ristretto255_scalar_random;
+DROP FUNCTION IF EXISTS ristretto255_scalar_reduce;
+DROP FUNCTION IF EXISTS ristretto255_scalar_invert;
+DROP FUNCTION IF EXISTS ristretto255_scalar_negate;
+DROP FUNCTION IF EXISTS ristretto255_scalar_complement;
+DROP FUNCTION IF EXISTS ristretto255_scalar_add;
+DROP FUNCTION IF EXISTS ristretto255_scalar_sub;
+DROP FUNCTION IF EXISTS ristretto255_scalar_mul;

@@ -51,8 +51,8 @@
 
 // Scalar arithmetic over L
 
-my_bool ristrettoscalarrandom_init( UDF_INIT* initid, UDF_ARGS* args,
-                                    char* message )
+my_bool ristretto255_scalar_random_init( UDF_INIT* initid, UDF_ARGS* args,
+        char* message )
 {
     if( sodium_init() == -1 ) {
         strcpy( message, "sodium failed to initialize" );
@@ -62,9 +62,9 @@ my_bool ristrettoscalarrandom_init( UDF_INIT* initid, UDF_ARGS* args,
     return false;
 }
 
-char* ristrettoscalarrandom( const UDF_INIT* initid, UDF_ARGS* args,
-                             char* result,
-                             unsigned long* length, char* is_null, char* error )
+char* ristretto255_scalar_random( const UDF_INIT* initid, UDF_ARGS* args,
+                                  char* result,
+                                  unsigned long* length, char* is_null, char* error )
 {
     crypto_core_ristretto255_scalar_random( ( unsigned char* )result );
     *length = crypto_core_ristretto255_SCALARBYTES;

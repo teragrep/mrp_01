@@ -66,7 +66,7 @@ void testRistrettofromhash_init()
     UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
-    const my_bool result = ristrettofromhash_init( &initid, &args, message );
+    const my_bool result = ristretto255_from_hash_init( &initid, &args, message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
     free( hash );
@@ -86,7 +86,7 @@ void testInvalidArgAmountRistrettofromhash_init()
     char message[MYSQL_ERRMSG_SIZE];
     const UDF_ARGS args = { .arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0};
-    const my_bool result = ristrettofromhash_init( &initid, &args, message );
+    const my_bool result = ristretto255_from_hash_init( &initid, &args, message );
     assert( result == true &&
             "Result is not true (1), _init passed when it should have failed." );
     assert( strcmp( message, "requires 1 binary string argument" ) == 0 &&
@@ -111,7 +111,8 @@ void testRistrettofromhash()
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    const char* returnedPtr = ristrettofromhash( &initid, &args, result, length,
+    const char* returnedPtr = ristretto255_from_hash( &initid, &args, result,
+                              length,
                               is_null,
                               error );
     assert( returnedPtr == result &&
@@ -139,7 +140,8 @@ void testInvalidArgSizeRistrettofromhash()
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    const char* returnedPtr = ristrettofromhash( &initid, &args, result, length,
+    const char* returnedPtr = ristretto255_from_hash( &initid, &args, result,
+                              length,
                               is_null,
                               error );
     assert( returnedPtr == NULL &&

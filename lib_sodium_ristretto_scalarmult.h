@@ -46,10 +46,10 @@
 #ifndef MRP_01_LIB_SODIUM_RISTRETTO_SCALARMULT_H
 #define MRP_01_LIB_SODIUM_RISTRETTO_SCALARMULT_H
 
-my_bool scalarmultristretto_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                  char* message );
-char* scalarmultristretto( const UDF_INIT* initid, const UDF_ARGS* args,
-                           char* result,
-                           unsigned long* length, char* is_null,
-                           char* error );
+my_bool scalarmult_ristretto255_init( UDF_INIT* initid, const UDF_ARGS* args,
+                                      char* message );
+char* scalarmult_ristretto255( const UDF_INIT* initid, const UDF_ARGS* args,
+                               char* result,
+                               unsigned long* length, char* is_null,
+                               char* error );
 #endif //MRP_01_LIB_SODIUM_RISTRETTO_SCALARMULT_H

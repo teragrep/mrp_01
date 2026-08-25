@@ -46,10 +46,10 @@
 #ifndef MRP_01_LIB_SODIUM_RISTRETTO_SCALAR_SUB_H
 #define MRP_01_LIB_SODIUM_RISTRETTO_SCALAR_SUB_H
 
-my_bool ristrettoscalarsub_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                 char* message );
-char* ristrettoscalarsub( const UDF_INIT* initid, const UDF_ARGS* args,
-                          char* result,
-                          unsigned long* length, char* is_null,
-                          char* error );
+my_bool ristretto255_scalar_sub_init( UDF_INIT* initid, const UDF_ARGS* args,
+                                      char* message );
+char* ristretto255_scalar_sub( const UDF_INIT* initid, const UDF_ARGS* args,
+                               char* result,
+                               unsigned long* length, char* is_null,
+                               char* error );
 #endif //MRP_01_LIB_SODIUM_RISTRETTO_SCALAR_SUB_H
