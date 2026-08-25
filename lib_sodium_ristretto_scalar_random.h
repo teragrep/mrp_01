@@ -46,10 +46,10 @@
 #ifndef MRP_01_LIB_SODIUM_RISTRETTO_SCALAR_RANDOM_H
 #define MRP_01_LIB_SODIUM_RISTRETTO_SCALAR_RANDOM_H
 
-my_bool ristretto_scalar_random_init( UDF_INIT* initid, UDF_ARGS* args,
-                                      char* message );
-char* ristretto_scalar_random( const UDF_INIT* initid, UDF_ARGS* args,
-                               char* result,
-                               unsigned long* length, char* is_null,
-                               char* error );
+my_bool ristretto255_scalar_random_init( UDF_INIT* initid, UDF_ARGS* args,
+        char* message );
+char* ristretto255_scalar_random( const UDF_INIT* initid, UDF_ARGS* args,
+                                  char* result,
+                                  unsigned long* length, char* is_null,
+                                  char* error );
 #endif //MRP_01_LIB_SODIUM_RISTRETTO_SCALAR_RANDOM_H

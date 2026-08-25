@@ -49,7 +49,8 @@
 #include "lib_sodium_ristretto_scalarmultbase.h"
 #include <stdbool.h>
 
-my_bool scalar_mult_ristretto_base_init( UDF_INIT* initid, const UDF_ARGS* args,
+my_bool scalarmult_ristretto255_base_init( UDF_INIT* initid,
+        const UDF_ARGS* args,
         char* message )
 {
     args->arg_type[0] = STRING_RESULT;
@@ -67,9 +68,10 @@ my_bool scalar_mult_ristretto_base_init( UDF_INIT* initid, const UDF_ARGS* args,
     return false;
 }
 
-char* scalar_mult_ristretto_base( const UDF_INIT* initid, const UDF_ARGS* args,
-                                  char* result,
-                                  unsigned long* length, char* is_null, char* error )
+char* scalarmult_ristretto255_base( const UDF_INIT* initid,
+                                    const UDF_ARGS* args,
+                                    char* result,
+                                    unsigned long* length, char* is_null, char* error )
 {
     if( args->args[0] == NULL ||
             args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ) {

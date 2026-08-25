@@ -63,7 +63,8 @@ void testPassRistrettoisvalidpoint_init()
     const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
-    const my_bool result = ristretto_is_valid_point_init( &initid, &args, message );
+    const my_bool result = ristretto255_is_valid_point_init( &initid, &args,
+                           message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
     printf( "testPassRistrettoisvalidpoint_init() passed assertions!\n" );
@@ -83,7 +84,8 @@ void testInvalidArgAmountRistrettoisvalidpoint_init()
     const UDF_ARGS args = { .arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
-    const my_bool result = ristretto_is_valid_point_init( &initid, &args, message );
+    const my_bool result = ristretto255_is_valid_point_init( &initid, &args,
+                           message );
     assert( result == true &&
             "Result is not true (1), _init passed when it should have failed." );
     assert( strcmp( message, "requires 1 binary string argument" ) == 0 &&
@@ -105,7 +107,8 @@ void testInvalidArgTypeRistrettoisvalidpoint_init()
     const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
-    const my_bool result = ristretto_is_valid_point_init( &initid, &args, message );
+    const my_bool result = ristretto255_is_valid_point_init( &initid, &args,
+                           message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
     assert( args.arg_type[0] == STRING_RESULT &&
@@ -133,7 +136,8 @@ void testPassRistrettoisvalidpoint()
     char error[1];
     char is_null[1];
 
-    const long result = ristretto_is_valid_point( &initid, &args, is_null, error );
+    const long result = ristretto255_is_valid_point( &initid, &args, is_null,
+                        error );
     assert( result == 1 &&
             "Result is not 1, Ristretto point validation failed when it should have passed." );
     printf( "testPassRistrettoisvalidpoint() passed assertions!\n" );
@@ -155,7 +159,8 @@ void testInvalidArgSizeRistrettoisvalidpoint()
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = 21, .ptr = NULL, .const_item = 0};
     char error[1];
     char is_null[1];
-    const long result = ristretto_is_valid_point( &initid, &args, is_null, error );
+    const long result = ristretto255_is_valid_point( &initid, &args, is_null,
+                        error );
     assert( result == 0 &&
             "Result is not 0, Ristretto point validation passed when it should have failed." );
     printf( "testInvalidArgSizeRistrettoisvalidpoint() passed assertions!\n" );
@@ -177,7 +182,8 @@ void testFailRistrettoisvalidpoint()
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = 21, .ptr = NULL, .const_item = 0};
     char error[1];
     char is_null[1];
-    const long result = ristretto_is_valid_point( &initid, &args, is_null, error );
+    const long result = ristretto255_is_valid_point( &initid, &args, is_null,
+                        error );
     assert( result == 0 &&
             "Result is not 0, Ristretto point validation passed when it should have failed." );
     printf( "testFailRistrettoisvalidpoint() passed assertions!\n" );

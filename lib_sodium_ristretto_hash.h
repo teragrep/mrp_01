@@ -46,10 +46,10 @@
 #ifndef MRP_01_LIB_SODIUM_RISTRETTO_HASH_H
 #define MRP_01_LIB_SODIUM_RISTRETTO_HASH_H
 
-my_bool ristretto_from_hash_init( UDF_INIT* initid, const UDF_ARGS* args,
-                                  char* message );
-char* ristretto_from_hash( const UDF_INIT* initid, const UDF_ARGS* args,
-                           char* result,
-                           unsigned long* length, char* is_null,
-                           char* error );
+my_bool ristretto255_from_hash_init( UDF_INIT* initid, const UDF_ARGS* args,
+                                     char* message );
+char* ristretto255_from_hash( const UDF_INIT* initid, const UDF_ARGS* args,
+                              char* result,
+                              unsigned long* length, char* is_null,
+                              char* error );
 #endif //MRP_01_LIB_SODIUM_RISTRETTO_HASH_H

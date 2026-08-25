@@ -65,7 +65,7 @@ void testRistrettoAdd_init()
     UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
-    const my_bool result = ristretto_add_init( &initid, &args, message );
+    const my_bool result = ristretto255_add_init( &initid, &args, message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
     printf( "testRistrettoAdd_init() passed assertions!\n" );
@@ -83,7 +83,7 @@ void testInvalidArgsAmountRistrettoAdd_init()
     UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
-    const my_bool result = ristretto_add_init( &initid, &args, message );
+    const my_bool result = ristretto255_add_init( &initid, &args, message );
     assert( result == true &&
             "Result is not true (1), _init passed when it should have failed." );
     assert( strcmp( message, "requires 2 binary string arguments" ) == 0 &&
@@ -107,7 +107,7 @@ void testInvalidFirstArgPointRistrettoAdd_init()
     UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
-    const my_bool result = ristretto_add_init( &initid, &args, message );
+    const my_bool result = ristretto255_add_init( &initid, &args, message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
     printf( "testInvalidFirstArgPointRistrettoAdd_init() passed assertions!\n" );
@@ -129,7 +129,7 @@ void testInvalidSecondArgPointRistrettoAdd_init()
     UDF_INIT initid = {
         .maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0
     };
-    const my_bool result = ristretto_add_init( &initid, &args, message );
+    const my_bool result = ristretto255_add_init( &initid, &args, message );
     assert( result == false &&
             "Result is not false (0), _init failed when it should have passed." );
     printf( "testInvalidSecondArgPointRistrettoAdd_init() passed assertions!\n" );
@@ -152,7 +152,7 @@ void testRistrettoAdd()
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    const char* returnedPtr = ristretto_add( &initid, &args, result, length,
+    const char* returnedPtr = ristretto255_add( &initid, &args, result, length,
                               is_null,
                               error );
     assert( returnedPtr == result &&
@@ -188,7 +188,7 @@ void testInvalidFirstArgSizeRistrettoAdd()
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    const char* returnedPtr = ristretto_add( &initid, &args, result, length,
+    const char* returnedPtr = ristretto255_add( &initid, &args, result, length,
                               is_null,
                               error );
     assert( returnedPtr == NULL &&
@@ -215,7 +215,7 @@ void testInvalidSecondArgSizeRistrettoAdd()
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    const char* returnedPtr = ristretto_add( &initid, &args, result, length,
+    const char* returnedPtr = ristretto255_add( &initid, &args, result, length,
                               is_null,
                               error );
     assert( returnedPtr == NULL &&
@@ -242,7 +242,7 @@ void testInvalidFirstArgPointRistrettoAdd()
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    const char* returnedPtr = ristretto_add( &initid, &args, result, length,
+    const char* returnedPtr = ristretto255_add( &initid, &args, result, length,
                               is_null,
                               error );
     assert( returnedPtr == NULL &&
@@ -269,7 +269,7 @@ void testInvalidSecondArgPointRistrettoAdd()
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    const char* returnedPtr = ristretto_add( &initid, &args, result, length,
+    const char* returnedPtr = ristretto255_add( &initid, &args, result, length,
                               is_null,
                               error );
     assert( returnedPtr == NULL &&

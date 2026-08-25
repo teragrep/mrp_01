@@ -46,8 +46,9 @@
 #ifndef MRP_01_LIB_SODIUM_RISTRETTO_ADDITION_H
 #define MRP_01_LIB_SODIUM_RISTRETTO_ADDITION_H
 
-my_bool ristretto_add_init( UDF_INIT* initid, const UDF_ARGS* args,
-                            char* message );
-char* ristretto_add( const UDF_INIT* initid, const UDF_ARGS* args, char* result,
-                     unsigned long* length, char* is_null, char* error );
+my_bool ristretto255_add_init( UDF_INIT* initid, const UDF_ARGS* args,
+                               char* message );
+char* ristretto255_add( const UDF_INIT* initid, const UDF_ARGS* args,
+                        char* result,
+                        unsigned long* length, char* is_null, char* error );
 #endif //MRP_01_LIB_SODIUM_RISTRETTO_ADDITION_H

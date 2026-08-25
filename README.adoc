@@ -24,75 +24,75 @@ Or alternatively, install the user defined functions manually via queries:
 ----
 USE mysql;
 
-DROP FUNCTION IF EXISTS ristretto_is_valid_point;
-CREATE FUNCTION ristretto_is_valid_point RETURNS INTEGER SONAME 'lib_sodium_ristretto.so';
-DROP FUNCTION IF EXISTS ristretto_random;
-CREATE FUNCTION ristretto_random RETURNS STRING SONAME 'lib_sodium_ristretto.so';
-DROP FUNCTION IF EXISTS ristretto_from_hash;
-CREATE FUNCTION ristretto_from_hash RETURNS STRING SONAME 'lib_sodium_ristretto.so';
-DROP FUNCTION IF EXISTS scalar_mult_ristretto;
-CREATE FUNCTION scalar_mult_ristretto RETURNS STRING SONAME 'lib_sodium_ristretto.so';
-DROP FUNCTION IF EXISTS scalar_mult_ristretto_base;
-CREATE FUNCTION scalar_mult_ristretto_base RETURNS STRING SONAME 'lib_sodium_ristretto.so';
-DROP FUNCTION IF EXISTS ristretto_add;
-CREATE FUNCTION ristretto_add RETURNS STRING SONAME 'lib_sodium_ristretto.so';
-DROP FUNCTION IF EXISTS ristretto_sub;
-CREATE FUNCTION ristretto_sub RETURNS STRING SONAME 'lib_sodium_ristretto.so';
-DROP FUNCTION IF EXISTS ristretto_scalar_random;
-CREATE FUNCTION ristretto_scalar_random RETURNS STRING SONAME 'lib_sodium_ristretto.so';
-DROP FUNCTION IF EXISTS ristretto_scalar_reduce;
-CREATE FUNCTION ristretto_scalar_reduce RETURNS STRING SONAME 'lib_sodium_ristretto.so';
-DROP FUNCTION IF EXISTS ristretto_scalar_invert;
-CREATE FUNCTION ristretto_scalar_invert RETURNS STRING SONAME 'lib_sodium_ristretto.so';
-DROP FUNCTION IF EXISTS ristretto_scalar_negate;
-CREATE FUNCTION ristretto_scalar_negate RETURNS STRING SONAME 'lib_sodium_ristretto.so';
-DROP FUNCTION IF EXISTS ristretto_scalar_complement;
-CREATE FUNCTION ristretto_scalar_complement RETURNS STRING SONAME 'lib_sodium_ristretto.so';
-DROP FUNCTION IF EXISTS ristretto_scalar_add;
-CREATE FUNCTION ristretto_scalar_add RETURNS STRING SONAME 'lib_sodium_ristretto.so';
-DROP FUNCTION IF EXISTS ristretto_scalar_sub;
-CREATE FUNCTION ristretto_scalar_sub RETURNS STRING SONAME 'lib_sodium_ristretto.so';
-DROP FUNCTION IF EXISTS ristretto_scalar_mul;
-CREATE FUNCTION ristretto_scalar_mul RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_is_valid_point;
+CREATE FUNCTION ristretto255_is_valid_point RETURNS INTEGER SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_random;
+CREATE FUNCTION ristretto255_random RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_from_hash;
+CREATE FUNCTION ristretto255_from_hash RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS scalarmult_ristretto255;
+CREATE FUNCTION scalarmult_ristretto255 RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS scalarmult_ristretto255_base;
+CREATE FUNCTION scalarmult_ristretto255_base RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_add;
+CREATE FUNCTION ristretto255_add RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_sub;
+CREATE FUNCTION ristretto255_sub RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_scalar_random;
+CREATE FUNCTION ristretto255_scalar_random RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_scalar_reduce;
+CREATE FUNCTION ristretto255_scalar_reduce RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_scalar_invert;
+CREATE FUNCTION ristretto255_scalar_invert RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_scalar_negate;
+CREATE FUNCTION ristretto255_scalar_negate RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_scalar_complement;
+CREATE FUNCTION ristretto255_scalar_complement RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_scalar_add;
+CREATE FUNCTION ristretto255_scalar_add RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_scalar_sub;
+CREATE FUNCTION ristretto255_scalar_sub RETURNS STRING SONAME 'lib_sodium_ristretto.so';
+DROP FUNCTION IF EXISTS ristretto255_scalar_mul;
+CREATE FUNCTION ristretto255_scalar_mul RETURNS STRING SONAME 'lib_sodium_ristretto.so';
 ----
 
 == SQL Functions
 
 === Encoded element validation
 
-`ristretto_is_valid_point(BINARY(32) p)`
+`ristretto255_is_valid_point(BINARY(32) p)`
 
 The function checks that the input argument `p` is a valid ristretto255-encoded element. Returns 1 on success, 0 if the check didn't pass.
 
 === Random group element
 
-`ristretto_random()`
+`ristretto255_random()`
 
 The function returns a random ristretto255 group element in binary string format.
 
 === Hash-to-group
 
-`ristretto_from_hash(BINARY(64) a)`
+`ristretto255_from_hash(BINARY(64) a)`
 
 The function maps a 64 bytes vector that given as input argument `a` to a ristretto255 group element and returns it.
 
 === Scalar multiplication
 
-`scalar_mult_ristretto(BINARY(32) a, BINARY(32) b);`
+`scalarmult_ristretto255(BINARY(32) a, BINARY(32) b);`
 
 The function multiplies a ristretto element `b` by a scalar `a` and returns the resulting element.
 
-`scalar_mult_ristretto_base(BINARY(32) a);`
+`scalarmult_ristretto255_base(BINARY(32) a);`
 
 The function multiplies the randomly generated ristretto element by a scalar `a` and returns the resulting element.
 
 === Element addition and subtraction
 
-`ristretto_add(BINARY(32) a, BINARY(32) b)`
+`ristretto255_add(BINARY(32) a, BINARY(32) b)`
 
 The function adds the ristretto element `a` to ristretto element `b` and returns the resulting element.
 
-`ristretto_sub(BINARY(32) a, BINARY(32) b)`
+`ristretto255_sub(BINARY(32) a, BINARY(32) b)`
 
 The function subtracts the ristretto element `a` to the ristretto element `b` and returns the resulting element.
 
@@ -100,35 +100,35 @@ The function subtracts the ristretto element `a` to the ristretto element `b` an
 
 The ristrettoscalar*() function set operates over scalars in the `[0..L[` interval, `L` being the order of the ristretto255 group: (2^252 + 27742317777372353535851937790883648493).
 
-`ristretto_scalar_random()`
+`ristretto255_scalar_random()`
 
 The function returns a random scalar in binary string format.
 
-`ristretto_scalar_reduce(BINARY(64) s)`
+`ristretto255_scalar_reduce(BINARY(64) s)`
 
 The function reduces a larger scalar value `s` to `s mod L` and returns the resulting 32 byte integer in binary string format.
 
-`ristretto_scalar_invert(BINARY(32) a)`
+`ristretto255_scalar_invert(BINARY(32) a)`
 
 The function computes the multiplicative inverse of `a over L` and returns the result in binary string format.
 
-`ristretto_scalar_negate(BINARY(32) a)`
+`ristretto255_scalar_negate(BINARY(32) a)`
 
 The function returns `neg` so that `a + neg = 0 (mod L)`.
 
-`ristretto_scalar_complement(BINARY(32) a)`
+`ristretto255_scalar_complement(BINARY(32) a)`
 
 The function returns `comp` so that `a + comp = 1 (mod L)`.
 
-`ristretto_scalar_add(BINARY(32) a, BINARY(32) b)`
+`ristretto255_scalar_add(BINARY(32) a, BINARY(32) b)`
 
 The function returns the result of `a + b (mod L)`.
 
-`ristretto_scalar_sub(BINARY(32) a, BINARY(32) b)`
+`ristretto255_scalar_sub(BINARY(32) a, BINARY(32) b)`
 
 The function returns the result of `a - b (mod L)`.
 
-`ristretto_scalar_mul(BINARY(32) a, BINARY(32) b)`
+`ristretto255_scalar_mul(BINARY(32) a, BINARY(32) b)`
 
 The function returns the result of `a * b (mod L)`.
 
@@ -140,7 +140,7 @@ A short introduction on how to use the new user defined functions in SQL queries
 
 [source,sql]
 ----
-SELECT ristretto_random();
+SELECT ristretto255_random();
 ----
 
 === Hash-to-group
@@ -148,81 +148,81 @@ SELECT ristretto_random();
 [source,sql]
 ----
 # The SHA2() function produces a nonbinary string, UNHEX() is used to convert it to binary string.
-SELECT ristretto_from_hash(UNHEX(SHA2('Maria', 512)));
+SELECT ristretto255_from_hash(UNHEX(SHA2('Maria', 512)));
 ----
 
 === Encoded element validation
 
 [source,sql]
 ----
-SELECT ristretto_is_valid_point(ristretto_from_hash(UNHEX(SHA2('Maria', 512))));
-SELECT ristretto_is_valid_point(0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45);
+SELECT ristretto255_is_valid_point(ristretto255_from_hash(UNHEX(SHA2('Maria', 512))));
+SELECT ristretto255_is_valid_point(0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45);
 ----
 
 === Scalar multiplication
 
 [source,sql]
 ----
-SELECT scalar_mult_ristretto(0x34ABF3B816C051FE1BA7315760B5854800959D776AF87ACF540CC55F3701A905, 0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45);
+SELECT scalarmult_ristretto255(0x34ABF3B816C051FE1BA7315760B5854800959D776AF87ACF540CC55F3701A905, 0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45);
 ----
 
 [source,sql]
 ----
-SELECT scalar_mult_ristrettobase(0x34ABF3B816C051FE1BA7315760B5854800959D776AF87ACF540CC55F3701A905);
+SELECT scalarmult_ristretto255_base(0x34ABF3B816C051FE1BA7315760B5854800959D776AF87ACF540CC55F3701A905);
 ----
 
 === Element addition and subtraction
 
 [source,sql]
 ----
-SELECT ristretto_add(0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45, 0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45);
+SELECT ristretto255_add(0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45, 0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45);
 ----
 
 [source,sql]
 ----
-SELECT ristretto_sub(0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45, 0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45);
+SELECT ristretto255_sub(0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45, 0x1077D7247296C4E9364498EC436E3A9C9F7CFAC6AC08FEC11C351AEC4E4C1A45);
 ----
 
 === Scalar arithmetic over L
 
 [source,sql]
 ----
-SELECT ristretto_scalar_random();
+SELECT ristretto255_scalar_random();
 ----
 
 [source,sql]
 ----
-SELECT ristretto_scalar_reduce(RANDOM_BYTES(64));
+SELECT ristretto255_scalar_reduce(RANDOM_BYTES(64));
 ----
 
 [source,sql]
 ----
-SELECT ristretto_scalar_invert(ristretto_scalar_random());
+SELECT ristretto255_scalar_invert(ristretto255_scalar_random());
 ----
 
 [source,sql]
 ----
-SELECT ristretto_scalar_negate(ristretto_scalar_random());
+SELECT ristretto255_scalar_negate(ristretto255_scalar_random());
 ----
 
 [source,sql]
 ----
-SELECT ristretto_scalar_complement(ristretto_scalar_random());
+SELECT ristretto255_scalar_complement(ristretto255_scalar_random());
 ----
 
 [source,sql]
 ----
-SELECT ristretto_scalar_add(ristretto_scalar_random(), ristretto_scalar_random());
+SELECT ristretto255_scalar_add(ristretto255_scalar_random(), ristretto255_scalar_random());
 ----
 
 [source,sql]
 ----
-SELECT ristretto_scalar_sub(ristretto_scalar_random(), ristretto_scalar_random());
+SELECT ristretto255_scalar_sub(ristretto255_scalar_random(), ristretto255_scalar_random());
 ----
 
 [source,sql]
 ----
-SELECT ristretto_scalar_mul(ristretto_scalar_random(), ristretto_scalar_random());
+SELECT ristretto255_scalar_mul(ristretto255_scalar_random(), ristretto255_scalar_random());
 ----
 
 == Development
