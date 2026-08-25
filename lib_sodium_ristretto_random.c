@@ -58,6 +58,7 @@ my_bool ristretto255_random_init( UDF_INIT* initid, UDF_ARGS* args,
         strcpy( message, "sodium failed to initialize" );
         return true;
     }
+    initid->const_item = 0;
     initid->max_length = crypto_core_ristretto255_BYTES;
     return false;
 }
