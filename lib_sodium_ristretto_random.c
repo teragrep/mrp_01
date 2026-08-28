@@ -54,6 +54,10 @@
 my_bool ristretto255_random_init( UDF_INIT* initid, UDF_ARGS* args,
                                   char* message )
 {
+    if( args->arg_count != 0 ) {
+        strcpy( message, "requires 0 arguments" );
+        return true;
+    }
     if( sodium_init() == -1 ) {
         strcpy( message, "sodium failed to initialize" );
         return true;

@@ -46,16 +46,14 @@
 #include <assert.h>
 #include <mysql/mysql.h>
 #include <sodium.h>
+#include <string.h>
 #include <stdbool.h>
 
 #include "../lib_sodium_ristretto_random.h"
 
 void testPassRistrettorandom_init()
 {
-    char* testArgs[] = {0};
-    unsigned long testLengths[1] = {0};
-    enum Item_result itemValue[1] = {STRING_RESULT};
-    UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    UDF_ARGS args = { .arg_count = 0, .arg_type = NULL, .args = NULL, .lengths = NULL, .maybe_null = 0};
     UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0};
     char message[MYSQL_ERRMSG_SIZE];
     const my_bool result = ristretto255_random_init( &initid, &args, message );
@@ -64,14 +62,31 @@ void testPassRistrettorandom_init()
     printf( "testPassRistrettorandom_init() passed assertions!\n" );
 }
 
+void testInvalidArgsAmountRistrettorandom_init()
+{
+    unsigned char scalar[crypto_core_ristretto255_SCALARBYTES];
+    crypto_core_ristretto255_scalar_random( scalar );
+    char* testArgs[] = {( char* ) scalar};
+    unsigned long testLengths[] = {crypto_core_ristretto255_SCALARBYTES};
+    enum Item_result itemValue[] = {STRING_RESULT};
+    const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0};
+    char message[MYSQL_ERRMSG_SIZE];
+    const my_bool result = ristretto255_random_init( &initid, &args, message );
+    assert( result == true &&
+            "Result is not true (1), _init passed when it should have failed." );
+    assert( strcmp( message, "requires 0 arguments" ) == 0 &&
+            "Error message is incorrect" );
+    printf( "testInvalidArgsAmountRistrettorandom_init() passed assertions!\n" );
+}
+
 void testRistrettorandom()
 {
     char result[255];
     unsigned long length[1];
     char error[1];
     char is_null[1];
-    enum Item_result itemValue[1] = {STRING_RESULT};
-    UDF_ARGS args = { .arg_count = 0, .arg_type = itemValue, .args = 0, .lengths = 0, .maybe_null = 0};
+    UDF_ARGS args = { .arg_count = 0, .arg_type = NULL, .args = NULL, .lengths = NULL, .maybe_null = 0};
     const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_BYTES, .ptr = NULL, .const_item = 0};
     const char* returnedPtr = ristretto255_random( &initid, &args, result, length,
                               is_null,
@@ -87,6 +102,7 @@ void testRistrettorandom()
 int main()
 {
     testPassRistrettorandom_init();
+    testInvalidArgsAmountRistrettorandom_init();
     testRistrettorandom();
     return 0;
 }
