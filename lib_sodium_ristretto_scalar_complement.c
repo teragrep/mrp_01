@@ -77,7 +77,7 @@ char* ristretto255_scalar_complement( const UDF_INIT* initid,
     if( args->args[0] == NULL ||
             args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ) {
         *is_null = 1;
-        memset( result, 0, crypto_core_ristretto255_SCALARBYTES );
+        sodium_memzero( result, crypto_core_ristretto255_SCALARBYTES );
         return NULL;
     }
     const unsigned char* scalar1 = ( const unsigned char* )args->args[0];

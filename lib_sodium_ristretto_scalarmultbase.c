@@ -75,14 +75,14 @@ char* scalarmult_ristretto255_base( const UDF_INIT* initid,
     if( args->args[0] == NULL ||
             args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ) {
         *is_null = 1;
-        memset( result, 0, crypto_core_ristretto255_BYTES );
+        sodium_memzero( result, crypto_core_ristretto255_BYTES );
         return NULL;
     }
     const unsigned char* scalar1 = ( const unsigned char* )args->args[0];
     if( crypto_scalarmult_ristretto255_base( ( unsigned char* )result,
             scalar1 ) != 0 ) {
         *is_null = 1;
-        memset( result, 0, crypto_core_ristretto255_BYTES );
+        sodium_memzero( result, crypto_core_ristretto255_BYTES );
         return NULL;
     }
     *length = crypto_core_ristretto255_BYTES;
