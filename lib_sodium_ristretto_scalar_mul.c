@@ -76,7 +76,6 @@ char* ristretto255_scalar_mul( const UDF_INIT* initid, const UDF_ARGS* args,
             args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ||
             args->lengths[1] != crypto_core_ristretto255_SCALARBYTES ) {
         *is_null = 1;
-        *error = 1;
         memset( result, 0, crypto_core_ristretto255_SCALARBYTES );
         return NULL;
     }

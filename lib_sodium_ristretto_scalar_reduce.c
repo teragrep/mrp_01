@@ -76,7 +76,6 @@ char* ristretto255_scalar_reduce( const UDF_INIT* initid, const UDF_ARGS* args,
     if( args->args[0] == NULL ||
             args->lengths[0] != crypto_core_ristretto255_NONREDUCEDSCALARBYTES ) {
         *is_null = 1;
-        *error = 1;
         memset( result, 0, crypto_core_ristretto255_SCALARBYTES );
         return NULL;
     }

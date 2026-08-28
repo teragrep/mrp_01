@@ -76,7 +76,6 @@ char* scalarmult_ristretto255_base( const UDF_INIT* initid,
     if( args->args[0] == NULL ||
             args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ) {
         *is_null = 1;
-        *error = 1;
         memset( result, 0, crypto_core_ristretto255_BYTES );
         return NULL;
     }
@@ -84,7 +83,6 @@ char* scalarmult_ristretto255_base( const UDF_INIT* initid,
     if( crypto_scalarmult_ristretto255_base( ( unsigned char* )result,
             scalar1 ) != 0 ) {
         *is_null = 1;
-        *error = 1;
         memset( result, 0, crypto_core_ristretto255_BYTES );
         return NULL;
     }

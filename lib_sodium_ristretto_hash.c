@@ -76,7 +76,6 @@ char* ristretto255_from_hash( const UDF_INIT* initid, const UDF_ARGS* args,
     if( args->args[0] == NULL ||
             args->lengths[0] != crypto_core_ristretto255_HASHBYTES ) {
         *is_null = 1;
-        *error = 1;
         memset( result, 0, crypto_core_ristretto255_BYTES );
         return NULL;
     }
@@ -84,7 +83,6 @@ char* ristretto255_from_hash( const UDF_INIT* initid, const UDF_ARGS* args,
     if( crypto_core_ristretto255_from_hash( ( unsigned char* )result,
                                             hash1 ) != 0 ) {
         *is_null = 1;
-        *error = 1;
         memset( result, 0, crypto_core_ristretto255_BYTES );
         return NULL;
     }
