@@ -65,6 +65,7 @@ my_bool ristretto255_is_valid_point_init( UDF_INIT* initid,
     }
     args->arg_type[0] = STRING_RESULT;
     initid->maybe_null = 1;
+    initid->const_item = ( args->args[0] != NULL );
     return false;
 }
 

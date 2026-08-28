@@ -66,6 +66,7 @@ my_bool scalarmult_ristretto255_init( UDF_INIT* initid, const UDF_ARGS* args,
     args->arg_type[1] = STRING_RESULT;
     initid->maybe_null = 1;
     initid->max_length = crypto_core_ristretto255_BYTES;
+    initid->const_item = ( args->args[0] != NULL && args->args[1] != NULL );
     return false;
 }
 

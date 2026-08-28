@@ -65,6 +65,7 @@ my_bool ristretto255_scalar_reduce_init( UDF_INIT* initid, const UDF_ARGS* args,
     args->arg_type[0] = STRING_RESULT;
     initid->maybe_null = 1;
     initid->max_length = crypto_core_ristretto255_SCALARBYTES;
+    initid->const_item = ( args->args[0] != NULL );
     return false;
 }
 
