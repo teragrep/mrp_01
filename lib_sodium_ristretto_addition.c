@@ -54,8 +54,6 @@
 my_bool ristretto255_add_init( UDF_INIT* initid, const UDF_ARGS* args,
                                char* message )
 {
-    args->arg_type[0] = STRING_RESULT;
-    args->arg_type[1] = STRING_RESULT;
     if( args->arg_count != 2 ) {
         strcpy( message, "requires 2 binary string arguments" );
         return true;
@@ -64,6 +62,8 @@ my_bool ristretto255_add_init( UDF_INIT* initid, const UDF_ARGS* args,
         strcpy( message, "sodium failed to initialize" );
         return true;
     }
+    args->arg_type[0] = STRING_RESULT;
+    args->arg_type[1] = STRING_RESULT;
     initid->maybe_null = 1;
     initid->max_length = crypto_core_ristretto255_BYTES;
     initid->const_item = ( args->args[0] != NULL && args->args[1] != NULL );
