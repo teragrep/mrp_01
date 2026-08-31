@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install jq
-        run: sudo apt-get update && sudo apt-get install jq make automake autoconf libtool libmariadb-dev libsodium-dev build-essentials curl
+        run: sudo apt-get update && sudo apt-get install jq make automake autoconf libtool libmariadb-dev libsodium-dev build-essential curl
 
       - name: Get version
         run: printf "RELEASE_VERSION=%q\n" "$(git describe --always --tags)" >> $GITHUB_ENV
