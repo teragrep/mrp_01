@@ -66,6 +66,25 @@ void testRistrettoScalarRandom_init()
     printf( "testRistrettoScalarRandom_init() passed assertions!\n" );
 }
 
+void testInvalidArgsAmountRistrettoScalarRandom_init()
+{
+    unsigned char scalar[crypto_core_ristretto255_SCALARBYTES];
+    crypto_core_ristretto255_scalar_random( scalar );
+    char* testArgs[] = {( char* ) scalar};
+    unsigned long testLengths[] = {crypto_core_ristretto255_SCALARBYTES};
+    enum Item_result itemValue[] = {STRING_RESULT};
+    const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
+    char message[MYSQL_ERRMSG_SIZE];
+    const my_bool result = ristretto255_scalar_random_init( &initid, &args,
+                           message );
+    assert( result == true &&
+            "Result is not true (1), _init passed when it should have failed." );
+    assert( strcmp( message, "requires 0 arguments" ) == 0 &&
+            "Error message is incorrect" );
+    printf( "testInvalidArgsAmountRistrettoScalarRandom_init() passed assertions!\n" );
+}
+
 void testRistrettoScalarRandom()
 {
     char result[255];
@@ -91,6 +110,7 @@ void testRistrettoScalarRandom()
 int main()
 {
     testRistrettoScalarRandom_init();
+    testInvalidArgsAmountRistrettoScalarRandom_init();
     testRistrettoScalarRandom();
     return 0;
 }

@@ -53,7 +53,6 @@ my_bool scalarmult_ristretto255_base_init( UDF_INIT* initid,
         const UDF_ARGS* args,
         char* message )
 {
-    args->arg_type[0] = STRING_RESULT;
     if( args->arg_count != 1 )  {
         strcpy( message, "requires 1 binary string argument" );
         return true;
@@ -62,6 +61,7 @@ my_bool scalarmult_ristretto255_base_init( UDF_INIT* initid,
         strcpy( message, "sodium failed to initialize" );
         return true;
     }
+    args->arg_type[0] = STRING_RESULT;
     initid->maybe_null = 1;
     initid->max_length = crypto_core_ristretto255_BYTES;
     initid->const_item = ( args->args[0] != NULL );
@@ -73,19 +73,21 @@ char* scalarmult_ristretto255_base( const UDF_INIT* initid,
                                     char* result,
                                     unsigned long* length, char* is_null, char* error )
 {
-    if( args->args[0] == NULL ||
-            args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ) {
+    if( args->args[0] == NULL ) {
         *is_null = 1;
+        sodium_memzero( result, crypto_core_ristretto255_BYTES );
+        return NULL;
+    }
+    if( args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ) {
         *error = 1;
-        memset( result, 0, crypto_core_ristretto255_BYTES );
+        sodium_memzero( result, crypto_core_ristretto255_BYTES );
         return NULL;
     }
     const unsigned char* scalar1 = ( const unsigned char* )args->args[0];
     if( crypto_scalarmult_ristretto255_base( ( unsigned char* )result,
             scalar1 ) != 0 ) {
-        *is_null = 1;
         *error = 1;
-        memset( result, 0, crypto_core_ristretto255_BYTES );
+        sodium_memzero( result, crypto_core_ristretto255_BYTES );
         return NULL;
     }
     *length = crypto_core_ristretto255_BYTES;

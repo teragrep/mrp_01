@@ -96,7 +96,7 @@ void testRistrettoScalarMul()
     char error[1];
     char is_null[1];
     enum Item_result itemValue[] = {STRING_RESULT, STRING_RESULT};
-    const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    const UDF_ARGS args = { .arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     const char* returnedPtr = ristretto255_scalar_mul( &initid, &args, result,
                               length,
@@ -128,7 +128,7 @@ void testInvalidFirstArgSizeRistrettoScalarMul()
     char error[1];
     char is_null[1];
     enum Item_result itemValue[] = {STRING_RESULT, STRING_RESULT};
-    const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    const UDF_ARGS args = { .arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     const char* returnedPtr = ristretto255_scalar_mul( &initid, &args, result,
                               length,
@@ -154,7 +154,7 @@ void testInvalidSecondArgSizeRistrettoScalarMul()
     char error[1];
     char is_null[1];
     enum Item_result itemValue[] = {STRING_RESULT, STRING_RESULT};
-    const UDF_ARGS args = { .arg_count = 1, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
+    const UDF_ARGS args = { .arg_count = 2, .arg_type = itemValue, .args = testArgs, .lengths = testLengths, .maybe_null = 0};
     const UDF_INIT initid = {.maybe_null = 0, .decimals = 3, .max_length = crypto_core_ristretto255_SCALARBYTES, .ptr = NULL, .const_item = 0};
     const char* returnedPtr = ristretto255_scalar_mul( &initid, &args, result,
                               length,

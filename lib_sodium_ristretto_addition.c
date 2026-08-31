@@ -54,8 +54,6 @@
 my_bool ristretto255_add_init( UDF_INIT* initid, const UDF_ARGS* args,
                                char* message )
 {
-    args->arg_type[0] = STRING_RESULT;
-    args->arg_type[1] = STRING_RESULT;
     if( args->arg_count != 2 ) {
         strcpy( message, "requires 2 binary string arguments" );
         return true;
@@ -64,6 +62,8 @@ my_bool ristretto255_add_init( UDF_INIT* initid, const UDF_ARGS* args,
         strcpy( message, "sodium failed to initialize" );
         return true;
     }
+    args->arg_type[0] = STRING_RESULT;
+    args->arg_type[1] = STRING_RESULT;
     initid->maybe_null = 1;
     initid->max_length = crypto_core_ristretto255_BYTES;
     initid->const_item = ( args->args[0] != NULL && args->args[1] != NULL );
@@ -74,33 +74,33 @@ char* ristretto255_add( const UDF_INIT* initid, const UDF_ARGS* args,
                         char* result,
                         unsigned long* length, char* is_null, char* error )
 {
-    if( args->args[0] == NULL || args->args[1] == NULL ||
-            args->lengths[0] != crypto_core_ristretto255_BYTES ||
-            args->lengths[1] != crypto_core_ristretto255_BYTES ) {
+    if( args->args[0] == NULL || args->args[1] == NULL ) {
         *is_null = 1;
+        sodium_memzero( result, crypto_core_ristretto255_BYTES );
+        return NULL;
+    }
+    if( args->lengths[0] != crypto_core_ristretto255_BYTES ||
+            args->lengths[1] != crypto_core_ristretto255_BYTES ) {
         *error = 1;
-        memset( result, 0, crypto_core_ristretto255_BYTES );
+        sodium_memzero( result, crypto_core_ristretto255_BYTES );
         return NULL;
     }
     const unsigned char* point1 = ( const unsigned char* )args->args[0];
     if( crypto_core_ristretto255_is_valid_point( point1 ) == 0 ) {
-        *is_null = 1;
         *error = 1;
-        memset( result, 0, crypto_core_ristretto255_BYTES );
+        sodium_memzero( result, crypto_core_ristretto255_BYTES );
         return NULL;
     }
     const unsigned char* point2 = ( const unsigned char* )args->args[1];
     if( crypto_core_ristretto255_is_valid_point( point2 ) == 0 ) {
-        *is_null = 1;
         *error = 1;
-        memset( result, 0, crypto_core_ristretto255_BYTES );
+        sodium_memzero( result, crypto_core_ristretto255_BYTES );
         return NULL;
     }
     if( crypto_core_ristretto255_add( ( unsigned char* )result, point2,
                                       point1 ) != 0 ) {
-        *is_null = 1;
         *error = 1;
-        memset( result, 0, crypto_core_ristretto255_BYTES );
+        sodium_memzero( result, crypto_core_ristretto255_BYTES );
         return NULL;
     }
     *length = crypto_core_ristretto255_BYTES;

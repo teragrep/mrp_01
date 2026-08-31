@@ -54,7 +54,6 @@
 my_bool ristretto255_scalar_reduce_init( UDF_INIT* initid, const UDF_ARGS* args,
         char* message )
 {
-    args->arg_type[0] = STRING_RESULT;
     if( args->arg_count != 1 ) {
         strcpy( message, "requires 1 binary string argument" );
         return true;
@@ -63,6 +62,7 @@ my_bool ristretto255_scalar_reduce_init( UDF_INIT* initid, const UDF_ARGS* args,
         strcpy( message, "sodium failed to initialize" );
         return true;
     }
+    args->arg_type[0] = STRING_RESULT;
     initid->maybe_null = 1;
     initid->max_length = crypto_core_ristretto255_SCALARBYTES;
     initid->const_item = ( args->args[0] != NULL );
@@ -73,11 +73,14 @@ char* ristretto255_scalar_reduce( const UDF_INIT* initid, const UDF_ARGS* args,
                                   char* result,
                                   unsigned long* length, char* is_null, char* error )
 {
-    if( args->args[0] == NULL ||
-            args->lengths[0] != crypto_core_ristretto255_NONREDUCEDSCALARBYTES ) {
+    if( args->args[0] == NULL ) {
         *is_null = 1;
+        sodium_memzero( result, crypto_core_ristretto255_SCALARBYTES );
+        return NULL;
+    }
+    if( args->lengths[0] != crypto_core_ristretto255_NONREDUCEDSCALARBYTES ) {
         *error = 1;
-        memset( result, 0, crypto_core_ristretto255_SCALARBYTES );
+        sodium_memzero( result, crypto_core_ristretto255_SCALARBYTES );
         return NULL;
     }
     const unsigned char* nonReducedScalar1 = ( const unsigned char* )args->args[0];

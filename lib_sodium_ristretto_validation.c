@@ -55,7 +55,6 @@ my_bool ristretto255_is_valid_point_init( UDF_INIT* initid,
         const UDF_ARGS* args,
         char* message )
 {
-    args->arg_type[0] = STRING_RESULT;
     if( args->arg_count != 1 ) {
         strcpy( message, "requires 1 binary string argument" );
         return true;
@@ -64,6 +63,7 @@ my_bool ristretto255_is_valid_point_init( UDF_INIT* initid,
         strcpy( message, "sodium failed to initialize" );
         return true;
     }
+    args->arg_type[0] = STRING_RESULT;
     initid->maybe_null = 1;
     initid->const_item = ( args->args[0] != NULL );
     return false;
@@ -77,7 +77,8 @@ long long ristretto255_is_valid_point( UDF_INIT* initid, const UDF_ARGS* args,
         return 0;
     }
     if( args->lengths[0] != crypto_core_ristretto255_BYTES ) {
-        return 0; // return long 0
+        *error = 1;
+        return 0;
     }
     const unsigned char* point1 = ( const unsigned char* )args->args[0];
     if( crypto_core_ristretto255_is_valid_point( point1 ) == 0 ) {
