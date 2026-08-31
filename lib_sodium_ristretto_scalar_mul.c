@@ -72,10 +72,14 @@ char* ristretto255_scalar_mul( const UDF_INIT* initid, const UDF_ARGS* args,
                                char* result,
                                unsigned long* length, char* is_null, char* error )
 {
-    if( args->args[0] == NULL || args->args[1] == NULL ||
-            args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ||
-            args->lengths[1] != crypto_core_ristretto255_SCALARBYTES ) {
+    if( args->args[0] == NULL || args->args[1] == NULL ) {
         *is_null = 1;
+        sodium_memzero( result, crypto_core_ristretto255_SCALARBYTES );
+        return NULL;
+    }
+    if( args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ||
+            args->lengths[1] != crypto_core_ristretto255_SCALARBYTES ) {
+        *error = 1;
         sodium_memzero( result, crypto_core_ristretto255_SCALARBYTES );
         return NULL;
     }

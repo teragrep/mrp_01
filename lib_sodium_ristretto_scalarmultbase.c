@@ -73,16 +73,20 @@ char* scalarmult_ristretto255_base( const UDF_INIT* initid,
                                     char* result,
                                     unsigned long* length, char* is_null, char* error )
 {
-    if( args->args[0] == NULL ||
-            args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ) {
+    if( args->args[0] == NULL ) {
         *is_null = 1;
+        sodium_memzero( result, crypto_core_ristretto255_BYTES );
+        return NULL;
+    }
+    if( args->lengths[0] != crypto_core_ristretto255_SCALARBYTES ) {
+        *error = 1;
         sodium_memzero( result, crypto_core_ristretto255_BYTES );
         return NULL;
     }
     const unsigned char* scalar1 = ( const unsigned char* )args->args[0];
     if( crypto_scalarmult_ristretto255_base( ( unsigned char* )result,
             scalar1 ) != 0 ) {
-        *is_null = 1;
+        *error = 1;
         sodium_memzero( result, crypto_core_ristretto255_BYTES );
         return NULL;
     }

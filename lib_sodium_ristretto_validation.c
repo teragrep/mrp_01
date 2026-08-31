@@ -77,7 +77,8 @@ long long ristretto255_is_valid_point( UDF_INIT* initid, const UDF_ARGS* args,
         return 0;
     }
     if( args->lengths[0] != crypto_core_ristretto255_BYTES ) {
-        return 0; // return long 0
+        *error = 1;
+        return 0;
     }
     const unsigned char* point1 = ( const unsigned char* )args->args[0];
     if( crypto_core_ristretto255_is_valid_point( point1 ) == 0 ) {
