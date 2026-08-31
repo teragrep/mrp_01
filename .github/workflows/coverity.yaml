@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install jq
-        run: sudo apt-get update && sudo apt-get install jq
+        run: sudo apt-get update && sudo apt-get install jq make automake autoconf libtool libmariadb-dev libsodium-dev
 
       - name: Get version
         run: printf "RELEASE_VERSION=%q\n" "$(git describe --always --tags)" >> $GITHUB_ENV
@@ -56,7 +56,9 @@ jobs:
 
       - name: Compile Coverity
         run: |
-           ${RUNNER_TEMP}/${{ env.COVERITY }}/bin/cov-build --dir ${RUNNER_TEMP}/cov-int mvn -B -Drevision=${{ env.RELEASE_VERSION }} -Dsha1= -Dchangelist= -Dmaven.test.skip.exec=true clean verify
+           autoreconf -fvi
+           bash configure
+           ${RUNNER_TEMP}/${{ env.COVERITY }}/bin/cov-build --dir ${RUNNER_TEMP}/cov-int make
            cd ${RUNNER_TEMP} && tar czvf ${{ vars.COVERITY_PROJECT_URL_ID }}.tgz cov-int
 
       - name: Wait for Coverity analysis slot
